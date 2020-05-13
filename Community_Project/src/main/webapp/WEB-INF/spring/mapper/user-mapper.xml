@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sif.community.dao.UserDao">
+
+	<resultMap id="userDetailsRM" type="userDetailsVO">
+		<id property="id" column="id"/>
+		<result property="username" column="username"/>
+		<collection property="authorities" column="username" ofType="authorityVO" select="findByUsernameFromAuthorities"/>
+	</resultMap>
+	
+	<select id="findByUsernameFromAuthorities" resultType="authorityVO">
+		SELECT *
+		FROM authorities
+		WHERE username = #{username}
+	</select>
+	
+	<select id="selectAll" resultMap="userDetailsRM">
+		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
+		FROM tbl_users
+	</select>
+
+	<select id="findById" resultMap="userDetailsRM">
+		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
+		FROM tbl_users
+		WHERE id = #{id}
+	</select>
+	
+	<select id="findByUsername" resultMap="userDetailsRM">
+		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
+		FROM tbl_users
+		WHERE username = #{username}
+	</select>
+	
+	<select id="create_table">
+		${create_table}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO `tbl_users` (
+			username,
+			password,
+			enabled,
+			nickname,
+			email,
+			phone,
+			age
+		) VALUES (
+			#{username},
+			#{password},
+			#{enabled},
+			#{nickname},
+			#{email},
+			#{phone},
+			CONCAT( #{year}, '-', #{month}, '-', #{day} )
+		)
+	</insert>
+	
+	<update id="update_user">
+		UPDATE `tbl_users`
+		SET
+		`enabled` = #{enabled},
+		`nickname` = #{nickname},
+		`phone` = #{phone},
+		`age` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
+		WHERE `username` = #{username}
+	</update>
+	
+	<update id="update_pw">
+		UPDATE `tbl_users`
+		SET
+		`password` = #{password}
+		WHERE `username` = #{username}
+	</update>
+	
+	<update id="update_email">
+		UPDATE `tbl_users`
+		SET
+		`email` = #{email}
+		WHERE `username` = #{username}
+	</update>
+	
+</mapper>
