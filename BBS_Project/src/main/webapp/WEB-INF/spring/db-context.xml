@@ -15,7 +15,7 @@
 	<!-- 8.0 버전대에서 사용하려면 &allowPublicKeyRetrieval=true 를 추가해야 한다 -->
 	<bean id="mysqlDS" class="org.apache.commons.dbcp2.BasicDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-		<property name="url" value="jdbc:mysql://localhost:3306/myshop?serverTimezone=Asia/Seoul"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/community?serverTimezone=Asia/Seoul"/>
 		<property name="username" value="${mysql.username}"/>
 		<property name="password" value="${mysql.password}"/>
 	</bean>
