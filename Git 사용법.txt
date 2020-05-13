@@ -1,0 +1,52 @@
+[ Git에 올라온 최신버전 가져오기 ]
+---- master에서 최신버전 가져오기 ----
+1. git checkout master : master 브랜치로 이동
+2. git pull origin master : master 브랜치에 git에 올라온 최신버전 가져오기
+---- 자기 작업본(자기 브랜치)에 최신버전 반영하기 ----
+1. git checkout 브랜치이름 : 자기 브랜치로 이동
+2. git merge master : 자기 브랜치에서 최신버전을 가져온 master 브랜치(최신버전)와 합치기
+
+
+[ 자기 작업물 올리기 ]
+---- 먼저 자기 브랜치에 최신버전 올리기 ----
+1. git checkout 브랜치이름 : 자기 브랜치로 이동
+2. git add .
+3. git commit -m "설명"
+4. git push origin 브랜치이름
+---- Master 브랜치에 최신버전 올리기(※상의 후 올리기) ----
+1. git checkout master : master 브랜치로 이동
+2. git merge 브랜치이름 : master 브랜치에서 자기 브랜치 작업물(최신버전)과 합치기
+3. git push origin master
+
+
+[ 기본 개념 ]
+Git(브랜치이름) <-> 내 컴퓨터(local)의 브랜치이름 (내 컴퓨터에서 "git push origin 브랜치이름" 하면 Git의 브랜치이름에 올라감)
+Git(master) <-> 내 컴퓨터(local)의 master (내 컴퓨터에서 "git push origin master" 하면 Git의 master 브랜치에 올라감)
+
+※ 자기 브랜치에 작업하기
+※ 어느 정도 만들어졌는지 서로 협의 후 master에 작업물 올리고 최신버전 받아서 계속 작업하기
+
+
+[ 작업 중 같은 곳을 수정한다면 충돌 발생 ]
+예시)
+<<<<<<< HEAD
+	<span>브랜치A 구현</span>
+===========
+	<div>
+		<span>브랜치B 구현</span>
+	</div>
+>>>>>>> as86bg123f7sdgs6g6d8g5s76d57sda
+
+위와 같이 master에서 충돌 발생 시
+어느 부분을 적용할 지 상의 후, 수동으로 충돌부분 직접 수정해서 다시 올리기
+
+
+[ 코드에서 버그 등이 발생하여 한참 전의 코드로 돌아가야 할 경우 ]
+https://victorydntmd.tistory.com/91
+
+
+[ 잘못 올라간 Git 원격저장소 파일 삭제하는 방법 ]
+1. Git 원격저장소 파일만 삭제
+git rm --cached 파일명
+2. Git 원격저장소 + 로컬(내 컴퓨터) 파일 삭제
+git rm 파일명
