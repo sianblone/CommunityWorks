@@ -86,56 +86,30 @@ public class UserService {
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
 	public int update_user(UserDetailsVO userVO) {
-		Authentication oldAuth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsVO loginUserVO = (UserDetailsVO) oldAuth.getPrincipal();
+		// 유저 정보는 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
 		
-		loginUserVO.setEmail(userVO.getEmail());
+		// SecurityContextHolder에서 인증정보 가져오기
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 가져온 인증정보에서 Principal(유저정보) 가져오기
+		UserDetailsVO loginUserVO = (UserDetailsVO) auth.getPrincipal();
+		
+		// 기존의 유저정보에 form에서 입력받은 정보만 새로 세팅하기
+		// 닉네임, 핸드폰, 생년, 생월, 생일
+		loginUserVO.setNickname(userVO.getNickname());
 		loginUserVO.setPhone(userVO.getPhone());
+		
 		loginUserVO.setYear(userVO.getYear());
 		loginUserVO.setMonth(userVO.getMonth());
 		loginUserVO.setDay(userVO.getDay());
 		
+		// DB에 업데이트 된 유저정보 저장
 		int ret = userDao.update_user(loginUserVO);
 		if(ret > 0) {
-			// 업데이트 성공시, 전역으로 쓰는 SecurityContextHolder에 새로운 Authentication 업데이트 시켜주기
-			Authentication newAuth = new UsernamePasswordAuthenticationToken(loginUserVO, oldAuth.getCredentials(), oldAuth.getAuthorities());
+			// 업데이트 성공시, 전역으로 쓰는 SecurityContextHolder(현재 로그인 된 사용자 정보)에 새로운 Authentication 업데이트 시켜주기
+			Authentication newAuth = new UsernamePasswordAuthenticationToken(loginUserVO, auth.getCredentials(), auth.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(newAuth);
 		}
 		
-		return ret;
-	}
-	
-	// 관리자가 다른 유저 정보 수정하기
-	// 유저 정보, 설정한 권한 따로 받기
-	@Transactional
-	public int update_user_from_admin(UserDetailsVO userVO, String[] arrAuth) {
-		UserDetailsVO dbUserVO = userDao.findByUsername(userVO.getUsername());
-		
-		dbUserVO.setEnabled(userVO.isEnabled());
-		dbUserVO.setEmail(userVO.getEmail());
-		dbUserVO.setPhone(userVO.getPhone());
-		dbUserVO.setYear(userVO.getYear());
-		dbUserVO.setMonth(userVO.getMonth());
-		dbUserVO.setDay(userVO.getDay());
-		
-		int ret = userDao.update_user(dbUserVO);
-		
-		if(ret > 0) {
-			List<AuthorityVO> authList = new ArrayList<AuthorityVO>();
-			for(String auth : arrAuth) {
-				//input에서 받은 auth 값이 비어있으면(="") 무시함 
-				if(!auth.isEmpty()) {
-					AuthorityVO authVO = AuthorityVO.builder()
-										.username(dbUserVO.getUsername())
-										.authority(auth)
-										.build();
-					
-					authList.add(authVO);
-				}
-			}
-			authDao.delete(dbUserVO.getUsername());
-			authDao.insert(authList);
-		}
 		return ret;
 	}
 	
@@ -257,19 +231,21 @@ public class UserService {
 		
 		// 페이지 인증코드 복호화
 		String dec_code = PbeEncryptor.decrypt(enc_auth_code);
+		// 현재 로그인 한 유저 아이디 가져오고 form에서 받은 이메일 세팅하기
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		UserDetailsVO userVO = userDao.findByUsername(username);
+		userVO.setEmail(email);
+		
 		// 인증코드를 정확히 입력했을 경우
 		if(dec_code.equals(auth_code)) {
-			String username = SecurityContextHolder.getContext().getAuthentication().getName();
-			UserDetailsVO userVO = userDao.findByUsername(username);
-			userVO.setEmail(email);
-			
-			int result = userDao.update_user(userVO);
-			if(result > 0) ret = 1; else ret = 7;
+			int result = userDao.update_email(userVO);
 			// DB update 성공 = 리턴 1, 실패 = 리턴 7
+			if(result > 0) ret = 1; else ret = 7;
 			
-			// 현재 사용자의 권한이 ROLE_UNAUTH인 경우에만
-			if(ret == 1 && SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().filter(o -> o.getAuthority().equals("ROLE_UNAUTH")).findFirst().isPresent()) {
-				// 권한 테이블에서 username으로 검색한 튜플 전부 삭제 후 ROLE_USER 권한 새로 추가
+			// 현재 사용자의 권한이 ROLE_UNAUTH인 경우에만 실행
+			// 권한 테이블에서 username으로 검색한 튜플 전부 삭제 후 ROLE_USER 권한 새로 추가하기
+			if(ret == 1 && auth.getAuthorities().stream().filter(o -> o.getAuthority().equals("ROLE_UNAUTH")).findFirst().isPresent()) {
 				result = authDao.delete(userVO.getUsername());
 				if(result > 0) ret++; else ret = 7;
 				List<AuthorityVO> authList = new ArrayList<>();
@@ -282,6 +258,18 @@ public class UserService {
 		} else {
 			// 정확하지 않은 인증코드 입력 = 리턴 4
 			ret = 4;
+		}
+		
+		/*
+		 * 유저 테이블에 업데이트 성공 시 (현재 사용자의 권한이 ROLE_UNAUTH인 경우 권한 테이블까지 업데이트 성공 시)
+		 * 트랜잭션은 COMMIT : DB 업데이트
+		 * DB 업데이트 시 SecurityContextHolder의 유저 정보도 업데이트
+		 * UsernamePasswordAuthenticationToken에 서버에서 사용할 유저정보(userVO), 비밀번호, 권한을 생성자 매개변수로 넣어 새로 만들고 Authentication으로 만들기
+		 * 유저정보, Credential, 권한이 업데이트 된 새로운 Authentication을 SecurityContextHolder.getContext()에 setAuthentication() 메소드로 세팅해주기
+		 */
+		if(ret == 1 || ret == 3) {
+			Authentication newAuth = new UsernamePasswordAuthenticationToken(userVO, auth.getCredentials(), auth.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
 		}
 		
 		return ret;

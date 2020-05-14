@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.JoinService;
@@ -57,17 +58,21 @@ public class JoinController {
 	
 	/**
 	 * @since 2020-05-11
-	 * 이메일 링크 클릭 시 인증
+	 * 이메일 링크 클릭 시 username과 email을 parameter로 받아서 userVO에 매핑
+	 * 서비스 실행 결과를 기준으로 결과 보여주기
 	 * @param userVO
 	 * @param session
 	 * @return
 	 */
 	@RequestMapping(value="/email-auth", method=RequestMethod.GET)
-	public String email_valid(UserDetailsVO userVO, Model model) {
+	public String email_valid(UserDetailsVO userVO, RedirectAttributes redirect) {
 		byte ret = joinSvc.email_link_auth(userVO.getUsername(), userVO.getEmail());
-		
+		// 1(성공) : DB의 유저 테이블에 username이 있고, 링크의 이메일 복호화 값 == DB 유저 테이블의 이메일 값인 경우
+		// 2(실패) : DB의 유저 테이블에 username이 없는 경우
+		// 3(실패) : DB의 유저 테이블에 username이 있고, 링크의 이메일 복호화 값 != DB 유저 테이블의 이메일 값인 경우
+		// 4(실패) : DB의 유저 테이블에 username이 있고, 권한 중 ROLE_UNAUTH가 없는 경우
 		if (ret == 1) {
-			model.addAttribute("EMAIL_AUTH", true);
+			redirect.addAttribute("EMAIL_AUTH", true);
 			return "redirect:/";
 		} else {
 			return "user/email_auth_fail";

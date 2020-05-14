@@ -1,3 +1,6 @@
+target/
+
+# *.java 파일이 실행됐을 때 컴파일 된 파일
 *.class
 
 # Mobile Tools for Java (J2ME)

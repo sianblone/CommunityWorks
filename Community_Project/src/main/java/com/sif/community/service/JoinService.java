@@ -84,13 +84,10 @@ public class JoinService {
 		// 1. DB의 유저 테이블에 username이 없으면 아무 일도 하지 않음
 		if(userVO == null) {
 			ret = 2;
-		} else if(!authDao.findByUsername(plainUsername).stream()
+		} else if(authDao.findByUsername(plainUsername).stream()
 				.filter(o -> o.getAuthority().equals("ROLE_UNAUTH")).findFirst().isPresent()) {
-			// 2. DB의 유저 테이블에 username이 있지만 권한 중 ROLE_UNAUTH가 없는 경우 아무 일도 하지 않음
-			ret = 3;
-		} else {
-			// 3. DB의 유저 테이블에 username이 있고 권한 중 ROLE_UNAUTH가 있는 경우
-			// 3-1. 링크의 이메일 복호화 값이 DB의 이메일 값과 같으면 권한 업데이트
+			// 2. DB의 유저 테이블에 username이 있고, 해당 유저의 권한 테이블에 ROLE_UNAUTH가 있는 경우
+			// 2-1. 링크의 이메일 복호화 값 == DB 유저 테이블의 이메일 값이면 권한 업데이트
 			if(plainEmail.equalsIgnoreCase(userVO.getEmail())) {
 				// 현재 권한 테이블에서 username으로 검색한 튜플 전부 삭제 후 ROLE_USER 권한 새로 추가
 				authDao.delete(userVO.getUsername());
@@ -99,9 +96,12 @@ public class JoinService {
 				authDao.insert(authList);
 				ret = 1;
 			} else {
-				// 3-2. 링크의 이메일 복호화 값이 DB의 이메일 값과 다르면 잘못된 요청 페이지로 보내기
-				ret = 4;
+				// 2-2. 링크의 이메일 복호화 값 != DB 유저 테이블의 이메일 값이면 잘못된 요청 페이지로 보내기
+				ret = 3;
 			}
+		} else {
+			// 3. DB의 유저 테이블에 username이 있지만 권한 중 ROLE_UNAUTH가 없는 경우 아무 일도 하지 않음
+			ret = 4;
 		}
 		
 		return ret;

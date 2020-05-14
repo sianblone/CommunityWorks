@@ -41,8 +41,6 @@
 		#year, #month, #day {
 			width: 15%;
 			min-width: 70px;
-			background-color: var(--input-bg-color);
-			border: none;
 			margin-right: 20px;
 		}
 		
@@ -102,6 +100,7 @@
 			})
 			
 			$(document).on("click", "#btn_send_email", function() {
+				if(!enable_btn_send_email) return false
 				let email = $("#email")
 				
 				// 유효성 검사
@@ -132,6 +131,7 @@
 						} else {
 							$(".auth_code_box").css("display", "block")
 							$("#encrypted_auth_code").text(result)
+							alert("인증 메일이 발송되었습니다.")
 						}
 					},
 					error : function() {
@@ -144,6 +144,7 @@
 			})
 			
 			$(document).on("click", "#btn_auth_code", function() {
+				if(!enable_btn_auth_code) return false
 				let auth_code = $("#auth_code")
 				
 				// 유효성 검사
@@ -166,8 +167,11 @@
 						auth_code : $("#auth_code").val()
 					},
 					success : function(result) {
-						if(result == 1 || result == 3) {
+						if(result == 1) {
 							alert("이메일이 변경되었습니다.")
+							document.location.replace(document.location.href)
+						} else if(result == 3){
+							alert("이메일 변경 및 인증이 완료되었습니다.")
 							document.location.replace(document.location.href)
 						} else if(result == 7) {
 							alert("문제가 발생했습니다. 잠시 후 다시 시도하세요.")

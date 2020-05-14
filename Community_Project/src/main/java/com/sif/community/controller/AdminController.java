@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.AdminService;
 import com.sif.community.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 	
 	private final UserService userSvc;
+	private final AdminService adminSvc;
 	
 	//@ResponseBody
 	@RequestMapping(value="", method=RequestMethod.GET)
@@ -44,7 +46,7 @@ public class AdminController {
 	@RequestMapping(value="/user_detail", method=RequestMethod.POST)
 	public String mypage(UserDetailsVO userVO, String[] auth, Model model) {
 		System.out.println(userVO.toString());
-		int ret = userSvc.update_user_from_admin(userVO, auth);
+		int ret = adminSvc.update_user_from_admin(userVO, auth);
 		
 		return "redirect:/admin/user_detail/" + userVO.getUsername();
 	}

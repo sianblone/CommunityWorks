@@ -116,7 +116,7 @@
 					re_password.focus()
 					return false
 				} else if (password.val() != re_password.val()) {
-					alert("비밀번호가 다릅니다.\n다시 확인해주세요.")
+					alert("비밀번호가 다릅니다.\n다시 확인하세요.")
 					re_password.focus()
 					return false
 				} else if(email.val() == "") {

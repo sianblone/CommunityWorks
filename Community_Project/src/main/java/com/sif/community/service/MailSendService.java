@@ -2,7 +2,6 @@ package com.sif.community.service;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -96,8 +95,8 @@ public class MailSendService {
 		String enc_username = PbeEncryptor.encrypt(userVO.getUsername());
 		
 		String email_content =
-				"<p>OOO 사이트에서 비밀번호 재설정을 요청했습니다</p>"
-				+ "<p>본인이 맞으면 하단의 비밀번호 재설정 링크를 클릭하세요</p>"
+				"<p>OOO 사이트에서 비밀번호 재설정을 요청했습니다.</p>"
+				+ "<p>본인이 맞으면 하단의 비밀번호 재설정 링크를 클릭하세요.</p>"
 				+ "<a href='localhost:8080/sec/user/new-pw?link="
 				+ URLEncoder.encode(enc_username, "UTF-8")
 				+ "'>"
@@ -112,8 +111,8 @@ public class MailSendService {
 	public boolean send_auth_code(String to_email, String email_token) {
 		
 		StringBuilder email_content = new StringBuilder();
-		email_content.append("<p>회원가입을 완료하려면 인증코드를 입력하세요</p>");
-		email_content.append("<p>" + email_token + "</p>");
+		email_content.append("<p>회원가입을 완료하려면 인증코드를 입력하세요.</p>");
+		email_content.append("<p>인증코드 : " + email_token + "</p>");
 		
 		String subject = "이메일 변경 인증코드";
 		

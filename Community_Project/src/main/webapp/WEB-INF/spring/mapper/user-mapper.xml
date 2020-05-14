@@ -16,20 +16,23 @@
 	</select>
 	
 	<select id="selectAll" resultMap="userDetailsRM">
-		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
-		FROM tbl_users
+		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		FROM tbl_users as a JOIN tbl_users as b
+		ON a.id = b.id
 	</select>
 
 	<select id="findById" resultMap="userDetailsRM">
-		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
-		FROM tbl_users
-		WHERE id = #{id}
+		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		FROM tbl_users as a JOIN tbl_users as b
+		ON a.id = b.id
+		WHERE a.id = #{id}
 	</select>
 	
 	<select id="findByUsername" resultMap="userDetailsRM">
-		SELECT *, YEAR((SELECT age FROM tbl_users)) as year, MONTH((SELECT age FROM tbl_users)) as month, DAY((SELECT age FROM tbl_users)) as day
-		FROM tbl_users
-		WHERE username = #{username}
+		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		FROM tbl_users as a JOIN tbl_users as b
+		ON a.id = b.id
+		WHERE a.username = #{username}
 	</select>
 	
 	<select id="create_table">
@@ -59,7 +62,6 @@
 	<update id="update_user">
 		UPDATE `tbl_users`
 		SET
-		`enabled` = #{enabled},
 		`nickname` = #{nickname},
 		`phone` = #{phone},
 		`age` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
