@@ -44,11 +44,8 @@ public class EncGmail {
 			e.printStackTrace();
 		}
 		
-		
 		scanner.close();
 		System.out.println("gmail.connection.properties 저장 완료!");
-		
-		
 	}
 
 }

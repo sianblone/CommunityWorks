@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sif.community.model.UserDetailsVO;
-import com.sif.community.service.JoinService;
-import com.sif.community.service.UserService;
+import com.sif.community.service.user.JoinService;
+import com.sif.community.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

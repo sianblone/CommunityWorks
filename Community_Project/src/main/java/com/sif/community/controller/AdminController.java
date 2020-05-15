@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sif.community.model.UserDetailsVO;
-import com.sif.community.service.AdminService;
-import com.sif.community.service.UserService;
+import com.sif.community.service.user.AdminService;
+import com.sif.community.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 

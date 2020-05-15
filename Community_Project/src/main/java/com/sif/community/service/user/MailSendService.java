@@ -1,4 +1,4 @@
-package com.sif.community.service;
+package com.sif.community.service.user;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

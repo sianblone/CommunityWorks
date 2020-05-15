@@ -1,4 +1,4 @@
-package com.sif.community.service;
+package com.sif.community.service.user;
 
 import java.util.ArrayList;
 import java.util.Collection;

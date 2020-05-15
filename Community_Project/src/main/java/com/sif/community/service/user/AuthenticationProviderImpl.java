@@ -1,4 +1,4 @@
-package com.sif.community.service;
+package com.sif.community.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -46,11 +46,8 @@ public class EncMySQL {
 			e.printStackTrace();
 		}
 		
-		
 		scanner.close();
 		System.out.println("db.connection.properties 저장 완료!");
-		
-		
 	}
 
 }
