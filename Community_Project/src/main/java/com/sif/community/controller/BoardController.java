@@ -38,7 +38,7 @@ public class BoardController {
 			@RequestParam(value = "searchTxt", required = false, defaultValue = "") String searchTxt,
 			@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
 		
-		this.selectAllByPage(model, searchTxt, currPage);
+		this.selectAllByPage(model, boardName, searchTxt, currPage);
 		
 		return "board/list";
 	}

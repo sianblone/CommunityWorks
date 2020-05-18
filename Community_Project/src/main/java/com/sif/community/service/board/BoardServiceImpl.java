@@ -17,7 +17,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> selectAllByPage(String searchTxt, PaginationVO pageDTO) {
+	public List<BoardVO> selectAllByPage(String boardName, String searchTxt, PaginationVO pageDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}
