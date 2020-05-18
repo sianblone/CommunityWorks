@@ -2,9 +2,12 @@ package com.sif.community.service.board;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
 
+@Service(value = "boardSvc")
 public class BoardServiceImpl implements BoardService {
 
 	@Override
