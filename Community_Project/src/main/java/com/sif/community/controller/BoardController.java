@@ -34,7 +34,7 @@ public class BoardController {
 	// 검색 값과 현재 페이지로 페이지네이션 select하기
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String list(Model model,
-			@RequestParam(value = "board_name", required = false, defaultValue = "") String board_name,
+			@RequestParam(value = "boardName", required = false, defaultValue = "") String boardName,
 			@RequestParam(value = "searchTxt", required = false, defaultValue = "") String searchTxt,
 			@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
 		
@@ -79,12 +79,12 @@ public class BoardController {
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, String searchTxt, int currPage) {
+	private void selectAllByPage(Model model, String boardName, String searchTxt, int currPage) {
 		long totalCount = boardSvc.countAll();
 		PaginationVO pageDTO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageDTO);
 		
-		List<BoardVO> boardList = boardSvc.selectAllByPage(searchTxt, pageDTO);
+		List<BoardVO> boardList = boardSvc.selectAllByPage(boardName, searchTxt, pageDTO);
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 

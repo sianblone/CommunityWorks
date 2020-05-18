@@ -7,7 +7,7 @@ import com.sif.community.model.PaginationVO;
 
 public interface BoardService {
 	
-	public List<BoardVO> selectAllByPage(String searchTxt, PaginationVO pageDTO);
+	public List<BoardVO> selectAllByPage(String boardName, String searchTxt, PaginationVO pageDTO);
 
 	public long countAll();
 
