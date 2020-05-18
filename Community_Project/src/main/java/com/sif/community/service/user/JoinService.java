@@ -55,17 +55,21 @@ public class JoinService {
 		
 		int ret = userDao.insert(userVO);
 		
-		List<AuthorityVO> authList = new ArrayList<>();
-		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
-		authDao.insert(authList);
+		if(ret > 1) {
+			List<AuthorityVO> authList = new ArrayList<>();
+			authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
+			ret = authDao.insert(authList);
+		}
 		
-		// 인증메일 발송
-		try {
-			mailSvc.send_join_auth_link(userVO);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			ret = 0;
+		if(ret > 1) {
+			// 인증메일 발송
+			try {
+				mailSvc.send_join_auth_link(userVO);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				ret = 0;
+			}
 		}
 		
 		return ret;

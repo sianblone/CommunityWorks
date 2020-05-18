@@ -26,6 +26,7 @@ public class BoardVO {
 	private int board_count;//	BIGINT
 	private String board_filename;//	VARCHAR(256)
 	private int board_delete;//	TINYINT
-	private int board_recommend;//	BIGINT
+	private int board_recommend;//	BIGINTboard_category	VARCHAR(20)
+	private String board_category;//	VARCHAR(20)
 
 }
