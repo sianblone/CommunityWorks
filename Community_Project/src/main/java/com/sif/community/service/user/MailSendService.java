@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.UserDetailsVO;
@@ -57,6 +58,7 @@ public class MailSendService {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
+	@Transactional
 	public boolean send_join_auth_link(UserDetailsVO userVO) throws UnsupportedEncodingException {
 		
 		String username = userVO.getUsername();
