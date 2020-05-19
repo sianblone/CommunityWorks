@@ -81,10 +81,10 @@ public class BoardController {
 	// 페이지네이션
 	private void selectAllByPage(Model model, String boardName, String searchTxt, int currPage) {
 		long totalCount = boardSvc.countAll();
-		PaginationVO pageDTO = pageSvc.makePageInfo(totalCount, currPage);
-		model.addAttribute("PAGE_DTO", pageDTO);
+		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
+		model.addAttribute("PAGE_DTO", pageVO);
 		
-		List<BoardVO> boardList = boardSvc.selectAllByPage(boardName, searchTxt, pageDTO);
+		List<BoardVO> boardList = boardSvc.selectAllByPage(boardName, searchTxt, pageVO);
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 
