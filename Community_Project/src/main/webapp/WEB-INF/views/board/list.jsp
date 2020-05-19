@@ -19,14 +19,14 @@
 					<th>일시</th>
 					<th>제목</th>
 				</tr>
-				<c:forEach items="${GALLERY_LIST}" var="GALLERY" varStatus="i">
+				<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
 					<tr>
 						<td>${i.count}</td>
-						<td>${GALLERY.g_writer}</td>
-						<td>${GALLERY.g_date_time}</td>
+						<td>${B.board_writer}</td>
+						<td>${B.board_date} {B.board_time}</td>
 						<td>
-						<a href="${rootPath}/detail?g_id=${GALLERY.g_id}">
-						${GALLERY.b_subject}</a>
+						<a href="${rootPath}/detail?board_no=${B.board_no}">
+						${B.board_subject}</a>
 						</td>
 					</tr>
 				</c:forEach>

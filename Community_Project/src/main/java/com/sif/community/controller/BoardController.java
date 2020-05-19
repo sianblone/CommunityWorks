@@ -21,24 +21,25 @@ public class BoardController {
 	
 	@Autowired
 	@Qualifier(value = "pageSvc")
-	PaginationService pageSvc;
+	private PaginationService pageSvc;
 	
 	@Autowired
 	@Qualifier(value = "boardSvc")
-	BoardService boardSvc;
+	private BoardService boardSvc;
 	
 	// 게시판 컨트롤러
 	// 리스트(GET) + 게시판 이름 + 검색 + 페이지 / 상세보기(GET) / 저장(GET: 화면 보여주기, POST: 입력 받기) / 삭제(POST)
 	
 	// 리스트 + 게시판 이름 + 검색 + 페이지 메소드
 	// 검색 값과 현재 페이지로 페이지네이션 select하기
-	@RequestMapping(value="", method=RequestMethod.GET)
+	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model,
-			@RequestParam(value = "boardName", required = false, defaultValue = "") String boardName,
-			@RequestParam(value = "searchTxt", required = false, defaultValue = "") String searchTxt,
+			BoardVO boardVO,
 			@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
+		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
+		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
-		this.selectAllByPage(model, boardName, searchTxt, currPage);
+		this.selectAllByPage(model, boardVO, currPage);
 		
 		return "board/list";
 	}
@@ -79,12 +80,12 @@ public class BoardController {
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, String boardName, String searchTxt, int currPage) {
-		long totalCount = boardSvc.countAll();
+	private void selectAllByPage(Model model, BoardVO boardVO, int currPage) {
+		long totalCount = boardSvc.countAll(boardVO);
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		
-		List<BoardVO> boardList = boardSvc.selectAllByPage(boardName, searchTxt, pageVO);
+		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 

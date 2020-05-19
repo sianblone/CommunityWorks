@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.AuthoritiesDao;
+import com.sif.community.dao.DdlDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
@@ -25,14 +26,16 @@ public class UserService {
 	private final PasswordEncoder bcryptEncoder;
 	private final UserDao userDao;
 	private final AuthoritiesDao authDao;
+	private final DdlDao ddlDao;
 	private final MailSendService mailSvc;
 	
 	// DB 스키마에 테이블 없으면 새로 생성하기
-	public UserService(PasswordEncoder bcryptEncoder, UserDao userDao, AuthoritiesDao authDao, MailSendService mailSvc) {
+	public UserService(PasswordEncoder bcryptEncoder, UserDao userDao, AuthoritiesDao authDao, DdlDao ddlDao, MailSendService mailSvc) {
 		this.bcryptEncoder = bcryptEncoder;
 		this.userDao = userDao;
 		this.authDao = authDao;
 		this.mailSvc = mailSvc;
+		this.ddlDao = ddlDao;
 		
 		String create_user_table = "CREATE TABLE IF NOT EXISTS tbl_users ( " + 
 				" id BIGINT PRIMARY KEY AUTO_INCREMENT, " + 
@@ -56,8 +59,8 @@ public class UserService {
 				" ) "
 				;
 		
-		userDao.create_table(create_user_table);
-		userDao.create_table(create_auth_table);
+		ddlDao.create_table(create_user_table);
+		ddlDao.create_table(create_auth_table);
 	}
 	
 	// selectAll() 메소드는 2개의 테이블을 select하고 있다
