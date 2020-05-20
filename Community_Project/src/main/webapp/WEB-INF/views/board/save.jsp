@@ -39,6 +39,10 @@
 			}
 		}) // end summer
 		
+		$("button.btn-success").click(function(){
+			document.location.href="${rootPath}/board/list?board_name=gallery"
+		})
+		
 		function upFile(file,editor) {
 			
 			var formData = new FormData()

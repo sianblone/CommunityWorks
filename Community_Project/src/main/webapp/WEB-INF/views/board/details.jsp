@@ -8,6 +8,12 @@
 	<title>JSP 페이지</title>
 </head>
 <body>
-	
+	<p>${BOARD_VO.board_writer}</p>
+	<p>${BOARD_VO.board_date} ${BOARD_VO.board_time}</p>
+	<p>${BOARD_VO.board_count}</p>
+	<p>${BOARD_VO.board_recommend}</p>
+	<p>${BOARD_VO.board_category}</p>
+	<p>${BOARD_VO.board_subject}</p>
+	<p>${BOARD_VO.board_content}</p>
 </body>
 </html>

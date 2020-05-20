@@ -34,7 +34,7 @@
 						<td>${i.count}</td>
 						<td>${B.board_category}</td>
 						<td>
-						<a href="${rootPath}/board/detail?board_name=${BOARD_NAME}&board_no=${B.board_no}">
+						<a href="${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=${B.board_no}">
 						${B.board_subject}</a>
 						</td>
 						<td>${B.board_writer}</td>

@@ -16,6 +16,7 @@ public interface BoardService {
 	public void delete(Long id);
 
 	public BoardVO findByNo(Long no);
+
 	
 
 }

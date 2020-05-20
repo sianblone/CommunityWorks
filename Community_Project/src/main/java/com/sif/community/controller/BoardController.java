@@ -55,8 +55,9 @@ public class BoardController {
 	// 상세보기 메소드
 	// id값으로 게시글 보여주기
 	@RequestMapping(value="/details", method=RequestMethod.GET)
-	public String details(BoardVO boardVO) {
-		
+	public String details(BoardVO boardOptionVO, Model model) {
+		BoardVO boardVO = boardSvc.findByNo(boardOptionVO.getBoard_no());
+		model.addAttribute("BOARD_VO",boardVO);
 		return "board/details";
 	}
 	
