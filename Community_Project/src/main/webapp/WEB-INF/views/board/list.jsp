@@ -6,6 +6,13 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
+<script>
+	$(function(){
+		$("button.btn-writer").click(function(){
+			document.location.href="${rootPath}/board/save"
+		})
+	})
+</script>
 </head>
 
 <body>
