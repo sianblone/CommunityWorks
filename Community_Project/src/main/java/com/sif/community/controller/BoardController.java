@@ -16,6 +16,9 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.BoardService;
 import com.sif.community.service.board.PaginationService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
@@ -41,6 +44,7 @@ public class BoardController {
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
+		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		this.selectAllByPage(model, boardVO, currPage);
 		
 		model.addAttribute("BOARD_NAME", boardVO.getBoard_name());
@@ -51,7 +55,7 @@ public class BoardController {
 	// 상세보기 메소드
 	// id값으로 게시글 보여주기
 	@RequestMapping(value="/details", method=RequestMethod.GET)
-	public String details(Long id) {
+	public String details(BoardVO boardVO) {
 		
 		return "board/details";
 	}
@@ -103,9 +107,10 @@ public class BoardController {
 	// 게시물 삭제버튼 클릭 시 사용할 메소드
 	// 게시글 deleted 칼럼 값 1로 바꿔주기
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(Long no) {
-		boardSvc.delete(no);
-		String board_name = boardSvc.findByNo(no).getBoard_name();
+	public String delete(BoardVO boardVO) {
+		long board_no = boardVO.getBoard_no();
+		boardSvc.delete(board_no);
+		String board_name = boardSvc.findByNo(board_no).getBoard_name();
 		return "redirect:/board/list?board_name=" + board_name;
 	}
 	
@@ -116,6 +121,7 @@ public class BoardController {
 		model.addAttribute("PAGE_DTO", pageVO);
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
+		log.debug(boardList.toString());
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 

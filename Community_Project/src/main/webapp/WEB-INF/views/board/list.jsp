@@ -21,8 +21,8 @@
 		<article>
 			<table class="table table-striped table-hover">
 				<tr>
-					<th>NO</th>
-					<th></th>
+					<th>글번호</th>
+					<th>카테고리</th>
 					<th>제목</th>
 					<th>작성자</th>
 					<th>등록일</th>
@@ -34,11 +34,11 @@
 						<td>${i.count}</td>
 						<td>${B.board_category}</td>
 						<td>
-						<a href="${rootPath}/detail?board_no=${B.board_no}">
+						<a href="${rootPath}/board/detail?board_name=${BOARD_NAME}&board_no=${B.board_no}">
 						${B.board_subject}</a>
 						</td>
 						<td>${B.board_writer}</td>
-						<td>${B.board_date} {B.board_time}</td>
+						<td>${B.board_date} ${B.board_time}</td>
 						<td>${B.board_count}</td>
 						<td>${B.board_recommend}</td>
 					</tr>

@@ -7,9 +7,11 @@
 		SELECT *
 		FROM tbl_board
 		WHERE
-			board_name = #{board_name}
+			board_name = #{boardVO.board_name}
 			AND
-			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
+			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+		ORDER BY board_no DESC
+		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
 	
 	<select id="countAll" resultType="long">

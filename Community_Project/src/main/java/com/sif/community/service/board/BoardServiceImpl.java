@@ -51,8 +51,8 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
-		
-		return null;
+		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
+		return boardDao.selectAllByPage(boardVO, pageVO);
 	}
 
 	@Override
