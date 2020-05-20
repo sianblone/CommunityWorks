@@ -53,8 +53,10 @@ public class JoinService {
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);
 		
+		// DB tbl_users 테이블 INSERT
 		int ret = userDao.insert(userVO);
 		
+		// DB authorities 테이블 INSERT
 		if(ret > 1) {
 			List<AuthorityVO> authList = new ArrayList<>();
 			authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
