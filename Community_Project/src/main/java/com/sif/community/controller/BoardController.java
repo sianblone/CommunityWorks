@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,12 +35,15 @@ public class BoardController {
 	// 검색 값과 현재 페이지로 페이지네이션 select하기
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model,
-			BoardVO boardVO,
-			@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
+					BoardVO boardVO,
+					@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
+		
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
 		this.selectAllByPage(model, boardVO, currPage);
+		
+		model.addAttribute("BOARD_NAME", boardVO.getBoard_name());
 		
 		return "board/list";
 	}
@@ -57,26 +61,52 @@ public class BoardController {
 	// id값을 받았으면, 현재 사용자와 DB 게시글id 작성자를 검색하여, 일치하면 값 채워서 저장화면 보여주기
 	// 현재 사용자와 DB의 게시글id 작성자가 다르면 오류 페이지로 보내기
 	@RequestMapping(value="/save", method=RequestMethod.GET)
-	public String save(Model model) {
+	public String save(Long no, Model model) {
+		String render = "";
+		if(no != null) {
+			// 게시글번호를 쿼리에서 받은 경우
+			
+			BoardVO boardVO = boardSvc.findByNo(no);
+			
+			// 게시글번호로 찾은 데이터가 DB에 있으면(이미 있는 글이면) 수정하기
+			if(boardVO != null) {
+				// 현재 로그인한 사용자와 게시글 작성자가 다르면 수정 불가
+				String loginName = SecurityContextHolder.getContext().getAuthentication().getName();
+				if(!loginName.equals(boardVO.getBoard_writer())) {
+					render = "board/error";
+				} else {
+					// 로그인한 사용자와 게시글 작성자가 같으면 수정정보 view로 보내기
+					model.addAttribute("BOARD_VO",boardVO);
+					render = "board/save";
+				}
+			} else {
+				// 게시글번호로 찾은 데이터가 DB에 없으면 에러페이지로
+				render = "board/error";
+			}
+		} else {
+			// 게시글 번호를 쿼리로 받지 않은 경우(신규작성 글)
+			render = "board/save";
+		}
 		
-		return "board/save";
+		return render;
 	}
 	
 	// form에서 저장버튼 클릭 시 사용할 메소드
 	// 현재 사용자와 DB의 게시글id 작성자가 같은지 다시 확인 후
 	// form에서 입력받은 값으로 DB에 저장하기(INSERT 또는 UPDATE)
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save() {
-		
-		return "redirect:/board";
+	public String save(BoardVO boardVO) {
+		boardSvc.save(boardVO);
+		return "redirect:/board/list?board_name=" + boardVO.getBoard_name();
 	}
 	
 	// 게시물 삭제버튼 클릭 시 사용할 메소드
 	// 게시글 deleted 칼럼 값 1로 바꿔주기
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(Long id) {
-		
-		return "redirect:/board";
+	public String delete(Long no) {
+		boardSvc.delete(no);
+		String board_name = boardSvc.findByNo(no).getBoard_name();
+		return "redirect:/board/list?board_name=" + board_name;
 	}
 	
 	// 페이지네이션

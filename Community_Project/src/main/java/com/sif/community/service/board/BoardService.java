@@ -11,9 +11,11 @@ public interface BoardService {
 
 	public long countAll(BoardVO boardVO);
 
-	public void save(BoardVO boardVO);
+	public int save(BoardVO boardVO);
 
 	public void delete(Long id);
+
+	public BoardVO findByNo(Long no);
 	
 
 }
