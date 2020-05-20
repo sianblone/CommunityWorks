@@ -40,6 +40,45 @@ public class BoardServiceImpl implements BoardService {
 		" ) "
 		;
 		
+		/*
+		String create_function_depth
+		= " DROP FUNCTION IF EXISTS fnc_depth; "
+		+ " DELIMITER $$ "
+		+ " CREATE FUNCTION fnc_depth() RETURNS INT "
+		+ " NOT DETERMINISTIC "
+		+ " READS SQL DATA "
+		+ " BEGIN "
+		+ " DECLARE v_no INT; "
+		+ " DECLARE v_p_no INT; "
+		+ " DECLARE CONTINUE HANDLER FOR NOT FOUND SET @board_no = NULL; "
+		+ " SET v_p_no = @board_no; "
+		+ " SET v_no = -1; "
+		+ " IF @board_no IS NULL THEN "
+		+ " RETURN NULL; "
+		+ " END IF; "
+		+ " LOOP "
+		+ " SELECT MIN(board_no) "
+		+ " INTO @board_no "
+		+ " FROM tbl_board "
+		+ " WHERE board_p_no = v_p_no "
+		+ " AND board_p_no > v_no; "
+		+ " IF (@board_no IS NOT NULL) OR (v_p_no = @start_with) THEN "
+		+ " SET @level = @level + 1; "
+		+ " RETURN @board_no; "
+		+ " END IF; "
+		+ " SET @level := @level - 1; "
+		+ " SELECT board_no, board_p_no "
+		+ " INTO v_no , v_p_no "
+		+ " FROM tbl_board "
+		+ " WHERE board_no = v_p_no; "
+		+ " END LOOP; "
+		+ " END "
+		+ " $$ "
+		+ " DELIMITER ; "
+		;
+		
+		ddlDao.create_table(create_function_depth);
+		*/
 		ddlDao.create_table(create_table_board);
 	}
 

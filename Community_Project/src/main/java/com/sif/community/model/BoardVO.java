@@ -1,5 +1,7 @@
 package com.sif.community.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class BoardVO {
 	private int board_delete;//	TINYINT
 	private long board_recommend;//	BIGINT
 	private String board_category;//	VARCHAR(20)
+	
+	private List<BoardVO> board_reply;
 	
 	private String search_type;
 	private String search_txt;

@@ -3,15 +3,30 @@
 
 <mapper namespace="com.sif.community.dao.BoardDao">
 
-	<select id="selectAllByPage" resultType="boardVO">
+	<resultMap id="boardRM" type="boardVO">
+		<id property="board_no" column="board_no" />
+		<collection property="board_reply" column="board_no" ofType="boardVO" select="selectAllByPageReply"/>
+	</resultMap>
+
+	<select id="selectAllByPage" resultType="boardRM">
 		SELECT *
 		FROM tbl_board
 		WHERE
 			board_name = #{boardVO.board_name}
 			AND
+			board_p_no = 0
+			AND
 			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 		ORDER BY board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<select id="selectAllByPageReply" resultType="boardVO">
+		SELECT *
+		FROM tbl_board
+		WHERE
+			board_p_no = #{board_no}
+		ORDER BY board_no DESC
 	</select>
 	
 	<select id="countAll" resultType="long">
