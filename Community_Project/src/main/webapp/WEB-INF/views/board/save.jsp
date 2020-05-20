@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form"  prefix="form" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -69,24 +70,31 @@
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
 		<fieldset>
-			<form method="POST">
-			<div class="form-group">
-				<input name="board_writer" class="form-control" 
-						placeholder="작성자" value="${B.board_writer}">
-			</div>
-			<div class="form-group">
-				<input name="board_subject"  class="form-control" 
-					placeholder="제목" value="${B.board_subject}">
-			</div>
-			<div class="form-group">
-				<textarea name="board_content" id="board_content" rows="5" cols="30">${B.board_content}</textarea>
-			</div>
-			<div class="form-group d-flex justify-content-end">
-				<button class="btn btn-primary mr-2">저장</button>
-				<button type="button" 
-					class="btn btn-success">목록으로</button>
-			</div>
-			</form>
+			<form:form method="POST">
+				
+				<div class="form-group">
+					<select id="board_category" class="form-control" name="board_category">
+						<option value="">카테고리</option>
+						<option value="1">잡담</option>
+						<option value="2">질문</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<input name="board_subject"  class="form-control" 
+						placeholder="제목" value="${BOARD_VO.board_subject}">
+				</div>
+				
+				<div class="form-group">
+					<textarea name="board_content" id="board_content" rows="5" cols="30">${BOARD_VO.board_content}</textarea>
+				</div>
+				
+				<div class="form-group d-flex justify-content-end">
+					<button class="btn btn-primary mr-2">저장</button>
+					<button type="button" 
+						class="btn btn-success">목록으로</button>
+				</div>
+			</form:form>
 		</fieldset>
 	</section>
 </body>
