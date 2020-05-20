@@ -9,7 +9,7 @@
 <script>
 	$(function(){
 		$("button.btn-writer").click(function(){
-			document.location.href="${rootPath}/board/save"
+			document.location.href="${rootPath}/board/save?board_name=${BOARD_NAME}"
 		})
 	})
 </script>

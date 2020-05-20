@@ -10,5 +10,9 @@ public interface BoardDao {
 
 	public List<BoardVO> selectAllByPage(BoardVO boardVO);
 	public long countAll(BoardVO boardVO);
+	public int insert(BoardVO boardVO);
+	public int update(BoardVO boardVO);
+	public BoardVO findByNo(Long no);
+	
 	
 }
