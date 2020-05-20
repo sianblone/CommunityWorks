@@ -132,6 +132,7 @@
 				// 유효성 검사 통과 시
 				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_join = false
+				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/join/join",
@@ -141,8 +142,10 @@
 						if(result > 0) {
 							alert("가입을 환영합니다!\n이메일로 발송된 인증 링크를 클릭하세요.")
 							document.location.href = "${rootPath}/"
-						} else {
+						} else if(result == 0) {
 							alert("이미 사용중인 ID입니다.")
+						} else if(result < 0) {
+							alert("인증메일 발송에 실패했습니다. 다시 시도해주세요.")
 						}
 						
 					},
@@ -151,6 +154,7 @@
 					}
 				}).always(function() {
 					enable_btn_join = true
+					$("body").css("cursor", "default")
 				})
 			})
 			

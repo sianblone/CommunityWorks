@@ -46,11 +46,7 @@ public class UserController {
 		return "user/mypage";
 	}
 	
-	/**
-	 * mypage에서 정보 수정 후 저장 시 form에 입력된 데이터가 userVO에 담겨서 온다
-	 * @param userVO
-	 * @return
-	 */
+	// mypage에서 정보 수정 후 저장 시 form에 입력된 데이터가 userVO에 담겨서 온다
 	@RequestMapping(value = "/mypage", method=RequestMethod.POST)
 	public String mypage(UserDetailsVO userVO) {
 		/*
@@ -177,12 +173,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/new-pw", method=RequestMethod.GET)
-	public String new_pw(@RequestParam(value = "link", required = false) String enc_username) {
+	public String new_pw(@RequestParam(value = "link", required = false) String enc_username, Model model) {
+		model.addAttribute("ENC_USER", enc_username);
 		return "user/new_pw";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/new-pw", method=RequestMethod.POST)
-	public String new_pw(@RequestParam(value = "link", required = false) String enc_username, String password, String re_password) {
+	public String new_pw(String enc_username, String password, String re_password) {
 		// userVO에는 암호화 된 username, password만 담겨있다
 		int ret = userSvc.new_pw(enc_username, password, re_password);
 		return "redirect:/";

@@ -104,6 +104,7 @@
 				// 유효성 검사 통과 시
 				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_find_id = false
+				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/find-id",
@@ -117,6 +118,7 @@
 						} else {
 							// result가 들어있으면
 							$(".result-id").css("display", "block")
+							$(".result-id").text("")
 							result.forEach(function(username){
 								$(".result-id").append("<p>" + username + "</p>")
 							})
@@ -127,6 +129,7 @@
 					}
 				}).always(function() {
 					enable_btn_find_id = true
+					$("body").css("cursor", "default")
 				})
 			})
 			
@@ -150,6 +153,7 @@
 				// 유효성 검사 통과 시
 				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_find_pw = false
+				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/find-pw",
@@ -175,6 +179,7 @@
 					}
 				}).always(function() {
 					enable_btn_find_pw = true
+					$("body").css("cursor", "default")
 				})
 			})
 			

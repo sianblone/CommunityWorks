@@ -117,7 +117,8 @@
 				// 유효성 검사 통과 시
 				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_send_email = false
-					
+				$("body").css("cursor", "wait")
+				
 				$.ajax({
 					url : "${rootPath}/user/change-email",
 					type : "POST",
@@ -139,6 +140,7 @@
 					}
 				}).always(function() {
 					enable_btn_send_email = true
+					$("body").css("cursor", "default")
 				})
 				
 			})
@@ -157,6 +159,7 @@
 				// 유효성 검사 통과 시
 				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_auth_code = false
+				$("body").css("cursor", "wait")
 					
 				$.ajax({
 					url : "${rootPath}/user/change-email-auth",
@@ -184,6 +187,7 @@
 					}
 				}).always(function() {
 					enable_btn_auth_code = true
+					$("body").css("cursor", "default")
 				})
 				
 			})
