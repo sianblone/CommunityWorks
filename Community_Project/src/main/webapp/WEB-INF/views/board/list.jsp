@@ -46,5 +46,7 @@
 			<button class="btn btn-primary text-white btn-writer">글쓰기</button>
 		</article>
 	</section>
+	
+	<%@ include file="/WEB-INF/views/include/pagination.jsp" %>
 </body>
 </html>

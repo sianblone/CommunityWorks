@@ -22,7 +22,14 @@ public class PaginationServiceImpl implements PaginationService {
 	public PaginationVO makePageInfo(long totalCount, int currPageNo) {
 		
 		if(totalCount < 1) {
-			return new PaginationVO();// 데이터가 없으면 아무 일도 하지 않음
+			PaginationVO pageVO = PaginationVO.builder()
+					.startPageNo(1)
+					.endPageNo(1)
+					.currentPageNo(1)
+					.lastPageNo(1)
+					.build();
+					
+			return pageVO ;// 데이터가 없으면 시작페이지, 현재 페이지만 1로 세팅 후 넘겨줌
 		}
 		
 //		lastPageNo(끝 페이지) : (전체 데이터 개수 + 페이지당 보여줄 데이터 개수 - 1) / 페이지당 보여줄 데이터 개수
@@ -77,8 +84,8 @@ public class PaginationServiceImpl implements PaginationService {
 		
 		PaginationVO paginationVO = PaginationVO.builder()
 				.totalCount(totalCount)
-				.listPerPage(dataPerPage)
-				.pageCount(pageLength)
+				.dataPerPage(dataPerPage)
+				.pageLength(pageLength)
 				.offset(offset)
 				.limit(limit)
 				

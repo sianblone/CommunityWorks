@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +66,10 @@ public class BoardController {
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	public String details(BoardVO boardOptionVO, Model model) {
 		BoardVO boardVO = boardSvc.findByNo(boardOptionVO.getBoard_no());
+		if(boardVO.getBoard_delete() == 1) {
+			return "board/error";
+		}
+		
 		model.addAttribute("BOARD_VO",boardVO);
 		return "board/details";
 	}
@@ -115,11 +120,13 @@ public class BoardController {
 	
 	// 게시물 삭제버튼 클릭 시 사용할 메소드
 	// 게시글 deleted 칼럼 값 1로 바꿔주기
-	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(BoardVO boardVO) {
-		long board_no = boardVO.getBoard_no();
-		boardSvc.delete(board_no);
-		String board_name = boardSvc.findByNo(board_no).getBoard_name();
+	@RequestMapping(value="/delete/{board_no}", method=RequestMethod.GET)
+	public String delete(@PathVariable("board_no") long board_no) {
+		BoardVO boardVO = boardSvc.findByNo(board_no);
+		boardVO.setBoard_delete(1);
+		boardSvc.delete(boardVO);
+		
+		String board_name = boardVO.getBoard_name();
 		return "redirect:/board/list?board_name=" + board_name;
 	}
 	

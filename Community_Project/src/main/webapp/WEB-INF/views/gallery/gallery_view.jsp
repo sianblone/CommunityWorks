@@ -154,66 +154,7 @@ $(function(){
 		<div class="p-4 cmt-list">
 			<%@ include file="/WEB-INF/views/gallery/comment_list.jsp" %>
 		</div>
-<style>
-	div.modal-main {
-		position: fixed;
-		top:0;
-		left:0;
-		
-		width: 100%;
-		height: 100%;
-		
-		overflow: auto;
-		
-		background-color: rgba(0,0,0,0.4);
-		z-index: 10;
-		display: none;
-	}
-	
-	div.modal-content {
-		
-		width : 80%;
-		position: relative;
-		margin: auto;
-		top:300px;
-		padding:0;
-		
-	
-	}
-	
-	div.modal-header{
-		display: flex;
-		justify-content: flex-end;
-	}
-	
-	span.modal-close {
-		cursor: pointer;
-		font-size: 30px;
-		font-weight: bold;
-		color:black;
-	}
-	
-	span.modal-close:hover, span.modal-close:focus {
-		color:#000;
-	}
-</style>
-<script>
-$(function(){
-	$(".modal-close").click(function(){
-		$(".modal-main").css("display","none")
-	})
-})
-</script>
-<div class="modal-main">
-	<div class="modal-content">
-		<div class="modal-header">
-			<span class="modal-close">&times;</span>
-		</div>
-		<div class="modal-body">
-		
-		</div>
-	</div>
-</div>
+
 	</section>
 </body>
 </html>
