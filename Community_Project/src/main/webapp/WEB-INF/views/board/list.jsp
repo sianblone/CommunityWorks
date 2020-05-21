@@ -30,13 +30,10 @@
 					<th>추천수</th>
 				</tr>
 				<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
-					<tr>
+					<tr style="cursor:pointer" onclick="location.href='${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=${B.board_no}'" >
 						<td>${i.count}</td>
 						<td>${B.board_category}</td>
-						<td>
-						<a href="${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=${B.board_no}">
-						${B.board_subject}</a>
-						</td>
+						<td>${B.board_subject}</td>
 						<td>${B.board_writer}</td>
 						<td>${B.board_date} ${B.board_time}</td>
 						<td>${B.board_count}</td>

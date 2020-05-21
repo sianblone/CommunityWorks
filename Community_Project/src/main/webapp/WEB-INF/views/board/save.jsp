@@ -31,9 +31,9 @@
 			height:'200px',
 			disableDragAndDrop : false,
 			callbacks : {
-				onImageUpload : function(files,editor,isEdite) {
+				onImageUpload : function(files, editor, isEdite) {
 					for(let i = files.length - 1; i >=0 ; i--) {
-						upFile(files[i],this)
+						upFile(files[i], this)
 					}
 				}
 			}
@@ -43,13 +43,17 @@
 			document.location.href="${rootPath}/board/list?board_name=gallery"
 		})
 		
-		function upFile(file,editor) {
+		function upFile(file, editor) {
 			
 			var formData = new FormData()
-		
+			formData.append('upFile',file)
+			//formData.append('${_csrf.parameterName}', '${_csrf.token}')
+			
+			//alert(JSON.stringify(formData))
+			
 			formData.append('upFile',file)
 			$.ajax({
-				url : "${rootPath}/image_up",
+				url : "${rootPath}/board/image_up",
 				type : "POST",
 				data : formData,
 				contentType : false,
@@ -57,7 +61,7 @@
 				enctype : "multipart/form-data",
 				success:function(result) {
 					alert(result)
-					result = "${rootPath}/files/" + result
+					result = "${rootPath}/resources/files/" + result
 					$(editor)
 						.summernote('editor.insertImage',result)
 				},

@@ -10,10 +10,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.BoardService;
+import com.sif.community.service.board.FileService;
 import com.sif.community.service.board.PaginationService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
+	
+	
+	@Autowired
+	private FileService fileService;
+	
 	
 	@Autowired
 	@Qualifier(value = "pageSvc")
@@ -124,6 +132,21 @@ public class BoardController {
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
 		log.debug(boardList.toString());
 		model.addAttribute("BOARD_LIST", boardList);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/image_up",
+				method=RequestMethod.POST,
+				produces = "text/html;charset=UTF-8")
+	public String fileUp(MultipartFile upFile) {
+		
+		log.debug("파일업:" + upFile.getOriginalFilename());
+		
+		String retFileName = fileService.fileUp(upFile);
+		if(retFileName == null) {
+			return "FAIL";
+		}
+		return retFileName;
 	}
 
 }
