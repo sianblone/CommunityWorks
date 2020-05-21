@@ -19,6 +19,9 @@ import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.util.PbeEncryptor;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class UserService {
 	
@@ -28,40 +31,6 @@ public class UserService {
 	private final AuthoritiesDao authDao;
 	private final DdlDao ddlDao;
 	private final MailSendService mailSvc;
-	
-	// DB 스키마에 테이블 없으면 새로 생성하기
-	public UserService(PasswordEncoder bcryptEncoder, UserDao userDao, AuthoritiesDao authDao, DdlDao ddlDao, MailSendService mailSvc) {
-		this.bcryptEncoder = bcryptEncoder;
-		this.userDao = userDao;
-		this.authDao = authDao;
-		this.mailSvc = mailSvc;
-		this.ddlDao = ddlDao;
-		
-		String create_user_table = "CREATE TABLE IF NOT EXISTS tbl_users ( " + 
-				" id BIGINT PRIMARY KEY AUTO_INCREMENT, " + 
-				" username VARCHAR(50) UNIQUE, " + 
-				" password VARCHAR(125), " + 
-				" enabled BOOLEAN default true, " +
-				" accountNonExpired BOOLEAN default true, " +
-				" accountNonLocked BOOLEAN default true, " +
-				" credentialsNonExpired BOOLEAN default true, " +
-				" nickname VARCHAR(30), " +
-				" email VARCHAR(50), " +
-				" phone VARCHAR(20), " +
-				" age DATE " +
-				" ) "
-				;
-		
-		String create_auth_table = "CREATE TABLE IF NOT EXISTS authorities ( " + 
-				" id BIGINT PRIMARY KEY AUTO_INCREMENT, " + 
-				" username VARCHAR(50), " + 
-				" authority VARCHAR(50) " + 
-				" ) "
-				;
-		
-		ddlDao.create_table(create_user_table);
-		ddlDao.create_table(create_auth_table);
-	}
 	
 	// selectAll() 메소드는 2개의 테이블을 select하고 있다
 	// 이런 경우 1번 테이블의 데이터는 가져왔는데 2번 테이블을 가져오기 전
