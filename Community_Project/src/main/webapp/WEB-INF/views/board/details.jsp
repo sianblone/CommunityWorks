@@ -4,6 +4,17 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
+<style>
+	.details_info {
+		display: flex;
+	}
+	small {
+		display: block;
+	}
+	.details_info small:nth-child(3) {
+		margin-left: auto !important;
+	}
+</style>
 <script>
 $(function(){
 	$(document).on("click","cmt-item",function(){
@@ -114,7 +125,7 @@ $(function(){
 			<small class="m-3"><label>작성일시 :</label>${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
 		</div>
 		<hr/>
-		<div>
+		<div class="details_info">
 			<small class="m-3"><label>카테고리 :</label>${BOARD_VO.board_category}</small>
 			<small class="m-3"><label>작성자 :</label>${BOARD_VO.board_writer}</small>
 			<small class="m-3"><label>조회수 :</label>${BOARD_VO.board_count}</small>
