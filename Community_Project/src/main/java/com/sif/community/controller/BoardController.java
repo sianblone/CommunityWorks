@@ -142,11 +142,7 @@ public class BoardController {
 		
 		log.debug("파일업:" + upFile.getOriginalFilename());
 		
-		String retFileName = fileService.fileUp(upFile);
-		if(retFileName == null) {
-			return "FAIL";
-		}
-		return retFileName;
+		return upFile.getOriginalFilename();
 	}
 
 }

@@ -46,8 +46,9 @@
 		function upFile(file, editor) {
 			
 			var formData = new FormData()
-			formData.append('upFile',file)
-			//formData.append('${_csrf.parameterName}', '${_csrf.token}')
+			let upFile = $("#file")[0].files[0]
+			formData.append('upFile',upFile)
+			//formData.append()
 			
 			//alert(JSON.stringify(formData))
 			
@@ -58,7 +59,12 @@
 				data : formData,
 				contentType : false,
 				processData : false,
-				enctype : "multipart/form-data",
+				beforeSend : function(ax) {
+					ax.setRequestHeader(
+						"${_csrf.headerName}",
+						"${_csrf.token}"
+					)
+				},
 				success:function(result) {
 					alert(result)
 					result = "${rootPath}/resources/files/" + result
@@ -78,13 +84,15 @@
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
 		<fieldset>
-			<form:form method="POST">
+			<form:form  modelAttribute="boardVO"
+						action="?${_csrf.parameterName}=${_csrf.token}"
+						enctype="multipart/form-data">
 				
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="">카테고리</option>
-						<option value="1">잡담</option>
-						<option value="2">질문</option>
+						<option value="잡담">잡담</option>
+						<option value="질문">질문</option>
 					</select>
 				</div>
 				

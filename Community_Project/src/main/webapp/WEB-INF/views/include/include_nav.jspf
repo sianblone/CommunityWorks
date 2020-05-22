@@ -28,7 +28,7 @@
 		color: black;
 	}
 	
-	#navbar a:nth-child(4) {
+	#navbar a:nth-child(5) {
 		margin-left: auto;
 	}
 </style>
@@ -60,7 +60,13 @@
 
 <nav id="navbar">
 	<a href="${rootPath}/">HOME</a>
-	<a href="#">Menu1</a>
+	<a type="button" class="dropdown-toggle" data-toggle="dropdown">게시판</a>
+	 	<div class="dropdown-menu">
+		    <a class="dropdown-item" href="#">유머게시판</a>
+		    <a class="dropdown-item" href="#">감동게시판</a>
+		    <a class="dropdown-item" href="#">자유게시판</a>
+		    <a class="dropdown-item" href="#">토론게시판</a>
+	  	</div>	
 	<a href="${rootPath}/board/list?board_name=gallery">갤러리</a>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
