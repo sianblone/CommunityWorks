@@ -142,18 +142,17 @@ public class BoardController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/image_up",
-				method=RequestMethod.POST,
-				produces = "text/html;charset=UTF-8")
+	@RequestMapping(value="/image_up", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String fileUp(MultipartFile upFile) {
 		
 		log.debug("파일업:" + upFile.getOriginalFilename());
 		
-		String retFileName = fileService.fileUp(upFile);
-		if(retFileName == null) {
+		String saveName = fileService.fileUp(upFile);
+		if(saveName == null) {
 			return "FAIL";
 		}
-		return retFileName;
+		
+		return saveName;
 	}
 
 }

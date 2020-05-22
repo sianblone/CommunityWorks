@@ -37,37 +37,37 @@ public class FileService {
 	 */
 	public String fileUp(MultipartFile upFile) {
 		
-		// 파일이름을 추출(그림.jpg)
-		String originalFileName = upFile.getOriginalFilename();
-		
-		// UUID가 부착된 새로운 이름을 생성
-		String strUUID = UUID.randomUUID().toString();
-		strUUID += originalFileName; // (UUID그림.jpg)
-		
-		// filePath와 변경된 파일이름을 결합하여
-		// File 객체를 생성
-		File serverFile = new File(filePath,strUUID);
-		
-		// upload할 filePath가 있는지 확인을 하고
-		// 없으면 폴더를 생성
+//		1. 폴더 생성
 		File dir = new File(filePath);
-		
+		// upload할 filePath가 있는지 확인 후 없으면 폴더 생성
 		if(!dir.exists()) {
-			dir.mkdirs();
+			//dir.mkdir();// filePath = c:/bizwork/upload를 만들때 upload 폴더만 만들기
+			dir.mkdirs();//  filePath = c:/bizwork/upload를 만들때 앞까지 전부 만들기(만약 앞이 전부 있다면 생략하고 upload만 만들기)
 		}
 		
-		// upFile을 serverFile 이름으로 복사 수행
+//		2. 같은 파일명으로 공격 등을 방지하기 위해 UUID를 붙인 새로운 파일명 만들기
+		// MultipartFile에서 파일명 추출(그림.jpg)
+		String originalFileName = upFile.getOriginalFilename();
+		
+		// UUID가 부착된 새로운 파일명 생성
+		String uuid = UUID.randomUUID().toString();
+		String saveName = uuid + "_" + originalFileName; // (UUID_그림.jpg)
+		
+		// filePath와 새로운 파일명을 결합하여 File 객체 생성(serverFile)
+		File serverFile = new File(filePath, saveName);
+		
 		try {
-			
+			// File.transferTo() : 실제 파일을 복사하는 메소드
+			// file 객체의 transferTo() 메소드를 사용하여 컨트롤러에서 받은 upFile을 serverFile로 복사하기
 			upFile.transferTo(serverFile);
-			return strUUID;
-			
 		} catch (IllegalStateException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			// try-catch에 의해 파일복사 실패 시
+			return "fail";
 		}
-		return null;
-	
+		
+		return saveName;
 	}
 	
 	

@@ -24,20 +24,20 @@
 		]
 		
 		$("#board_content").summernote({
-			lang:'ko-KR',
-			placeholder:'본문을 입력하세요',
-			width:'100%',
-			toolbar:toolbar,
-			height:'200px',
-			disableDragAndDrop : false,
-			callbacks : {
-				onImageUpload : function(files, editor, isEdite) {
+			lang: 'ko-KR',
+			placeholder: '본문을 입력하세요',
+			width: '100%',
+			toolbar: toolbar,
+			height: '200px',
+			disableDragAndDrop: false,
+			callbacks: {
+				onImageUpload: function(files, editor, isEdit) {
 					for(let i = files.length - 1; i >=0 ; i--) {
 						upFile(files[i], this)
 					}
 				}
 			}
-		}) // end summer
+		})
 		
 		$("button.btn-success").click(function(){
 			document.location.href="${rootPath}/board/list?board_name=gallery"
@@ -46,31 +46,27 @@
 		function upFile(file, editor) {
 			
 			var formData = new FormData()
-
-			formData.append('upFile',file)
-			//formData.append('${_csrf.parameterName}', '${_csrf.token}')
+			formData.append('upFile', file)
 			
-			//alert(JSON.stringify(formData))
-			
-			formData.append('upFile',file)
 			$.ajax({
-				url : "${rootPath}/board/image_up",
-				type : "POST",
-				data : formData,
-				contentType : false,
-				processData : false,
-
-				enctype : "multipart/form-data",
-				success:function(result) {
-					alert(result)
-					result = "${rootPath}/resources/files/" + result
-					$(editor)
-						.summernote('editor.insertImage',result)
+				url: "${rootPath}/board/image_up",
+				type: "POST",
+				data: formData,
+				contentType: false,
+				processData: false,
+				enctype: "multipart/form-data",
+				beforeSend: function(ajx) {
+					ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
 				},
-				error:function() {
-					alert("서버통신오류")
+				success: function(result) {
+					result = "${rootPath}/files/" + result
+					$(editor).summernote('editor.insertImage', result)
+				},
+				error: function() {
+					alert("서버 통신 오류")
 				}
 			})
+			
 		}
 	})
 	</script>
@@ -79,9 +75,8 @@
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
-		<fieldset>
-			<form:form method="POST">
-				
+		<form:form method="POST" enctype="multipart/form-data" action="?board_name=${param.board_name}&${_csrf.parameterName}=${_csrf.token}">
+			<fieldset>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="">카테고리</option>
@@ -101,11 +96,10 @@
 				
 				<div class="form-group d-flex justify-content-end">
 					<button class="btn btn-primary mr-2">저장</button>
-					<button type="button" 
-						class="btn btn-success">목록으로</button>
+					<button class="btn btn-success" type="button" >목록으로</button>
 				</div>
-			</form:form>
-		</fieldset>
+			</fieldset>
+		</form:form>
 	</section>
 </body>
 </html>
