@@ -53,11 +53,13 @@ public class JoinService {
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);
 		
+		// DB tbl_users 테이블 INSERT
 		int ret = userDao.insert(userVO);
 		
+		// DB authorities 테이블 INSERT
 		List<AuthorityVO> authList = new ArrayList<>();
 		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
-		authDao.insert(authList);
+		ret += authDao.insert(authList);
 		
 		// 인증메일 발송
 		try {
@@ -65,7 +67,7 @@ public class JoinService {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ret = 0;
+			ret = -1;
 		}
 		
 		return ret;

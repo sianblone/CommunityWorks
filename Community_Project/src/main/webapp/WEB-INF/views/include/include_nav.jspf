@@ -61,7 +61,7 @@
 <nav id="navbar">
 	<a href="${rootPath}/">HOME</a>
 	<a href="#">Menu1</a>
-	<a href="#">Menu2</a>
+	<a href="${rootPath}/board/list?board_name=gallery">갤러리</a>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<a href="${rootPath}/admin">관리자</a>
