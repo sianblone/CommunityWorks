@@ -54,10 +54,10 @@ $(function(){
 	$(document).on("click","button",function(){
 		let txt = $(this).text()
 		if(txt == '수정') {
-			document.location.href="${rootPath}/save?board_no=${B.board_no}"
+			document.location.href="${rootPath}/board/save?board_no=${BOARD_VO.board_no}"
 		} else if(txt == '삭제') {
 			if(confirm("삭제할까요?")) {
-				document.location.replace("${rootPath}/delete/${B.board_no}")
+				document.location.replace("${rootPath}/board/delete/${BOARD_VO.board_no}")
 			}
 		} else if(txt == '답변저장') {
 			var formData = $("form.repl").serialize()
@@ -91,10 +91,11 @@ $(function(){
 			})
 			return true
 		} else if(txt == "답글") {
-			document.location.href = "${rootPath}/repl?board_no=${B.board_no}"
+			document.location.href = "${rootPath}/board/repl?board_no=${BOARD_VO.board_no}"
 			return false
 		} else {
 			document.location.href="${rootPath}/board/list?board_name=gallery"
+
 		}
 	})
 })
@@ -158,66 +159,7 @@ $(function(){
 		<div class="p-4 cmt-list">
 			<%@ include file="/WEB-INF/views/board/comment_list.jsp" %>
 		</div>
-<style>
-	div.modal-main {
-		position: fixed;
-		top:0;
-		left:0;
-		
-		width: 100%;
-		height: 100%;
-		
-		overflow: auto;
-		
-		background-color: rgba(0,0,0,0.4);
-		z-index: 10;
-		display: none;
-	}
-	
-	div.modal-content {
-		
-		width : 80%;
-		position: relative;
-		margin: auto;
-		top:300px;
-		padding:0;
-		
-	
-	}
-	
-	div.modal-header{
-		display: flex;
-		justify-content: flex-end;
-	}
-	
-	span.modal-close {
-		cursor: pointer;
-		font-size: 30px;
-		font-weight: bold;
-		color:black;
-	}
-	
-	span.modal-close:hover, span.modal-close:focus {
-		color:#000;
-	}
-</style>
-<script>
-$(function(){
-	$(".modal-close").click(function(){
-		$(".modal-main").css("display","none")
-	})
-})
-</script>
-<div class="modal-main">
-	<div class="modal-content">
-		<div class="modal-header">
-			<span class="modal-close">&times;</span>
-		</div>
-		<div class="modal-body">
-		
-		</div>
-	</div>
-</div>
+
 	</section>
 </body>
 </html>

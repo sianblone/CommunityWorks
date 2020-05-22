@@ -13,9 +13,9 @@ public interface BoardService {
 
 	public int save(BoardVO boardVO);
 
-	public void delete(Long id);
+	public int delete(BoardVO boardVO);
 
-	public BoardVO findByNo(Long no);
+	public BoardVO findByNo(long board_no);
 
 	
 

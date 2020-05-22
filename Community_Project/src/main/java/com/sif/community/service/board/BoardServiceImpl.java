@@ -55,20 +55,15 @@ public class BoardServiceImpl implements BoardService {
 		
 		return ret;
 	}
-
+	
 	@Override
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public BoardVO findByNo(Long no) {
-		
-		return boardDao.findByNo(no);
+	public int delete(BoardVO boardVO) {
+		return boardDao.delete(boardVO);
 	}
 	
-	
-	
+	@Override
+	public BoardVO findByNo(long board_no) {
+		return boardDao.findByNo(board_no);
+	}
 
 }

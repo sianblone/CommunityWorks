@@ -11,6 +11,8 @@
 			AND
 			board_p_no = 0
 			AND
+			board_delete = 0
+			AND
 			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 		ORDER BY board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
@@ -21,6 +23,8 @@
 		FROM tbl_board
 		WHERE
 			board_name = #{board_name}
+			AND
+			board_delete = 0
 			AND
 			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
 	</select>
@@ -68,5 +72,12 @@
 			`board_filename` = #{board_filename},
 			`board_category` = #{board_category}
 		WHERE `board_no` = #{board_no}
+	</update>
+	
+	<update id="delete">
+		UPDATE tbl_board
+		SET
+			board_delete = #{board_delete}
+		WHERE board_no = #{board_no}
 	</update>
 </mapper>

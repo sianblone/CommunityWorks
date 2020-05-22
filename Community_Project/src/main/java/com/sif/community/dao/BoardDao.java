@@ -11,9 +11,10 @@ public interface BoardDao {
 
 	public List<BoardVO> selectAllByPage(@Param("boardVO") BoardVO boardVO, @Param("pageVO")PaginationVO pageVO);
 	public long countAll(BoardVO boardVO);
+	public BoardVO findByNo(long board_no);
+	
 	public int insert(BoardVO boardVO);
 	public int update(BoardVO boardVO);
-	public BoardVO findByNo(Long no);
-	
+	public int delete(BoardVO boardVO);
 	
 }

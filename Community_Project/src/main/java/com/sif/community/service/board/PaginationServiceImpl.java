@@ -9,11 +9,12 @@ public class PaginationServiceImpl implements PaginationService {
 	
 	private int dataPerPage = 10;// 한 페이지에 보여줄 데이터 개수
 	private int pageLength = 10;// 한 번에 보여줄 페이지 (1 ~ 10)
-
+	
+	// 한 페이지 당 보여줄 데이터(게시물) 수 세팅 메소드
 	public void setListPerPage(int dataPerPage) {
 		this.dataPerPage = dataPerPage;
 	}
-
+	// 하단에 보여줄 페이지 길이 세팅 메소드
 	public void setPageCount(int pageLength) {
 		this.pageLength = pageLength;
 	}
@@ -21,7 +22,14 @@ public class PaginationServiceImpl implements PaginationService {
 	public PaginationVO makePageInfo(long totalCount, int currPageNo) {
 		
 		if(totalCount < 1) {
-			return new PaginationVO();// 데이터가 없으면 아무 일도 하지 않음
+			PaginationVO pageVO = PaginationVO.builder()
+					.startPageNo(1)
+					.endPageNo(1)
+					.currentPageNo(1)
+					.lastPageNo(1)
+					.build();
+					
+			return pageVO ;// 데이터가 없으면 시작페이지, 현재 페이지만 1로 세팅 후 넘겨줌
 		}
 		
 //		lastPageNo(끝 페이지) : (전체 데이터 개수 + 페이지당 보여줄 데이터 개수 - 1) / 페이지당 보여줄 데이터 개수
@@ -37,38 +45,47 @@ public class PaginationServiceImpl implements PaginationService {
 		
 //		현재 페이지(currPageNo)가 3이면 1 ~ 5, 10이면 8 ~ 12까지 이런 식으로 현재페이지를 한 가운데로 만들기 위한 설정
 		int startPageNo = 1;
-//		가운데 페이지 = 현재페이지(10)에서 페이지길이 절반(*내림)을 뺀 값.
-//		현재 페이지 10, 페이지길이 10이면 가운데 페이지는 5번 / 현재 페이지 11, 페이지길이 10이면 가운데 페이지는 6번
-		int midPage = currPageNo - pageLength / 2;
-//		만약 현재 페이지 3, 페이지 길이 10인 경우처럼 페이지길이 절반보다 현재 페이지가 작다면, 가운데 페이지는 페이
-		if (midPage > 0) {
-			startPageNo = midPage;
+//		새로운 시작페이지 : 현재 페이지(8) - 페이지 길이 절반(5) = 새로운 시작페이지(3)
+		int newStartPage = currPageNo - pageLength / 2;
+//		새로운 시작페이지가 음수면 시작페이지 1로 고정, 양수일 때만 시작페이지 바꿔주기
+		if (newStartPage > 0) {
+			startPageNo = newStartPage;
 		}
 		
+//		마지막 페이지 : 시작페이지(3) + 페이지 길이(10) - 1 = 마지막 페이지(12)
 		int endPageNo = startPageNo + pageLength - 1;
+//		현재 페이지를 기준으로 계산한 마지막 페이지가 끝페이지보다 커지는 경우 : 마지막 페이지는 끝페이지로 고정
 		if(endPageNo > lastPageNo) endPageNo = lastPageNo;
 		
+//		이전 페이지 : 현재 페이지가 2 이상인 경우 = 현재 페이지 - 1
 		int prePageNo = 1;
 		if(currPageNo > 1) prePageNo = currPageNo - 1;
 		
+//		다음 페이지 : 현재 페이지가 끝페이지보다 작은 경우 = 현재 페이지 + 1
 		int nextPageNo = lastPageNo;
 		if(currPageNo < lastPageNo) {
 			nextPageNo = currPageNo + 1;
 		}
 		
+//		끝페이지가 보이는 시점 시작페이지 처리하기
+//		끝페이지:35, 31 32 33 34 35에서 34 클릭 시
+//		32 33 34 35에서 시작페이지 31로 만들기
+//		마지막페이지(35)-시작페이지(32) + 1 = (4) < 페이지길이(5)일때
 		if(endPageNo - startPageNo + 1 < pageLength) {
+//			시작페이지 = 끝페이지(35) - 페이지길이(5) + 1 = (31)
+//			만약 끝페이지(4) - 페이지길이(5) + 1 = (0) 인 경우 <= 0이 되므로 시작페이지는 1로 고정
 			startPageNo = lastPageNo - pageLength + 1 > 0 ? lastPageNo - pageLength + 1 : 1; 
 		}
 		
-		// MySQL DB에서 데이터 가져올 값 설정
-		// 1페이지 선택시 offset:0,limit:10, 2페이지 선택시 offset:10,limit:10, 3페이지 선택시 offset:20,limit:10
+//		MySQL DB에서 데이터 가져올 값 설정
+//		1페이지 선택시 offset:0,limit:10, 2페이지 선택시 offset:10,limit:10, 3페이지 선택시 offset:20,limit:10
 		int offset = (currPageNo - 1) * dataPerPage;
 		int limit = dataPerPage;
 		
 		PaginationVO paginationVO = PaginationVO.builder()
 				.totalCount(totalCount)
-				.listPerPage(dataPerPage)
-				.pageCount(pageLength)
+				.dataPerPage(dataPerPage)
+				.pageLength(pageLength)
 				.offset(offset)
 				.limit(limit)
 				
