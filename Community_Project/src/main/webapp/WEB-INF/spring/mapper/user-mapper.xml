@@ -35,10 +35,6 @@
 		WHERE a.username = #{username}
 	</select>
 	
-	<select id="create_table">
-		${create_table}
-	</select>
-	
 	<insert id="insert">
 		INSERT INTO `tbl_users` (
 			username,

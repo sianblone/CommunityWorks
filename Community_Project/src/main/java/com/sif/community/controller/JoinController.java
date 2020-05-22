@@ -14,11 +14,7 @@ import com.sif.community.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Spring Security 기반 회원가입 및 Email 인증 프로젝트 메인 컨트롤러
- * @since 2020-05-11
- * @author sianblone
- */
+// Spring Security 기반 회원가입 및 Email 인증 프로젝트 메인 컨트롤러
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value="/join")
@@ -28,25 +24,16 @@ public class JoinController {
 	private final UserService userSvc;
 	private final JoinService joinSvc;
 	
-	/**
-	 * 회원가입 화면 보여주기
-	 * @since 2020-05-11
-	 * @param userVO
-	 * @param model
-	 * @return
-	 */
+	// 회원가입 화면 보여주기
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String join(UserDetailsVO userVO, Model model) {
 		return "user/join";
 	}
 	
-	/**
-	 * 회원가입 화면에서 username, password 및 정보 입력 후 회원가입 버튼 클릭 시
-	 * userVO에 데이터를 받아서(username, password) DB에 인증되지 않은 유저 상태로 저장하고
-	 * 메일로 인증 링크 발송하기
-	 * @since 2020-05-11
-	 * @param userVO
-	 * @return
+	/*
+	 * 회원가입 화면에서 username, password 및 정보 입력 후
+	 * 회원가입 버튼 클릭 시 userVO에 데이터를 받아서(username, password)
+	 * DB에 인증되지 않은 유저 상태로 저장하고 메일로 인증 링크 발송하기
 	 */
 	@ResponseBody
 	@RequestMapping(value="/join", method=RequestMethod.POST)
@@ -55,17 +42,12 @@ public class JoinController {
 		
 		return ret;
 	}
-	
-	/**
-	 * @since 2020-05-11
-	 * 이메일 링크 클릭 시 username과 email을 parameter로 받아서 userVO에 매핑
-	 * 서비스 실행 결과를 기준으로 결과 보여주기
-	 * @param userVO
-	 * @param session
-	 * @return
-	 */
+
+	// 회원가입 인증 메일 링크 클릭 시, username과 email을 parameter로 받아서 userVO의 변수명에 매핑
+	// 메소드 return값을 기준으로 jsp에서 결과 보여주기
 	@RequestMapping(value="/email-auth", method=RequestMethod.GET)
 	public String email_valid(UserDetailsVO userVO, RedirectAttributes redirect) {
+		
 		byte ret = joinSvc.email_link_auth(userVO.getUsername(), userVO.getEmail());
 		// 1(성공) : DB의 유저 테이블에 username이 있고, 링크의 이메일 복호화 값 == DB 유저 테이블의 이메일 값인 경우
 		// 2(실패) : DB의 유저 테이블에 username이 없는 경우

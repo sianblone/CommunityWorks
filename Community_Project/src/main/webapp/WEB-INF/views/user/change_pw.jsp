@@ -60,6 +60,7 @@
 				// 유효성 검사 통과 시
 				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_change_pw = false
+				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/change-pw",
@@ -86,6 +87,7 @@
 					}
 				}).always(function() {
 					enable_btn_change_pw = true
+					$("body").css("cursor", "default")
 				})
 			})
 		})

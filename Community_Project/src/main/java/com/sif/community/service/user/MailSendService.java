@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.UserDetailsVO;
@@ -57,6 +58,7 @@ public class MailSendService {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
+	@Transactional
 	public boolean send_join_auth_link(UserDetailsVO userVO) throws UnsupportedEncodingException {
 		
 		String username = userVO.getUsername();
@@ -75,7 +77,7 @@ public class MailSendService {
 		// 따라서 URL을 통해 정상적으로 보낼 수 있도록 암호화된 문자열을 URLEncoder.encode() 등을 통해 인코딩하여 보낸다
 		StringBuilder email_link = new StringBuilder();
 		email_link.append("http://localhost:8080");
-		email_link.append("/join/email-auth");
+		email_link.append("/cmnt/join/email-auth");
 		email_link.append("?username=" + URLEncoder.encode(encUsername, "UTF-8"));
 		email_link.append("&email=" + URLEncoder.encode(encEmail, "UTF-8"));
 		
@@ -97,10 +99,10 @@ public class MailSendService {
 		String email_content =
 				"<p>OOO 사이트에서 비밀번호 재설정을 요청했습니다.</p>"
 				+ "<p>본인이 맞으면 하단의 비밀번호 재설정 링크를 클릭하세요.</p>"
-				+ "<a href='localhost:8080/sec/user/new-pw?link="
+				+ "<a href='http://localhost:8080/cmnt/user/new-pw?link="
 				+ URLEncoder.encode(enc_username, "UTF-8")
 				+ "'>"
-				+ "http://localhost:8080/sec/user/new-pw?link=" + URLEncoder.encode(enc_username, "UTF-8")
+				+ "http://localhost:8080/cmnt/user/new-pw?link=" + URLEncoder.encode(enc_username, "UTF-8")
 				+ "</a>"
 				;
 		

@@ -53,23 +53,21 @@ public class JoinService {
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);
 		
+		// DB tbl_users 테이블 INSERT
 		int ret = userDao.insert(userVO);
 		
-		if(ret > 1) {
-			List<AuthorityVO> authList = new ArrayList<>();
-			authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
-			ret = authDao.insert(authList);
-		}
+		// DB authorities 테이블 INSERT
+		List<AuthorityVO> authList = new ArrayList<>();
+		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_UNAUTH").build());
+		ret += authDao.insert(authList);
 		
-		if(ret > 1) {
-			// 인증메일 발송
-			try {
-				mailSvc.send_join_auth_link(userVO);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				ret = 0;
-			}
+		// 인증메일 발송
+		try {
+			mailSvc.send_join_auth_link(userVO);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			ret = -1;
 		}
 		
 		return ret;

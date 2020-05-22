@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sif.community.dao.BoardDao">
+
+	<select id="selectAllByPage" resultType="boardVO">
+		SELECT *
+		FROM tbl_board
+		WHERE
+			board_name = #{boardVO.board_name}
+			AND
+			board_p_no = 0
+			AND
+			board_delete = 0
+			AND
+			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+		ORDER BY board_no DESC
+		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<select id="countAll" resultType="long">
+		SELECT COUNT(*)
+		FROM tbl_board
+		WHERE
+			board_name = #{board_name}
+			AND
+			board_delete = 0
+			AND
+			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
+	</select>
+	
+	<select id="findByNo" resultType="boardVO">
+		SELECT * FROM tbl_board
+		WHERE
+			board_no = #{board_no}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_board (
+			board_p_no,
+			board_name,
+			board_writer,
+			board_date,
+			board_time,
+			board_subject,
+			board_content,
+			board_filename,
+			board_category
+		) VALUES (
+			#{board_p_no},
+			#{board_name},
+			#{board_writer},
+			#{board_date},
+			#{board_time},
+			#{board_subject},
+			#{board_content},
+			#{board_filename},
+			#{board_category}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE `community`.`tbl_board`
+		SET
+			`board_p_no` = #{board_p_no},
+			`board_name` = #{board_name},
+			`board_writer` = #{board_writer},
+			`board_date` = #{board_date},
+			`board_time` = #{board_time},
+			`board_subject` = #{board_subject},
+			`board_content` = #{board_content},
+			`board_filename` = #{board_filename},
+			`board_category` = #{board_category}
+		WHERE `board_no` = #{board_no}
+	</update>
+	
+	<update id="delete">
+		UPDATE tbl_board
+		SET
+			board_delete = #{board_delete}
+		WHERE board_no = #{board_no}
+	</update>
+</mapper>
