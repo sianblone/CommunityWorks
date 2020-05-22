@@ -46,30 +46,20 @@
 		function upFile(file, editor) {
 			
 			var formData = new FormData()
-			
+
+			formData.append('upFile',file)
 			//formData.append('${_csrf.parameterName}', '${_csrf.token}')
+			
 			//alert(JSON.stringify(formData))
 			
-			let formData = new FormData()
-			
-			
 			formData.append('upFile',file)
-			
-			
-			
 			$.ajax({
 				url : "${rootPath}/board/image_up",
 				type : "POST",
 				data : formData,
 				contentType : false,
 				processData : false,
-				beforeSend : function(ax){
-					ax.setRequestHeader(
-							"${_csrf.headerName}",
-							"${_scrf.token}"		
-					)
-				}
-				
+
 				enctype : "multipart/form-data",
 				success:function(result) {
 					alert(result)

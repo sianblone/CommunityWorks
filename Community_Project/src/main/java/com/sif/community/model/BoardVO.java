@@ -17,7 +17,6 @@ import lombok.ToString;
 @Builder
 public class BoardVO {
 	
-
 	private long board_no;//	BIGINT
 	private long board_p_no;//	BIGINT
 	private String board_name;//	VARCHAR(20)
