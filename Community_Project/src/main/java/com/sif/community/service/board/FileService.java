@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +36,7 @@ public class FileService {
 	 * 변경된 이름으로 서버의 filePath에 저장하고
 	 * 변경된 파일이름을 return
 	 */
+	
 	public String fileUp(MultipartFile upFile) {
 		
 //		1. 폴더 생성

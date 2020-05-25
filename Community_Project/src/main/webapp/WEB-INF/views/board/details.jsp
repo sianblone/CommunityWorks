@@ -4,6 +4,17 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
+<style>
+	.details_info {
+		display: flex;
+	}
+	small {
+		display: block;
+	}
+	.details_info small:nth-child(3) {
+		margin-left: auto !important;
+	}
+</style>
 <script>
 $(function(){
 	$(document).on("click","cmt-item",function(){
@@ -94,7 +105,8 @@ $(function(){
 			document.location.href = "${rootPath}/board/repl?board_no=${BOARD_VO.board_no}"
 			return false
 		} else {
-			document.location.href="${rootPath}/board/list"
+			document.location.href="${rootPath}/board/list?board_name=gallery"
+
 		}
 	})
 })
@@ -108,16 +120,21 @@ $(function(){
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
-		<div>
-			<small class="m-3"><label>작성자 </label>${BOARD_VO.board_writer}</small>
-			<small class="m-3"><label>작성일시 </label>${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
-			<small class="m-3"><label>조회수 </label>${BOARD_VO.board_count}</small>
-			<small class="m-3"><label>추천수 </label>${BOARD_VO.board_recommend}</small><br>
-			<small class="m-3"><label>카테고리 </label>${BOARD_VO.board_category}</small>
+		<div class="text-right">
+			<h2 class="p-1">${BOARD_VO.board_subject}</h2>
+			<small class="m-3"><label>작성일시 :</label>${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
 		</div>
 		<hr/>
-		<h2 class="p-3">${BOARD_VO.board_subject}</h2>
-		<div class="p-3">${BOARD_VO.board_content}</div>
+		<div class="details_info">
+			<small class="m-3"><label>카테고리 :</label>${BOARD_VO.board_category}</small>
+			<small class="m-3"><label>작성자 :</label>${BOARD_VO.board_writer}</small>
+			<small class="m-3"><label>조회수 :</label>${BOARD_VO.board_count}</small>
+			<small class="m-3"><label>추천수 :</label>${BOARD_VO.board_recommend}</small><br>			
+		</div>
+		<hr/>
+		<div class="p-3">
+		${BOARD_VO.board_content}
+		</div>
 	</section>
 	<div class="form-group d-flex justify-content-end">
 		<button class="btn btn-primary mr-3">수정</button>

@@ -46,9 +46,11 @@
 		function upFile(file, editor) {
 			
 			var formData = new FormData()
+
 			formData.append('upFile', file)
 			
 			$.ajax({
+
 				url: "${rootPath}/board/image_up",
 				type: "POST",
 				data: formData,
@@ -80,8 +82,8 @@
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="">카테고리</option>
-						<option value="1">잡담</option>
-						<option value="2">질문</option>
+						<option value="잡담">잡담</option>
+						<option value="질문">질문</option>
 					</select>
 				</div>
 				
