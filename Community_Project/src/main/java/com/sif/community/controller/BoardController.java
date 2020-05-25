@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,7 +71,15 @@ public class BoardController {
 			return "board/error";
 		}
 		
+		boolean isWriter = false;
+		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
+		if(boardVO.getBoard_writer().equals(SecurityContextHolder.getContext().getAuthentication().getName())
+			|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			isWriter = true;
+		}
+		
 		model.addAttribute("BOARD_VO",boardVO);
+		model.addAttribute("IS_WRITER", isWriter);
 		return "board/details";
 	}
 	
@@ -79,32 +88,8 @@ public class BoardController {
 	// id값을 받았으면, 현재 사용자와 DB 게시글id 작성자를 검색하여, 일치하면 값 채워서 저장화면 보여주기
 	// 현재 사용자와 DB의 게시글id 작성자가 다르면 오류 페이지로 보내기
 	@RequestMapping(value="/save", method=RequestMethod.GET)
-	public String save(Long no, Model model) {
-		String render = "";
-		if(no != null) {
-			// 게시글번호를 쿼리에서 받은 경우
-			
-			BoardVO boardVO = boardSvc.findByNo(no);
-			
-			// 게시글번호로 찾은 데이터가 DB에 있으면(이미 있는 글이면) 수정하기
-			if(boardVO != null) {
-				// 현재 로그인한 사용자와 게시글 작성자가 다르면 수정 불가
-				String loginName = SecurityContextHolder.getContext().getAuthentication().getName();
-				if(!loginName.equals(boardVO.getBoard_writer())) {
-					render = "board/error";
-				} else {
-					// 로그인한 사용자와 게시글 작성자가 같으면 수정정보 view로 보내기
-					model.addAttribute("BOARD_VO",boardVO);
-					render = "board/save";
-				}
-			} else {
-				// 게시글번호로 찾은 데이터가 DB에 없으면 에러페이지로
-				render = "board/error";
-			}
-		} else {
-			// 게시글 번호를 쿼리로 받지 않은 경우(신규작성 글)
-			render = "board/save";
-		}
+	public String save(@RequestParam(value = "board_no", required = false, defaultValue = "0")long board_no, Model model) {
+		String render = boardSvc.saveView(board_no, model);
 		
 		return render;
 	}
@@ -122,12 +107,8 @@ public class BoardController {
 	// 게시글 deleted 칼럼 값 1로 바꿔주기
 	@RequestMapping(value="/delete/{board_no}", method=RequestMethod.GET)
 	public String delete(@PathVariable("board_no") long board_no) {
-		BoardVO boardVO = boardSvc.findByNo(board_no);
-		boardVO.setBoard_delete(1);
-		boardSvc.delete(boardVO);
-		
-		String board_name = boardVO.getBoard_name();
-		return "redirect:/board/list?board_name=" + board_name;
+		String render = boardSvc.delete(board_no);
+		return render;
 	}
 	
 	// 페이지네이션
@@ -136,8 +117,10 @@ public class BoardController {
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		
+		String defaultQuery = "board_name=" + boardVO.getBoard_name();
+		model.addAttribute("DEFAULT_QUERY", defaultQuery);
+		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
-		log.debug(boardList.toString());
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 	
