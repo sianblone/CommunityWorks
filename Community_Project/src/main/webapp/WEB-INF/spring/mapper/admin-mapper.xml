@@ -3,6 +3,21 @@
 
 <mapper namespace="com.sif.community.dao.AdminDao">
 
+	<select id="selectAllByPageAdmin" resultType="boardVO">
+		SELECT b.*, u.nickname AS board_nickname
+		FROM tbl_board b, tbl_users u
+		WHERE
+			board_name = #{boardVO.board_name}
+			AND
+			board_p_no = 0
+			AND
+			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			AND
+			b.board_writer = u.username
+		ORDER BY board_no DESC
+		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+
 	<update id="update_user_from_admin">
 		UPDATE `tbl_users`
 		SET

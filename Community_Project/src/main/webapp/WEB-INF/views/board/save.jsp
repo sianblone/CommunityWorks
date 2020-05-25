@@ -80,7 +80,7 @@
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
-		<form:form method="POST" enctype="multipart/form-data" action="?board_name=${param.board_name}&${_csrf.parameterName}=${_csrf.token}">
+		<form:form method="POST" enctype="multipart/form-data" action="?board_name=${param.board_name}&board_no=${param.board_no}&board_p_no=${param.board_p_no}&${_csrf.parameterName}=${_csrf.token}">
 			<fieldset>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">

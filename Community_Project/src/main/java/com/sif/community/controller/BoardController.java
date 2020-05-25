@@ -50,7 +50,7 @@ public class BoardController {
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(Model model,
 					BoardVO boardVO,
-					@RequestParam(value="currPage", required=false, defaultValue="1") int currPage) {
+					Integer currPage) {
 		
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
@@ -68,13 +68,14 @@ public class BoardController {
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	public String details(BoardVO boardOptionVO, Model model) {
 		BoardVO boardVO = boardSvc.findByNo(boardOptionVO.getBoard_no());
-		if(boardVO.getBoard_delete() == 1) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		// 현재 로그인한 사용자가 관리자가 아닐 때 delete 값이 1인 게시물 열람 불가
+		if(!auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) && boardVO.getBoard_delete() == 1) {
 			return "board/error";
 		}
 		
 		boolean isWriter = false;
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
 		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
 		if(boardVO.getBoard_writer().equals(auth.getName()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isWriter = true;
@@ -90,8 +91,8 @@ public class BoardController {
 	// id값을 받았으면, 현재 사용자와 DB 게시글id 작성자를 검색하여, 일치하면 값 채워서 저장화면 보여주기
 	// 현재 사용자와 DB의 게시글id 작성자가 다르면 오류 페이지로 보내기
 	@RequestMapping(value="/save", method=RequestMethod.GET)
-	public String save(@RequestParam(value = "board_no", required = false, defaultValue = "0")long board_no, Model model) {
-		String render = boardSvc.saveView(board_no, model);
+	public String save(BoardVO boardOptionVO, Model model) {
+		String render = boardSvc.saveView(boardOptionVO, model);
 		
 		return render;
 	}
@@ -101,6 +102,7 @@ public class BoardController {
 	// form에서 입력받은 값으로 DB에 저장하기(INSERT 또는 UPDATE)
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO) {
+		log.debug("SAVE 게시글 VO : {}" ,boardVO.toString());
 		boardSvc.save(boardVO);
 		return "redirect:/board/list?board_name=" + boardVO.getBoard_name();
 	}
@@ -114,7 +116,8 @@ public class BoardController {
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, BoardVO boardVO, int currPage) {
+	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
+		if(currPage == null) currPage = 1;
 		long totalCount = boardSvc.countAll(boardVO);
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);

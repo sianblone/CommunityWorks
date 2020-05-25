@@ -66,7 +66,7 @@ $(function(){
 	$(document).on("click","button",function(){
 		let txt = $(this).text()
 		if(txt == '수정') {
-			document.location.href="${rootPath}/board/save?board_no=${BOARD_VO.board_no}"
+			document.location.href="${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_no=${BOARD_VO.board_no}"
 		} else if(txt == '삭제') {
 			if(confirm("삭제할까요?")) {
 				document.location.replace("${rootPath}/board/delete/${BOARD_VO.board_no}")
@@ -103,10 +103,10 @@ $(function(){
 			})
 			return true
 		} else if(txt == "답글") {
-			document.location.href = "${rootPath}/board/repl?board_no=${BOARD_VO.board_no}"
+			document.location.href = "${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_p_no=${BOARD_VO.board_no}"
 			return false
 		} else {
-			document.location.href="${rootPath}/board/list?board_name=gallery"
+			document.location.href="${rootPath}/board/list?board_name=${BOARD_VO.board_name}"
 
 		}
 	})
@@ -127,10 +127,10 @@ $(function(){
 		</div>
 		<hr/>
 		<div class="details_info">
-			<small class="m-3"><label>카테고리 :</label>${BOARD_VO.board_category}</small>
-			<small class="m-3"><label>작성자 :</label>${BOARD_VO.board_nickname}</small>
-			<small class="m-3"><label>조회수 :</label>${BOARD_VO.board_count}</small>
-			<small class="m-3"><label>추천수 :</label>${BOARD_VO.board_recommend}</small><br>			
+			<small class="m-3"><label>카테고리 : </label>${BOARD_VO.board_category}</small>
+			<small class="m-3"><label>작성자 : </label>${BOARD_VO.board_nickname}</small>
+			<small class="m-3"><label>조회수 : </label>${BOARD_VO.board_count}</small>
+			<small class="m-3"><label>추천수 : </label>${BOARD_VO.board_recommend}</small><br>			
 		</div>
 		<hr/>
 		<div class="p-3">

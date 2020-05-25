@@ -19,6 +19,6 @@ public interface BoardService {
 
 	public BoardVO findByNo(long board_no);
 
-	public String saveView(long board_no, Model model);
+	public String saveView(BoardVO boardOptionVO, Model model);
 
 }

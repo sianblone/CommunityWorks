@@ -49,7 +49,7 @@
 						<c:otherwise>
 							<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
 								<tr data-id="${B.board_no}">
-									<td>${i.count}</td>
+									<td>${B.board_no}</td>
 									<td>${B.board_category}</td>
 									<td>${B.board_subject}</td>
 									<td>${B.board_nickname}</td>

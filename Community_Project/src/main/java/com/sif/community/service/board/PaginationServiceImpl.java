@@ -19,7 +19,7 @@ public class PaginationServiceImpl implements PaginationService {
 		this.pageLength = pageLength;
 	}
 
-	public PaginationVO makePageInfo(long totalCount, int currPageNo) {
+	public PaginationVO makePageInfo(long totalCount, int currPage) {
 		
 		if(totalCount < 1) {
 			PaginationVO pageVO = PaginationVO.builder()
@@ -39,14 +39,14 @@ public class PaginationServiceImpl implements PaginationService {
 		int lastPageNo = (int)((totalCount + dataPerPage - 1) / dataPerPage);
 		
 //		실제 마지막 페이지(ex:10)보다 큰 값(ex:12)을 현재 페이지로 전달받았다면, 마지막 페이지(10)를 현재 페이지(10)로 만들기
-		if(currPageNo > lastPageNo) currPageNo = lastPageNo;
+		if(currPage > lastPageNo) currPage = lastPageNo;
 //		1 미만의 값을 현재 페이지로 전달받았다면 현재 페이지를 1로 만들기
-		if(currPageNo < 1) currPageNo = 1;
+		if(currPage < 1) currPage = 1;
 		
 //		현재 페이지(currPageNo)가 3이면 1 ~ 5, 10이면 8 ~ 12까지 이런 식으로 현재페이지를 한 가운데로 만들기 위한 설정
 		int startPageNo = 1;
 //		새로운 시작페이지 : 현재 페이지(8) - 페이지 길이 절반(5) = 새로운 시작페이지(3)
-		int newStartPage = currPageNo - pageLength / 2;
+		int newStartPage = currPage - pageLength / 2;
 //		새로운 시작페이지가 음수면 시작페이지 1로 고정, 양수일 때만 시작페이지 바꿔주기
 		if (newStartPage > 0) {
 			startPageNo = newStartPage;
@@ -59,12 +59,12 @@ public class PaginationServiceImpl implements PaginationService {
 		
 //		이전 페이지 : 현재 페이지가 2 이상인 경우 = 현재 페이지 - 1
 		int prePageNo = 1;
-		if(currPageNo > 1) prePageNo = currPageNo - 1;
+		if(currPage > 1) prePageNo = currPage - 1;
 		
 //		다음 페이지 : 현재 페이지가 끝페이지보다 작은 경우 = 현재 페이지 + 1
 		int nextPageNo = lastPageNo;
-		if(currPageNo < lastPageNo) {
-			nextPageNo = currPageNo + 1;
+		if(currPage < lastPageNo) {
+			nextPageNo = currPage + 1;
 		}
 		
 //		끝페이지가 보이는 시점 시작페이지 처리하기
@@ -79,7 +79,7 @@ public class PaginationServiceImpl implements PaginationService {
 		
 //		MySQL DB에서 데이터 가져올 값 설정
 //		1페이지 선택시 offset:0,limit:10, 2페이지 선택시 offset:10,limit:10, 3페이지 선택시 offset:20,limit:10
-		int offset = (currPageNo - 1) * dataPerPage;
+		int offset = (currPage - 1) * dataPerPage;
 		int limit = dataPerPage;
 		
 		PaginationVO paginationVO = PaginationVO.builder()
@@ -98,7 +98,7 @@ public class PaginationServiceImpl implements PaginationService {
 				.startPageNo(startPageNo)
 				.endPageNo(endPageNo)
 				
-				.currentPageNo(currPageNo)
+				.currentPageNo(currPage)
 				.build();
 		
 		return paginationVO;

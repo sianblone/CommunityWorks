@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardDao boardDao;
+	private final AdminDao adminDao;
 	
 	@Override
 	public long countAll(BoardVO boardVO) {
@@ -31,12 +33,23 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
-		return boardDao.selectAllByPage(boardVO, pageVO);
+		
+		List<BoardVO> boardList = null;
+		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			boardList = adminDao.selectAllByPageAdmin(boardVO, pageVO);
+		} else {
+			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
+			boardList = boardDao.selectAllByPage(boardVO, pageVO);
+		}
+		
+		return boardList;
 	}
 	
 	@Override
-	public String saveView(long board_no, Model model) {
+	public String saveView(BoardVO boardOptionVO, Model model) {
 		String render = "";
+		long board_no = boardOptionVO.getBoard_no();
 		
 		if(board_no != 0) {
 			// 쿼리에서 board_no를 받은 경우
@@ -47,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
 				
 				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 				// 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 수정 view 보여주기
-				if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("USER_ADMIN"))) {
+				if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 					model.addAttribute("BOARD_VO",boardVO);
 					render = "board/save";
 				} else {
@@ -59,7 +72,8 @@ public class BoardServiceImpl implements BoardService {
 				render = "board/error";
 			}
 		} else {
-			// 게시글 번호를 쿼리로 받지 않은 경우(=신규작성 글) 수정이 아닌 새 글 작성 페이지 보여주기
+			// 쿼리에서 board_no를 받지 않은 경우(=신규작성 글 또는 답글) 새 글 작성 페이지 보여주기
+			// 답글인 경우 GET 쿼리의 board_p_no를 받아와 save.jsp의 POST action에 지정해주고 submit, 컨트롤러의 VO에 board_p_no 값이 매핑되어 자동 세팅
 			render = "board/save";
 		}
 		
@@ -71,24 +85,35 @@ public class BoardServiceImpl implements BoardService {
 		
 		int ret = 0;
 		
-		// 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없는 경우)
-		// 작성자, 날짜, 시간 세팅 후 INSERT
-		if(boardVO.getBoard_no() == 0) {
-			String username = SecurityContextHolder.getContext().getAuthentication().getName();
-			boardVO.setBoard_writer(username);
-			
-			LocalDateTime ldt = LocalDateTime.now();
-			DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			DateTimeFormatter dt = DateTimeFormatter.ofPattern("HH:mm:ss");
-			boardVO.setBoard_date(ldt.format(df).toString());
-			boardVO.setBoard_time(ldt.format(dt).toString());
-			ret = boardDao.insert(boardVO);
-		} else {
+		if(boardVO.getBoard_no() != 0) {
 			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 있는 경우)
-			ret = boardDao.update(boardVO);
+			BoardVO dbBoardVO = this.findByNo(boardVO.getBoard_no());
+			dbBoardVO.setBoard_category(boardVO.getBoard_category());
+			dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
+			dbBoardVO.setBoard_content(boardVO.getBoard_content());
+			ret = boardDao.update(dbBoardVO);
+		} else {
+			// 신규작성 글이나 답글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없는 경우)
+			// 작성자, 날짜, 시간 세팅 후 INSERT
+			// 답글인 경우는 GET 쿼리에 board_p_no가 있기에 자동으로 세팅
+			saveSetting(boardVO);
+			ret = boardDao.insert(boardVO);
 		}
 		
 		return ret;
+	}
+	
+	protected BoardVO saveSetting(BoardVO boardVO) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		boardVO.setBoard_writer(username);
+		
+		LocalDateTime ldt = LocalDateTime.now();
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		DateTimeFormatter dt = DateTimeFormatter.ofPattern("HH:mm:ss");
+		boardVO.setBoard_date(ldt.format(df).toString());
+		boardVO.setBoard_time(ldt.format(dt).toString());
+		
+		return boardVO;
 	}
 	
 	@Override
@@ -99,7 +124,7 @@ public class BoardServiceImpl implements BoardService {
 		if(boardVO != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			// 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 삭제하기
-			if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("USER_ADMIN"))) {
+			if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 				boardVO.setBoard_delete(1);
 				boardDao.delete(boardVO);
 				
