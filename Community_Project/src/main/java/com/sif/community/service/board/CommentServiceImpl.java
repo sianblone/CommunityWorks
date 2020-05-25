@@ -1,5 +1,6 @@
 package com.sif.community.service.board;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,6 +15,10 @@ import lombok.RequiredArgsConstructor;
 public class CommentServiceImpl implements CommentService {
 	
 	private final CommentDao cmtDao;
+	
+//	private List<CommentVO> findByBoardNoRepl(CommentVO cmtVO, int depth) {
+//		
+//	}
 
 	@Override
 	public List<CommentVO> selectAll() {
@@ -29,8 +34,12 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<CommentVO> findByBoardNo(long cmt_board_no) {
-		
-		return null;
+		List<CommentVO> cmtList = cmtDao.findByBoardNo(cmt_board_no);
+		List<CommentVO> retList = new ArrayList<CommentVO>();
+		for(CommentVO vo : cmtList) {
+//			retList.addAll(this.findByBoardNoRepl(vo,0));
+		}
+		return retList;
 	}
 
 	@Override
