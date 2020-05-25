@@ -231,7 +231,7 @@
 		<div class="mypage-div">
 			<span class="mypage-label">핸드폰</span>
 			<div class="mypage-content">
-				<input id="phone" name="phone" value="${loginVO.phone}" />
+				<input type="tel" id="phone" name="phone" value="${loginVO.phone}" />
 			</div>
 		</div>
 		

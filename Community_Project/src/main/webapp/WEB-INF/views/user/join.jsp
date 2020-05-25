@@ -250,7 +250,7 @@
 		</div>
 		
 		<div class="form_item">
-			<input id="phone" name="phone" />
+			<input type="tel" id="phone" name="phone" />
 		</div>
 		
 		<div class="form_item">

@@ -43,6 +43,8 @@
 			document.location.href="${rootPath}/board/list?board_name=gallery"
 		})
 		
+		
+		
 		function upFile(file, editor) {
 			
 			var formData = new FormData()
@@ -70,6 +72,7 @@
 			})
 			
 		}
+		
 	})
 	</script>
 </head>

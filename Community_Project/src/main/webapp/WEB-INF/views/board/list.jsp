@@ -29,17 +29,24 @@
 					<th>조회수</th>
 					<th>추천수</th>
 				</tr>
-				<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
-					<tr style="cursor:pointer" onclick="location.href='${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=${B.board_no}'" >
-						<td>${i.count}</td>
-						<td>${B.board_category}</td>
-						<td>${B.board_subject}</td>
-						<td>${B.board_writer}</td>
-						<td>${B.board_date} ${B.board_time}</td>
-						<td>${B.board_count}</td>
-						<td>${B.board_recommend}</td>
-					</tr>
-				</c:forEach>
+				<c:choose>
+					<c:when test="${empty BOARD_LIST}">
+						<tr><td colspan="5">등록된 리스트가 없습니다</td></tr>
+					</c:when>
+					<c:otherwise>
+						<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
+							<tr style="cursor:pointer" onclick="location.href='${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=${B.board_no}'" >
+								<td>${i.count}</td>
+								<td>${B.board_category}</td>
+								<td>${B.board_subject}</td>
+								<td>${B.board_writer}</td>
+								<td>${B.board_date} ${B.board_time}</td>
+								<td>${B.board_count}</td>
+								<td>${B.board_recommend}</td>
+							</tr>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
 			</table>
 		</article>
 		<article class="d-flex justify-content-end">
