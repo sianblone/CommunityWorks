@@ -14,14 +14,14 @@
 </script>
 <article class="page_box">
 	<ul class="page_body">
-		<li class="page_item"><a class="page_link" href="${URL}?currPage=1">처음</a></li>
+		<li class="page_item"><a class="page_link" href="?${DEFAULT_QUERY}&currPage=1">처음</a></li>
 		<li class="page_item"><a class="page_link middot">&middot;&middot;&middot;</a></li>
 		
 		<c:forEach begin="${PAGE_DTO.startPageNo}" end="${PAGE_DTO.endPageNo}" var="pageNo">
-			<li class="page_item <c:if test='${pageNo == PAGE_DTO.currentPageNo}'>active</c:if>"><a class="page_link" href="${URL}?currPage=${pageNo}">${pageNo}</a></li>
+			<li class="page_item <c:if test='${pageNo == PAGE_DTO.currentPageNo}'>active</c:if>"><a class="page_link" href="?${DEFAULT_QUERY}&currPage=${pageNo}">${pageNo}</a></li>
 		</c:forEach>
 		
 		<li class="page_item"><a class="page_link middot">&middot;&middot;&middot;</a></li>
-		<li class="page_item"><a class="page_link" href="${URL}?currPage=${pagiDTO.lastPageNo}">끝</a></li>
+		<li class="page_item"><a class="page_link" href="?${DEFAULT_QUERY}&currPage=${pagiDTO.lastPageNo}">끝</a></li>
 	</ul>
 </article>

@@ -32,6 +32,7 @@ public class UserDetailsVO implements UserDetails{
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	
+	private String re_password;
 	private String nickname;
 	private String email;
 	private String phone;

@@ -3,6 +3,7 @@ package com.sif.community.service.user;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,13 +43,10 @@ public class JoinService {
 	// 두 개 이상의 쿼리 => @Transactional
 	@Transactional
 	public int insert(UserDetailsVO userVO, int year, int month, int day) {
-		// 이미 DB에 있는 아이디면 아무 일도 하지 않음
-		if(userSvc.findByUsername(userVO.getUsername()) != null) {
-			return 0;
-		}
 		
-		// 이메일 인증 전, 활성화 되지 않은 사용자로 세팅하기
-		userVO.setEnabled(true);
+		int ret = this.validJoin(userVO);
+		if(ret > 0) return ret;
+		
 		// 비밀번호 암호화하기
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);
@@ -57,7 +55,7 @@ public class JoinService {
 		if(userVO.getNickname().isEmpty()) userVO.setNickname(userVO.getUsername());
 		
 		// DB tbl_users 테이블 INSERT
-		int ret = userDao.insert(userVO);
+		ret = userDao.insert(userVO);
 		
 		// DB authorities 테이블 INSERT
 		List<AuthorityVO> authList = new ArrayList<>();
@@ -70,9 +68,46 @@ public class JoinService {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ret = -1;
+			ret = -104;
 		}
 		
+		return ret;
+	}
+	
+	protected int validJoin(UserDetailsVO userVO) {
+		String password = userVO.getPassword();
+		String re_password = userVO.getRe_password();
+		String email = userVO.getEmail();
+		
+		// 4~12자 아이디 유효성 검사
+		if( !userVO.getUsername().matches("[^a-zA-Z0-9]{4,12}$") ) {
+			return -100;
+		} else if (password.isEmpty() || re_password.isEmpty() || !password.equals(re_password)) {
+			// 비밀번호 확인 유효성 검사
+			return -101;
+		} else if (email.isEmpty() || !email.matches("^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{1,6})+$")) {
+			// 이메일 유효성 검사
+			return -102;
+		} else if(userSvc.findByUsername(userVO.getUsername()) != null) {
+			// 이미 DB에 있는 아이디면 아무 일도 하지 않음
+			return -103;
+		} else {
+			return 0;
+		}
+		
+	}
+	
+	public int test_insert(UserDetailsVO userVO, int year, int month, int day) {
+		int ret = this.validJoin(userVO);
+		if(ret > 0) return ret;
+		
+		String encPW = bcryptEncoder.encode(userVO.getPassword());
+		userVO.setPassword(encPW);
+		if(userVO.getNickname().isEmpty()) userVO.setNickname(userVO.getUsername());
+		ret = userDao.insert(userVO);
+		List<AuthorityVO> authList = new ArrayList<>();
+		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_USER").build());
+		ret += authDao.insert(authList);
 		return ret;
 	}
 	

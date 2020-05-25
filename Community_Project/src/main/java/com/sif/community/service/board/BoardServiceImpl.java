@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardVO;
@@ -29,6 +30,37 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		return boardDao.selectAllByPage(boardVO, pageVO);
+	}
+	
+	@Override
+	public String saveView(long board_no, Model model) {
+		String render = "";
+		
+		if(board_no != 0) {
+			// 쿼리에서 board_no를 받은 경우
+			
+			BoardVO boardVO = this.findByNo(board_no);
+			// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기
+			if(boardVO != null) {
+				// 현재 로그인한 사용자와 게시글 작성자가 다르면 수정 불가
+				String loginName = SecurityContextHolder.getContext().getAuthentication().getName();
+				if(!loginName.equals(boardVO.getBoard_writer())) {
+					render = "board/error";
+				} else {
+					// 로그인한 사용자와 게시글 작성자가 같으면 글 수정 view 보여주기
+					model.addAttribute("BOARD_VO",boardVO);
+					render = "board/save";
+				}
+			} else {
+				// DB에 baord_no로 검색한 데이터가 없으면 에러페이지 보여주기
+				render = "board/error";
+			}
+		} else {
+			// 게시글 번호를 쿼리로 받지 않은 경우(=신규작성 글) 수정이 아닌 새 글 작성 페이지 보여주기
+			render = "board/save";
+		}
+		
+		return render;
 	}
 
 	@Override
@@ -57,8 +89,29 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int delete(BoardVO boardVO) {
-		return boardDao.delete(boardVO);
+	public String delete(long board_no) {
+		String render = "";
+		BoardVO boardVO = this.findByNo(board_no);
+		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
+		if(boardVO != null) {
+			// 현재 로그인한 사용자와 게시글 작성자가 다르면 삭제 불가
+			String loginName = SecurityContextHolder.getContext().getAuthentication().getName();
+			if(!loginName.equals(boardVO.getBoard_writer())) {
+				render = "board/error";
+			} else {
+				// 로그인한 사용자와 게시글 작성자가 같으면 글 삭제하기
+				boardVO.setBoard_delete(1);
+				boardDao.delete(boardVO);
+				
+				String board_name = boardVO.getBoard_name();
+				render = "redirect:/board/list?board_name=" + board_name;
+			}
+		} else {
+			// DB에 baord_no로 검색한 데이터가 없으면 에러페이지 보여주기
+			render = "board/error";
+		}
+		
+		return render;
 	}
 	
 	@Override

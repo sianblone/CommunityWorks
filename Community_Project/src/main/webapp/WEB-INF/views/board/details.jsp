@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -137,9 +138,13 @@ $(function(){
 		</div>
 	</section>
 	<div class="form-group d-flex justify-content-end">
-		<button class="btn btn-primary mr-3">수정</button>
-		<button class="btn btn-danger mr-3">삭제</button>
-		<button class="btn btn-info mr-3">답글</button>
+		<c:if test="${IS_WRITER}">
+			<button class="btn btn-primary mr-3">수정</button>
+			<button class="btn btn-danger mr-3">삭제</button>
+		</c:if>
+		<sec:authorize access="isAuthenticated()">
+			<button class="btn btn-info mr-3">답글</button>
+		</sec:authorize>
 		<button class="btn btn-success">목록으로</button>
 	</div>
 	<hr/>
