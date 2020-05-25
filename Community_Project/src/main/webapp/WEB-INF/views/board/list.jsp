@@ -19,7 +19,7 @@
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
 		<article>
-			<table class="table table-striped table-hover">
+			<table class="table table-striped table-hover text-center">
 				<tr>
 					<th>글번호</th>
 					<th>카테고리</th>
@@ -31,7 +31,7 @@
 				</tr>
 				<c:choose>
 					<c:when test="${empty BOARD_LIST}">
-						<tr><td colspan="5">등록된 리스트가 없습니다</td></tr>
+						<tr><td colspan="7">등록된 리스트가 없습니다</td></tr>
 					</c:when>
 					<c:otherwise>
 						<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">

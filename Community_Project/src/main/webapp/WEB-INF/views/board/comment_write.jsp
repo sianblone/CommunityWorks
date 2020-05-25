@@ -4,14 +4,14 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <form method="POST" class="repl">
 	<div class="row p-4 bg-light">
-		<input type="hidden" name="c_p_id" id="c_p_id" value="${CMT.c_p_id}"> 
-		<input type="hidden" name="c_g_id" value="${CMT.c_g_id}">
+		<input type="hidden" name="cmt_p_no" id="cmt_p_no" value="${C.cmt_p_no}"> 
+		<input type="hidden" name="cmt_board_no" value="${C.cmt_board_no}">
 		<div class="col-2">
-			<input name="c_writer" id="c_writer" class="form-control"
+			<input name="cmt_writer" id="cmt_writer" class="form-control"
 				placeholder="작성자">
 		</div>
 		<div class="col-8">
-			<input name="c_subject" id="c_subject" class="form-control"
+			<input name="cmt_content" id="cmt_content" class="form-control"
 				placeholder="댓글을 입력하세요">
 		</div>
 		<div class="col-2  d-flex justify-content-center">
