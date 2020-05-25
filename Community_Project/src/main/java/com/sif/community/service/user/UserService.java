@@ -163,10 +163,11 @@ public class UserService {
 			return 0;
 		}
 		
-		// username 복호화, password 암호화해서 VO에 저장
+		// JASYPT로 username 복호화
+		// BCrypt로 password 암호화해서 VO에 저장
 		UserDetailsVO userVO = UserDetailsVO.builder()
 							.username(PbeEncryptor.decrypt(enc_username))
-							.password(PbeEncryptor.encrypt(password))
+							.password(bcryptEncoder.encode(password))
 							.build();
 		
 		// DB에 새로운 비밀번호 저장

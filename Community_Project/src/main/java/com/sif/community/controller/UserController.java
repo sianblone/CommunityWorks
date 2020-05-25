@@ -180,10 +180,10 @@ public class UserController {
 	
 	@ResponseBody
 	@RequestMapping(value="/new-pw", method=RequestMethod.POST)
-	public String new_pw(String enc_username, String password, String re_password) {
+	public int new_pw(String enc_username, String password, String re_password) {
 		// userVO에는 암호화 된 username, password만 담겨있다
 		int ret = userSvc.new_pw(enc_username, password, re_password);
-		return "redirect:/";
+		return ret;
 	}
 	
 }
