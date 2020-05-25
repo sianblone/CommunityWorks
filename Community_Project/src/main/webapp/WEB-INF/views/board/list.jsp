@@ -34,7 +34,7 @@
 						<td>${i.count}</td>
 						<td>${B.board_category}</td>
 						<td>${B.board_subject}</td>
-						<td>${B.board_writer}</td>
+						<td>${B.board_nickname}</td>
 						<td>${B.board_date} ${B.board_time}</td>
 						<td>${B.board_count}</td>
 						<td>${B.board_recommend}</td>

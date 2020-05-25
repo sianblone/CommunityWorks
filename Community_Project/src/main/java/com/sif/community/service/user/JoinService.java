@@ -53,6 +53,9 @@ public class JoinService {
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);
 		
+		// 닉네임이 비어있다면 아이디와 똑같이 설정하기
+		if(userVO.getNickname().isEmpty()) userVO.setNickname(userVO.getUsername());
+		
 		// DB tbl_users 테이블 INSERT
 		int ret = userDao.insert(userVO);
 		

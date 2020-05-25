@@ -58,16 +58,13 @@
 			background-color: var(--button-hover-bg-color);
 		}
 		.message {
-			display: none;
-			margin-left: 10px;
-			font-weight: bold;
-			font-size: small;
-		}
-		#m_email {
 			display: block;
 			margin-left: 10px;
 			font-weight: bold;
 			font-size: small;
+		}
+		#m_username {
+			display: none;
 		}
 	</style>
 	<script>
@@ -214,6 +211,7 @@
 		
 		<div class="form_item">
 			<label for="nickname">닉네임</label><br/>
+			<span id="m_nickname" class="message">* 입력하지 않으면 아이디와 동일하게 설정되며 마이페이지에서 수정할 수 있습니다.</span>
 		</div>
 		
 		<div class="form_item">
@@ -242,7 +240,7 @@
 		
 		<div class="form_item">
 			<input id="email" name="email" type="email"/>
-			<span id="m_email">* 해당 이메일로 인증 링크가 발송됩니다.</span>
+			<span id="m_email" class="message">* 해당 이메일로 인증 링크가 발송됩니다.</span>
 		</div>
 		
 		<div class="form_item">
