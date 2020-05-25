@@ -4,8 +4,8 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <form method="POST" class="repl">
 	<div class="row p-4 bg-light">
-		<input type="hidden" name="cmt_p_no" id="cmt_p_no" value="${C.cmt_p_no}"> 
-		<input type="hidden" name="cmt_board_no" value="${C.cmt_board_no}">
+		<input type="hidden" name="cmt_p_no" id="cmt_p_no" value="${CMT.cmt_p_no}"> 
+		<input type="hidden" name="cmt_board_no" value="${CMT.cmt_board_no}">
 		<div class="col-2">
 			<input name="cmt_writer" id="cmt_writer" class="form-control"
 				placeholder="작성자">
