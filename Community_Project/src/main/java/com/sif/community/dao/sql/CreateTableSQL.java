@@ -4,14 +4,13 @@ public class CreateTableSQL {
 	
 	public static String create_tbl_users
 		= "CREATE TABLE IF NOT EXISTS tbl_users ( "
-		+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
-		+ " username VARCHAR(50) UNIQUE, "
+		+ " username VARCHAR(50) PRIMARY KEY, "
 		+ " password VARCHAR(125), "
 		+ " enabled BOOLEAN default true, "
 		+ " accountNonExpired BOOLEAN default true, "
 		+ " accountNonLocked BOOLEAN default true, "
 		+ " credentialsNonExpired BOOLEAN default true, "
-		+ " nickname VARCHAR(30), "
+		+ " nickname VARCHAR(30) NOT NULL, "
 		+ " email VARCHAR(50), "
 		+ " phone VARCHAR(20), "
 		+ " age DATE "
@@ -23,11 +22,11 @@ public class CreateTableSQL {
 		+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
 		+ " username VARCHAR(50) NOT NULL, "
 		+ " authority VARCHAR(50), "
+		
 		+ " CONSTRAINT FK_USERS_AUTH_username "
 		+ " FOREIGN KEY (username) "
 		+ " REFERENCES tbl_users(username) "
 		+ " ON DELETE CASCADE "
-		+ " ON UPDATE CASCADE "
 		+ " ) "
 	;
 	
@@ -45,7 +44,12 @@ public class CreateTableSQL {
 		+ " board_filename VARCHAR(256), "
 		+ " board_delete TINYINT NOT NULL DEFAULT 0, "
 		+ " board_recommend TINYINT NOT NULL DEFAULT 0, "
-		+ " board_category VARCHAR(20) "
+		+ " board_category VARCHAR(20), "
+		
+		+ " CONSTRAINT FK_USERS_BOARD_board_writer "
+		+ " FOREIGN KEY (board_writer) "
+		+ " REFERENCES tbl_users(username) "
+		+ " ON DELETE CASCADE "
 		+ " ) "
 	;
 	

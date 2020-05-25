@@ -4,8 +4,8 @@
 <mapper namespace="com.sif.community.dao.BoardDao">
 
 	<select id="selectAllByPage" resultType="boardVO">
-		SELECT *
-		FROM tbl_board
+		SELECT b.*, u.nickname AS board_nickname
+		FROM tbl_board b, tbl_users u
 		WHERE
 			board_name = #{boardVO.board_name}
 			AND
@@ -14,6 +14,8 @@
 			board_delete = 0
 			AND
 			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			AND
+			b.board_writer = u.username
 		ORDER BY board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
@@ -30,9 +32,12 @@
 	</select>
 	
 	<select id="findByNo" resultType="boardVO">
-		SELECT * FROM tbl_board
+		SELECT b.*, u.nickname AS board_nickname
+		FROM tbl_board b, tbl_users u
 		WHERE
 			board_no = #{board_no}
+			AND
+			b.board_writer = u.username
 	</select>
 	
 	<insert id="insert">

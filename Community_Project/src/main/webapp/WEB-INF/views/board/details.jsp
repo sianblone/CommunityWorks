@@ -127,7 +127,7 @@ $(function(){
 		<hr/>
 		<div class="details_info">
 			<small class="m-3"><label>카테고리 :</label>${BOARD_VO.board_category}</small>
-			<small class="m-3"><label>작성자 :</label>${BOARD_VO.board_writer}</small>
+			<small class="m-3"><label>작성자 :</label>${BOARD_VO.board_nickname}</small>
 			<small class="m-3"><label>조회수 :</label>${BOARD_VO.board_count}</small>
 			<small class="m-3"><label>추천수 :</label>${BOARD_VO.board_recommend}</small><br>			
 		</div>
