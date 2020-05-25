@@ -142,9 +142,7 @@ $(function(){
 			<button class="btn btn-primary mr-3">수정</button>
 			<button class="btn btn-danger mr-3">삭제</button>
 		</c:if>
-		<sec:authorize access="isAuthenticated()">
-			<button class="btn btn-info mr-3">답글</button>
-		</sec:authorize>
+		<button class="btn btn-info mr-3">답글</button>
 		<button class="btn btn-success">목록으로</button>
 	</div>
 	<hr/>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -72,9 +73,10 @@ public class BoardController {
 		}
 		
 		boolean isWriter = false;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
 		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
-		if(boardVO.getBoard_writer().equals(SecurityContextHolder.getContext().getAuthentication().getName())
-			|| SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if(boardVO.getBoard_writer().equals(auth.getName()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isWriter = true;
 		}
 		

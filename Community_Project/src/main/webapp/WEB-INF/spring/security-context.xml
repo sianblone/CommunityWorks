@@ -125,6 +125,10 @@
 			access="permitAll()" />
 			
 		<security:intercept-url
+			pattern="/board/save"
+			access="hasAnyRole('ADMIN','USER')" />
+			
+		<security:intercept-url
 			pattern="/**"
 			access="permitAll()" />
 		
