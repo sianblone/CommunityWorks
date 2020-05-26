@@ -126,6 +126,7 @@ public class BoardController {
 		model.addAttribute("DEFAULT_QUERY", defaultQuery);
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
+		log.debug("페이지 데이터 : {}", boardList.toString());
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 	

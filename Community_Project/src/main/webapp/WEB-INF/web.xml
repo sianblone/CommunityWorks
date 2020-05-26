@@ -33,6 +33,20 @@
 			/WEB-INF/spring/fileup-context.xml
 		</param-value>
 	</context-param>
+	
+	<filter>
+	    <filter-name>MultipartFilter</filter-name>
+	    <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
+	    <init-param>
+	    	<param-name>multipartResolverBeanName</param-name>
+	    	<param-value>multipartResolver</param-value>
+	    </init-param>
+	</filter>
+	<filter-mapping>
+	    <filter-name>MultipartFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+		
     
 	<!-- Spring Security와 관련된 filter는 반드시 contextConfigLocation과 Listener 사이에 작성해야 한다 -->
 	<!-- 한글 encoding과 관련된 filter는 반드시 security보다 앞에 위치해야 한다 -->

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.sif.community.dao.BoardDao">
 
-	<select id="selectAllByPage" resultType="boardVO">
+	<select id="selectAllByPage" resultMap="selectAllByPageRM">
 		SELECT b.*, u.nickname AS board_nickname
 		FROM tbl_board b, tbl_users u
 		WHERE
@@ -18,6 +18,17 @@
 			b.board_writer = u.username
 		ORDER BY board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<resultMap id="selectAllByPageRM" type="boardVO">
+		<id property="board_no" column="board_no"/>
+		<collection property="board_reply" column="board_no" ofType="boardVO" select="selectReply" />
+	</resultMap>
+	
+	<select id="selectReply" resultType="boardVO">
+		SELECT *
+		FROM tbl_board
+		WHERE board_p_no = #{board_no}
 	</select>
 	
 	<select id="countAll" resultType="long">

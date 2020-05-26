@@ -80,8 +80,11 @@
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
-		<form:form method="POST" enctype="multipart/form-data" action="?board_name=${param.board_name}&board_no=${param.board_no}&board_p_no=${param.board_p_no}&${_csrf.parameterName}=${_csrf.token}">
+		<form:form method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
 			<fieldset>
+				<input type="hidden" name="board_name" value="${param.board_name}"/>
+				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
+				<input type="hidden" name="board_p_no" value="<c:out value='${param.board_p_no}' default='0'/>"/>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="">카테고리</option>
