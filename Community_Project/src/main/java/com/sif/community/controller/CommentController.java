@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sif.community.model.CommentVO;
-import com.sif.community.service.board.CommentService;
+import com.sif.community.service.board.itf.CommentService;
 
 import lombok.RequiredArgsConstructor;
 

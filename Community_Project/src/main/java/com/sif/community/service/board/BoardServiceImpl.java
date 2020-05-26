@@ -14,6 +14,7 @@ import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
+import com.sif.community.service.board.itf.BoardService;
 
 import lombok.RequiredArgsConstructor;
 

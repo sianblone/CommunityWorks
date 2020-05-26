@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.sif.community.dao.CommentDao;
 import com.sif.community.model.CommentVO;
+import com.sif.community.service.board.itf.CommentService;
 
 import lombok.RequiredArgsConstructor;
 

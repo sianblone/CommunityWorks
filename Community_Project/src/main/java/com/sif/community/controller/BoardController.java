@@ -16,9 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
-import com.sif.community.service.board.BoardService;
 import com.sif.community.service.board.FileService;
-import com.sif.community.service.board.PaginationService;
+import com.sif.community.service.board.itf.BoardService;
+import com.sif.community.service.board.itf.PaginationService;
 
 import lombok.extern.slf4j.Slf4j;
 

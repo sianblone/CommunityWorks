@@ -3,6 +3,7 @@ package com.sif.community.service.board;
 import org.springframework.stereotype.Service;
 
 import com.sif.community.model.PaginationVO;
+import com.sif.community.service.board.itf.PaginationService;
 
 @Service(value = "pageSvc")
 public class PaginationServiceImpl implements PaginationService {

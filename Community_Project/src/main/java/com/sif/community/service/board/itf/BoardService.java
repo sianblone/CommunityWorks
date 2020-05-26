@@ -1,4 +1,4 @@
-package com.sif.community.service.board;
+package com.sif.community.service.board.itf;
 
 import java.util.List;
 
