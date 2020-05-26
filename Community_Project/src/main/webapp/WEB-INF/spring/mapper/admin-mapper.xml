@@ -30,7 +30,7 @@
 			b.board_p_no = #{board_no}
 			AND
 			b.board_writer = u.username
-		ORDER BY b.board_no DESC
+		ORDER BY b.board_no ASC
 	</select>
 
 	<update id="update_user_from_admin">

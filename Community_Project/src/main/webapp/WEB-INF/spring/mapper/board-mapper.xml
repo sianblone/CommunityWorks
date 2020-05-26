@@ -34,7 +34,7 @@
 			b.board_delete = 0
 			AND
 			b.board_writer = u.username
-		ORDER BY b.board_no DESC
+		ORDER BY b.board_no ASC
 	</select>
 	
 	<select id="countAll" resultType="long">
