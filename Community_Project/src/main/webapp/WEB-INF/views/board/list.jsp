@@ -29,7 +29,7 @@
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
 		<article>
-			<table class="table table-striped table-hover text-center">
+			<table class="table table-hover text-center">
 				<thead>
 					<tr>
 						<th>글번호</th>
