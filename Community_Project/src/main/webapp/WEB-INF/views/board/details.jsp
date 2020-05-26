@@ -66,10 +66,10 @@ $(function(){
 	$(document).on("click","button",function(){
 		let txt = $(this).text()
 		if(txt == '수정') {
-			document.location.href="${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_no=${BOARD_VO.board_no}"
+			document.location.href="${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
 		} else if(txt == '삭제') {
 			if(confirm("삭제할까요?")) {
-				document.location.replace("${rootPath}/board/delete/${BOARD_VO.board_no}")
+				document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
 			}
 		} else if(txt == '답변저장') {
 			var formData = $("form.repl").serialize()
@@ -123,18 +123,18 @@ $(function(){
 	<section class="container-fluid">
 		<div class="text-right">
 			<h2 class="p-1">${BOARD_VO.board_subject}</h2>
-			<small class="m-3"><label>작성일시 :</label>${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
+			<small class="m-3">작성일시 : ${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
 		</div>
 		<hr/>
 		<div class="details_info">
-			<small class="m-3"><label>카테고리 : </label>${BOARD_VO.board_category}</small>
-			<small class="m-3"><label>작성자 : </label>${BOARD_VO.board_nickname}</small>
-			<small class="m-3"><label>조회수 : </label>${BOARD_VO.board_count}</small>
-			<small class="m-3"><label>추천수 : </label>${BOARD_VO.board_recommend}</small><br>			
+			<small class="m-3">카테고리 : ${BOARD_VO.board_category}</small>
+			<small class="m-3">작성자 : ${BOARD_VO.board_nickname}</small>
+			<small class="m-3">조회수 : ${BOARD_VO.board_count}</small>
+			<small class="m-3">추천수 : ${BOARD_VO.board_recommend}</small>
 		</div>
 		<hr/>
 		<div class="p-3">
-		${BOARD_VO.board_content}
+			${BOARD_VO.board_content}
 		</div>
 	</section>
 	<div class="form-group d-flex justify-content-end">

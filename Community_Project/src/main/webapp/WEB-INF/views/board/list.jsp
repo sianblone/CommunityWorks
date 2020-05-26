@@ -18,12 +18,22 @@
 <script>
 	$(function(){
 		$("button.btn-writer").click(function(){
-			document.location.href="${rootPath}/board/save?board_name=${BOARD_NAME}"
+			let url = "${rootPath}/board/save?board_name=${BOARD_LIST[0].board_name}";
+			
+			let currPage = "${param.currPage}"
+			if(currPage != "") url += "&currPage=" + currPage
+			
+			document.location.href = url
 		})
 		
 		$(document).on("click", "tbody tr", function() {
-			let board_no = $(this).data("id");
-			document.location.href = "${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=" + board_no
+			let board_no = $(this).data("id")
+			let url = "${rootPath}/board/details?board_name=${BOARD_LIST[0].board_name}&board_no=" + board_no;
+			
+			let currPage = "${param.currPage}";
+			if(currPage != "") url += "&currPage=" + currPage;
+			
+			document.location.href = url 
 		})
 	})
 </script>

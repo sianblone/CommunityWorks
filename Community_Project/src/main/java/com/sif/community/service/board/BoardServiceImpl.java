@@ -117,7 +117,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public String delete(long board_no) {
+	public String delete(long board_no, Integer currPage) {
 		String render = "";
 		BoardVO boardVO = this.findByNo(board_no);
 		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
@@ -130,6 +130,7 @@ public class BoardServiceImpl implements BoardService {
 				
 				String board_name = boardVO.getBoard_name();
 				render = "redirect:/board/list?board_name=" + board_name;
+				if(currPage != null) render += "&currPage=" + currPage;
 			} else {
 				// 현재 로그인한 사용자와 게시글 작성자가 다르고 관리자가 아니면 삭제 불가, 에러페이지 보여주기
 				render = "board/error";

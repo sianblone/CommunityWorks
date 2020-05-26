@@ -85,6 +85,7 @@
 				<input type="hidden" name="board_name" value="${param.board_name}"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
 				<input type="hidden" name="board_p_no" value="<c:out value='${param.board_p_no}' default='0'/>"/>
+				<input type="hidden" name="currPage" value="${param.currPage}"/>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="">카테고리</option>
