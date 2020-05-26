@@ -33,9 +33,9 @@ public class PaginationServiceImpl implements PaginationService {
 		}
 		
 //		lastPageNo(끝 페이지) : (전체 데이터 개수 + 페이지당 보여줄 데이터 개수 - 1) / 페이지당 보여줄 데이터 개수
-//		만약 lastPageNo = (totalCount/listPerPage) + 1로 만들면 데이터 13개/페이지당 5개 같은 경우 3페이지가 되지만 데이터 15개/페이지당 5개 같이 나누어 떨어질 때 의미없이 페이지가 +1 된다
+//		만약 lastPageNo = (totalCount/dataPerPage) + 1로 만들면 데이터 13개/페이지당 5개 같은 경우 3페이지가 되지만 데이터 15개/페이지당 5개 같이 나누어 떨어질 때 의미없이 페이지가 +1 된다
 //		(기본적으로 프로그래밍 언어에서 나눗셈은 소수점 내림이므로)
-//		따라서 totalCount에 listPerPage-1을 추가해준 뒤 나누면 나누어 떨어지는 경우까지 정확히 원하는 값을 얻을 수 있다
+//		따라서 totalCount에 dataPerPage-1을 추가해준 뒤 나누면 나누어 떨어지는 경우까지 정확히 원하는 값을 얻을 수 있다
 		int lastPageNo = (int)((totalCount + dataPerPage - 1) / dataPerPage);
 		
 //		실제 마지막 페이지(ex:10)보다 큰 값(ex:12)을 현재 페이지로 전달받았다면, 마지막 페이지(10)를 현재 페이지(10)로 만들기

@@ -9,10 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,11 +26,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
-	
-	
+		
 	@Autowired
 	private FileService fileService;
-	
 	
 	@Autowired
 	@Qualifier(value = "pageSvc")
@@ -57,8 +53,6 @@ public class BoardController {
 		
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		this.selectAllByPage(model, boardVO, currPage);
-		
-		model.addAttribute("BOARD_NAME", boardVO.getBoard_name());
 		
 		return "board/list";
 	}
@@ -101,17 +95,18 @@ public class BoardController {
 	// 현재 사용자와 DB의 게시글id 작성자가 같은지 다시 확인 후
 	// form에서 입력받은 값으로 DB에 저장하기(INSERT 또는 UPDATE)
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(BoardVO boardVO) {
-		log.debug("SAVE 게시글 VO : {}" ,boardVO.toString());
+	public String save(BoardVO boardVO, Integer currPage) {
 		boardSvc.save(boardVO);
-		return "redirect:/board/list?board_name=" + boardVO.getBoard_name();
+		String redirect = "redirect:/board/list?board_name=" + boardVO.getBoard_name();
+		if(currPage != null) redirect += "&currPage=" + currPage;
+		return redirect;
 	}
 	
 	// 게시물 삭제버튼 클릭 시 사용할 메소드
 	// 게시글 deleted 칼럼 값 1로 바꿔주기
-	@RequestMapping(value="/delete/{board_no}", method=RequestMethod.GET)
-	public String delete(@PathVariable("board_no") long board_no) {
-		String render = boardSvc.delete(board_no);
+	@RequestMapping(value="/delete", method=RequestMethod.GET)
+	public String delete(long board_no, Integer currPage) {
+		String render = boardSvc.delete(board_no, currPage);
 		return render;
 	}
 	

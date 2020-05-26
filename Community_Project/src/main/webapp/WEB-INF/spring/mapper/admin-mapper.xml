@@ -3,19 +3,34 @@
 
 <mapper namespace="com.sif.community.dao.AdminDao">
 
-	<select id="selectAllByPageAdmin" resultType="boardVO">
+	<select id="selectAllByPageAdmin" resultMap="selectAllByPageAdminRM">
 		SELECT b.*, u.nickname AS board_nickname
 		FROM tbl_board b, tbl_users u
 		WHERE
-			board_name = #{boardVO.board_name}
+			b.board_name = #{boardVO.board_name}
 			AND
-			board_p_no = 0
+			b.board_p_no = 0
 			AND
 			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 			AND
 			b.board_writer = u.username
-		ORDER BY board_no DESC
+		ORDER BY b.board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<resultMap id="selectAllByPageAdminRM" type="boardVO">
+		<id property="board_no" column="board_no"/>
+		<collection property="board_reply" column="board_no" ofType="boardVO" select="selectReply" />
+	</resultMap>
+	
+	<select id="selectReply" resultType="boardVO">
+		SELECT b.*, u.nickname AS board_nickname
+		FROM tbl_board b, tbl_users u
+		WHERE
+			b.board_p_no = #{board_no}
+			AND
+			b.board_writer = u.username
+		ORDER BY b.board_no DESC
 	</select>
 
 	<update id="update_user_from_admin">

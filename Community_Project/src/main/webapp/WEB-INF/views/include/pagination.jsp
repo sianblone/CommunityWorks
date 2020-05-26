@@ -7,7 +7,7 @@
 		$("a.middot").on("click", function() {
 			let href_page = prompt('이동할 페이지 (1~' + ${PAGE_DTO.lastPageNo} + ")")
 			if(href_page != null) {
-				document.location.href = "${URL}?currPage=" + href_page
+				document.location.href = "?${DEFAULT_QUERY}&currPage=" + href_page
 			}
 		})
 	})
@@ -22,6 +22,6 @@
 		</c:forEach>
 		
 		<li class="page_item"><a class="page_link middot">&middot;&middot;&middot;</a></li>
-		<li class="page_item"><a class="page_link" href="?${DEFAULT_QUERY}&currPage=${pagiDTO.lastPageNo}">끝</a></li>
+		<li class="page_item"><a class="page_link" href="?${DEFAULT_QUERY}&currPage=${PAGE_DTO.lastPageNo}">끝</a></li>
 	</ul>
 </article>

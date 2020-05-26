@@ -15,7 +15,7 @@ public interface BoardService {
 
 	public int save(BoardVO boardVO);
 
-	public String delete(long board_no);
+	public String delete(long board_no, Integer currPage);
 
 	public BoardVO findByNo(long board_no);
 
