@@ -39,11 +39,24 @@
 			}
 		})
 		
-		$("button.btn-success").click(function(){
-			document.location.href="${rootPath}/board/list?board_name=gallery"
+		$("#save_form").submit(function() {
+			let subject = $("#board_subject")
+			let content= $("#board_content")
+			
+			if(subject.val() == "") {
+				alert("제목을 입력하세요.")
+				subject.focus()
+				return false
+			} else if (content.val() == "") {
+				alert("내용을 입력하세요.")
+				return false
+			}
+			
 		})
 		
-		
+		$("#btn_list").click(function(){
+			document.location.href="${rootPath}/board/list?board_name=gallery"
+		})
 		
 		function upFile(file, editor) {
 			
@@ -80,7 +93,7 @@
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<section class="container-fluid">
-		<form:form method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
+		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
 			<fieldset>
 				<input type="hidden" name="board_name" value="${param.board_name}"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
@@ -95,17 +108,16 @@
 				</div>
 				
 				<div class="form-group">
-					<input name="board_subject"  class="form-control" 
-						placeholder="제목" value="${BOARD_VO.board_subject}">
+					<input id="board_subject" name="board_subject" class="form-control" placeholder="제목" value="${BOARD_VO.board_subject}">
 				</div>
 				
 				<div class="form-group">
-					<textarea name="board_content" id="board_content" rows="5" cols="30">${BOARD_VO.board_content}</textarea>
+					<textarea id="board_content" name="board_content" id="board_content" rows="5" cols="30">${BOARD_VO.board_content}</textarea>
 				</div>
 				
 				<div class="form-group d-flex justify-content-end">
-					<button class="btn btn-primary mr-2">저장</button>
-					<button class="btn btn-success" type="button" >목록으로</button>
+					<button id="btn_save" class="btn btn-primary mr-2">저장</button>
+					<button id="btn_list" class="btn btn-success" type="button">목록으로</button>
 				</div>
 			</fieldset>
 		</form:form>

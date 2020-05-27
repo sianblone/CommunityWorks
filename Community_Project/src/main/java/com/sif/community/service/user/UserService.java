@@ -1,6 +1,7 @@
 package com.sif.community.service.user;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.AuthoritiesDao;
-import com.sif.community.dao.DdlDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
@@ -29,7 +29,6 @@ public class UserService {
 	private final PasswordEncoder bcryptEncoder;
 	private final UserDao userDao;
 	private final AuthoritiesDao authDao;
-	private final DdlDao ddlDao;
 	private final MailSendService mailSvc;
 	
 	// selectAll() 메소드는 2개의 테이블을 select하고 있다
@@ -58,6 +57,10 @@ public class UserService {
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
 	public int update_user(UserDetailsVO userVO) {
+		// 생년월일 유효성 검사
+		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
+		if( !this.dateCheck(birth) ) return -103;
+		
 		// 유저 정보는 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
 		
 		// SecurityContextHolder에서 인증정보 가져오기
@@ -83,6 +86,17 @@ public class UserService {
 		}
 		
 		return ret;
+	}
+	
+	protected boolean dateCheck(String date) {
+		SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		try {
+			dateFormat.parse(date);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	@Transactional
@@ -176,6 +190,9 @@ public class UserService {
 	
 	// 이메일 변경 메소드
 	public String change_email_step1(String email) {
+		// 이메일 유효성 검사
+		if (email.isEmpty() || !email.matches("^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{1,6})+$")) return "-102";
+		
 		String ret = "";
 		
 		// UUID : 989bbfdd-ed54-430c-a20a-c348614e84be 가장 앞부분 대문자로 만들기

@@ -1,9 +1,9 @@
 package com.sif.community.service.user;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,10 +42,11 @@ public class JoinService {
 	 */
 	// 두 개 이상의 쿼리 => @Transactional
 	@Transactional
-	public int insert(UserDetailsVO userVO, int year, int month, int day) {
+	public int insert(UserDetailsVO userVO) {
 		
 		int ret = this.validJoin(userVO);
-		if(ret > 0) return ret;
+		// 유효성 검사 통과 실패 시 결과값 바로 리턴
+		if(ret < 0) return ret;
 		
 		// 비밀번호 암호화하기
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
@@ -68,7 +69,7 @@ public class JoinService {
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			ret = -104;
+			ret = -300;
 		}
 		
 		return ret;
@@ -78,28 +79,43 @@ public class JoinService {
 		String password = userVO.getPassword();
 		String re_password = userVO.getRe_password();
 		String email = userVO.getEmail();
+		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
+		int result = 0;
 		
 		// 4~12자 아이디 유효성 검사
-		if( !userVO.getUsername().matches("[^a-zA-Z0-9]{4,12}$") ) {
-			return -100;
+		if( !userVO.getUsername().matches("^[a-zA-Z0-9]{4,12}$") ) {
+			result = -100;
 		} else if (password.isEmpty() || re_password.isEmpty() || !password.equals(re_password)) {
 			// 비밀번호 확인 유효성 검사
-			return -101;
+			result = -101;
 		} else if (email.isEmpty() || !email.matches("^([a-zA-Z0-9_.+-])+\\@(([a-zA-Z0-9-])+\\.)+([a-zA-Z0-9]{1,6})+$")) {
 			// 이메일 유효성 검사
-			return -102;
+			result = -102;
+		} else if( !this.dateCheck(birth) ) {
+			// 생년월일 유효성 검사
+			result = -103;
 		} else if(userSvc.findByUsername(userVO.getUsername()) != null) {
-			// 이미 DB에 있는 아이디면 아무 일도 하지 않음
-			return -103;
-		} else {
-			return 0;
+			// 이미 DB에 있는 아이디인지 검사
+			result = -200;
 		}
 		
+		return result;
 	}
 	
-	public int test_insert(UserDetailsVO userVO, int year, int month, int day) {
+	protected boolean dateCheck(String date) {
+		SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+		try {
+			dateFormat.parse(date);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	public int test_insert(UserDetailsVO userVO) {
 		int ret = this.validJoin(userVO);
-		if(ret > 0) return ret;
+		if(ret < 0) return ret;
 		
 		String encPW = bcryptEncoder.encode(userVO.getPassword());
 		userVO.setPassword(encPW);

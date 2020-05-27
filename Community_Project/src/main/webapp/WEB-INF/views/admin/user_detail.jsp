@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
-<link rel="stylesheet" href="${rootPath}/resources/toggle.css"/>
+<link rel="stylesheet" href="${rootPath}/resources/css/toggle.css"/>
 <style>
 	section {
 		width: 70%;

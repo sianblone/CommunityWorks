@@ -171,7 +171,7 @@ $(function(){
 			<b>댓글 리스트</b>
 		</div>
 		<div class="p-4 cmt-list">
-			<%@ include file="/WEB-INF/views/board/comment_list.jsp" %>
+			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
 		</div>
 
 	</section>
