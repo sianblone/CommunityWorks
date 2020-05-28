@@ -94,6 +94,13 @@ $(function(){
 			$.ajax({
 				url : "${rootPath}/comment/insert",
 				data : formData,
+				type : "POST",
+				contentType: false,
+				processData: false,
+				enctype: "multipart/form-data",
+				beforeSend: function(ajx) {
+				ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+				},
 				success : function(result) {
 					$("div.cmt-list").html(result)
 				},

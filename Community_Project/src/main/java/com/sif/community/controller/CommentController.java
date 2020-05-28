@@ -43,10 +43,10 @@ public class CommentController {
 		return "redirect:/comment/list";
 	}
 	
-	@RequestMapping(value="/repl",method=RequestMethod.GET)
+	@RequestMapping(value="/repl",method=RequestMethod.POST)
 	public String repl(CommentVO cmtVO, Model model) {
 		model.addAttribute("CMT",cmtVO);
-		return "board/comment_write";
+		return "comment/comment_write";
 	}
 
 }

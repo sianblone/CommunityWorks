@@ -17,6 +17,7 @@ public class DdlService {
 		ddlDao.create_table(CreateTableSQL.create_authorities);//Spring Security와 연동할 권한 테이블 생성
 		
 		ddlDao.create_table(CreateTableSQL.create_tbl_board);//게시판 테이블 생성
+		ddlDao.create_table(CreateTableSQL.create_tbl_comment); // 댓글 테이블 생성
 	}
 
 }

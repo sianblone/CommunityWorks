@@ -52,5 +52,17 @@ public class CreateTableSQL {
 		+ " ON DELETE CASCADE "
 		+ " ) "
 	;
-
+	public static String create_tbl_comment
+			= " CREATE TABLE IF NOT EXISTS tbl_comment ( "
+			+ " cmt_board_no BIGINT	NOT NULL, "
+			+ " cmt_no BIGINT PRIMARY KEY AUTO_INCREMENT, "
+			+ " cmt_p_no VARCHAR(20) NOT NULL, "
+			+ " cmt_writer VARCHAR(50) NOT NULL, "
+			+ " cmt_date DATE, "
+			+ " cmt_time VARCHAR(10), "
+			+ " cmt_content	VARCHAR(1000) NOT NULL,	" 
+			+ " cmt_delete TINYINT NOT NULL, "
+			+ " cmt_recommend BIGINT NOT NULL " 
+			+ " ) "
+		;
 }
