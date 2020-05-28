@@ -25,7 +25,7 @@ public class CommentController {
 		long cmt_board_no = Long.valueOf(board_no);
 		List<CommentVO>cmtList = cmtService.findByBoardNo(cmt_board_no);
 		model.addAttribute("CMT_LIST",cmtList);	
-		return "board/comment_list";
+		return "comment/comment_list";
 	}
 	
 	@RequestMapping(value="/insert",method=RequestMethod.POST)
@@ -33,14 +33,14 @@ public class CommentController {
 		int ret = cmtService.insert(cmtVO);
 		model.addAttribute("cmt_writer",cmtVO.getCmt_writer());
 		model.addAttribute("board_no",cmtVO.getCmt_board_no());
-		return "redirect:/board/comment/list";
+		return "redirect:/comment/comment/list";
 	}
 	
 	@RequestMapping(value="/delete",method=RequestMethod.POST)
 	public String delete(String cmt_no, String board_no, Model model) {
 		int ret = cmtService.delete(Long.valueOf(cmt_no));
 		model.addAttribute("board_no",board_no);
-		return "redirect:/board/comment/list";
+		return "redirect:/comment/list";
 	}
 	
 	@RequestMapping(value="/repl",method=RequestMethod.GET)

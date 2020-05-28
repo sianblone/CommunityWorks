@@ -81,6 +81,7 @@
 		$(function() {
 			let enable_btn_send_email = true
 			let enable_btn_auth_code = true
+			let enable_btn_edit = true
 			
 			function isEmail(email) {
 				let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
@@ -88,12 +89,6 @@
 			}
 			
 			// --------------------------------------------------------
-			
-			$(".mypage_form").submit(function() {
-				if(!confirm("정말로 수정하시겠습니까?")) {
-					return false
-				}
-			})
 			
 			$(document).on("click", "#btn_change_pw", function() {
 				document.location.href = "${rootPath}/user/check-pw"
@@ -127,7 +122,9 @@
 						email : email.val()
 					},
 					success : function(result) {
-						if(result == 'fail') {
+						if(result == "-102") {
+							alert("이메일을 정확히 입력하세요.")
+						} else if(result == 'fail') {
 							alert("메일 발송이 실패했습니다.\n정확히 입력했는지 확인 후 다시 시도하세요.")
 						} else {
 							$(".auth_code_box").css("display", "block")
@@ -192,13 +189,43 @@
 				
 			})
 			
+			$(document).on("click", "#btn_edit", function() {
+				if(!confirm("정말로 수정하시겠습니까?")) return false
+				if(!enable_btn_edit) return false
+				
+				// 유효성 검사 통과 시
+				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+				enable_btn_edit = false
+				$("body").css("cursor", "wait")
+				
+				$.ajax({
+					url : "${rootPath}/user/mypage",
+					method : "POST",
+					data : $("#mypage_form").serialize(),
+					success : function(result) {
+						if(result > 0) {
+							alert("정보가 수정되었습니다.")
+							document.location.href = "${rootPath}/user/mypage"
+						} else if(result == -103) {
+							alert("생년월일을 정확히 입력하세요.")
+						}
+					},
+					error : function() {
+						alert("서버 통신 오류")
+					}
+				}).always(function() {
+					enable_btn_edit = true
+					$("body").css("cursor", "default")
+				})
+			})
+			
 		})
 	</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>마이페이지</h2>
-	<form:form class="mypage_form" action="${rootPath}/user/mypage" autocomplete="off">
+	<form:form id="mypage_form" class="mypage_form" autocomplete="off">
 		<div class="mypage-div">
 			<span class="mypage-label">ID</span>
 			<div class="mypage-content">
@@ -250,7 +277,7 @@
 		</div>
 		
 		<div class="flex">
-			<button id="btn_edit">수정</button>
+			<button id="btn_edit" type="button">수정</button>
 		</div>
 	</form:form>
 	

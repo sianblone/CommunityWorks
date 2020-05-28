@@ -37,8 +37,8 @@ public class JoinController {
 	 */
 	@ResponseBody
 	@RequestMapping(value="/join", method=RequestMethod.POST)
-	public int join(UserDetailsVO userVO, int year, int month, int day) {
-		int ret = joinSvc.insert(userVO, year, month, day);
+	public int join(UserDetailsVO userVO) {
+		int ret = joinSvc.insert(userVO);
 		
 		return ret;
 	}
@@ -79,8 +79,8 @@ public class JoinController {
 	
 	@ResponseBody
 	@RequestMapping(value="/test-join", method=RequestMethod.POST)
-	public int test_join(UserDetailsVO userVO, int year, int month, int day) {
-		int ret = joinSvc.test_insert(userVO, year, month, day);
+	public int test_join(UserDetailsVO userVO) {
+		int ret = joinSvc.test_insert(userVO);
 		
 		return ret;
 	}
