@@ -30,7 +30,7 @@
 		<th>활성여부</th>
 		<th>이메일</th>
 		<th>핸드폰</th>
-		<th>나이</th>
+		<th>생년월일</th>
 	</tr>
 	<c:choose>
 		<c:when test="${empty USER_LIST}">
@@ -47,7 +47,7 @@
 					<td>${user.enabled}</td>
 					<td>${user.email}</td>
 					<td>${user.phone}</td>
-					<td>${user.age}</td>
+					<td>${user.year}년 ${user.month}월 ${user.day}일</td>
 				</tr>
 			</c:forEach>
 		</c:when>

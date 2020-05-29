@@ -79,17 +79,21 @@
 	
 	<div class="mypage_form_item">
 		<label class="label" for="email">이메일</label>
-		<input class="data" id="email" name="email" value="${USER_VO.email}" />
+		<input type="email" class="data" id="email" name="email" value="${USER_VO.email}" />
 	</div>
 	
 	<div class="mypage_form_item">
 		<label class="label" for="phone">핸드폰</label>
-		<input class="data" id="phone" name="phone" value="${USER_VO.phone}" />
+		<input type="tel" class="data" id="phone" name="phone" value="${USER_VO.phone}" />
 	</div>
 	
 	<div class="mypage_form_item">
-		<label class="label" for="age">나이</label>
-		<input class="data" id="age" name="age" value="${USER_VO.age}" />
+		<input type="number" class="data" id="year" name="year" value="${USER_VO.year}" />
+		<label class="label" for="year">년</label>
+		<input type="number" class="data" id="month" name="month" value="${USER_VO.month}" />
+		<label class="label" for="month">월</label>
+		<input type="number" class="data" id="day" name="day" value="${USER_VO.day}" />
+		<label class="label" for="day">일</label>
 	</div>
 	
 	<c:forEach items="${USER_VO.authorities}" var="auth" varStatus="s">

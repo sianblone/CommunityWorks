@@ -33,7 +33,7 @@ public class CommentController {
 		int ret = cmtService.insert(cmtVO);
 		model.addAttribute("cmt_writer",cmtVO.getCmt_writer());
 		model.addAttribute("board_no",cmtVO.getCmt_board_no());
-		return "redirect:/comment/comment/list";
+		return "redirect:/comment/comment_list";
 	}
 	
 	@RequestMapping(value="/delete",method=RequestMethod.POST)

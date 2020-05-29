@@ -86,18 +86,13 @@ $(function(){
 				}
 			})
 		} else if(txt == '저장') {
-			var aData = {
-					cmt_writer : $("#cmt_writer").val(),
-					cmt_content : $("#cmt_content").val()
-			}
-			var formData = $("form.main").serialize()
 			$.ajax({
 				url : "${rootPath}/comment/insert",
-				data : formData,
+				data : {
+					"cmt_writer" : $("#cmt_writer").val(),
+					"cmt_content" : $("#cmt_content").val()
+			},
 				type : "POST",
-				contentType: false,
-				processData: false,
-				enctype: "multipart/form-data",
 				beforeSend: function(ajx) {
 				ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
 				},
