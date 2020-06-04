@@ -2,6 +2,7 @@ package com.sif.community.service.board;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -27,7 +28,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public long countAll(BoardVO boardVO) {
-		// TODO Auto-generated method stub
+		
+		
+		
 		return boardDao.countAll(boardVO);
 	}
 
@@ -36,6 +39,9 @@ public class BoardServiceImpl implements BoardService {
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		
 		List<BoardVO> boardList = null;
+		
+		
+		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			boardList = adminDao.selectAllByPageAdmin(boardVO, pageVO);
