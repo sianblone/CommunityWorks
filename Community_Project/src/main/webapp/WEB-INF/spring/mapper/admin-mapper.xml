@@ -32,6 +32,15 @@
 			b.board_writer = u.username
 		ORDER BY b.board_no ASC
 	</select>
+	
+	<select id="countAll" resultType="long">
+		SELECT COUNT(*)
+		FROM tbl_board
+		WHERE
+			board_name = #{board_name}
+			AND
+			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
+	</select>
 
 	<update id="update_user_from_admin">
 		UPDATE `tbl_users`

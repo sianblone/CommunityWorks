@@ -28,10 +28,17 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public long countAll(BoardVO boardVO) {
+		long totalCount = 0;
 		
+		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 count하기
+		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			totalCount = adminDao.countAll(boardVO);
+		} else {
+			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
+			totalCount = boardDao.countAll(boardVO);
+		}
 		
-		
-		return boardDao.countAll(boardVO);
+		return totalCount;
 	}
 
 	@Override

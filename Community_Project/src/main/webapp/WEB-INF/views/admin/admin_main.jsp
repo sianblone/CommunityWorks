@@ -47,7 +47,13 @@
 		$(function() {
 			
 			$(document).on("click", "#user_list", function() {
-				$.get("${rootPath}/admin/userlist", function(result) {
+				$.get("${rootPath}/admin/user_list", function(result) {
+					$("#admin_content").html(result)
+				})
+			})
+			
+			$(document).on("click", "#board_setting", function() {
+				$.get("${rootPath}/admin/board_setting", function(result) {
 					$("#admin_content").html(result)
 				})
 			})
@@ -86,8 +92,8 @@
 	<section id="body">
 		<nav>
 			<ul>
-				<li><a href="javascript:void(0)" id="user_list">유저목록</a></li>
-				<li><a href="#">Menu1</a></li>
+				<li><a id="user_list" href="javascript:void(0)">유저목록</a></li>
+				<li><a id="board_setting" href="javascript:void(0)">게시판 설정</a></li>
 				<li><a href="#">Menu2</a></li>
 			</ul>
 		</nav>

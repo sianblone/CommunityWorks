@@ -28,8 +28,16 @@ public class AdminController {
 		return "admin/admin_main";
 	}
 	
-	@RequestMapping(value="/userlist", method=RequestMethod.GET)
+	@RequestMapping(value="/user_list", method=RequestMethod.GET)
 	public String user_list(Model model) {
+		List<UserDetailsVO> userList = userSvc.selectAll();
+		
+		model.addAttribute("USER_LIST", userList);
+		return "admin/user_list";
+	}
+	
+	@RequestMapping(value="/board_setting", method=RequestMethod.GET)
+	public String board_setting(Model model) {
 		List<UserDetailsVO> userList = userSvc.selectAll();
 		
 		model.addAttribute("USER_LIST", userList);

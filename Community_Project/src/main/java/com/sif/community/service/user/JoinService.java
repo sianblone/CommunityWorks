@@ -113,7 +113,7 @@ public class JoinService {
 		}
 	}
 	
-	public int test_insert(UserDetailsVO userVO) {
+	public int test_insert(UserDetailsVO userVO, String authority) {
 		int ret = this.validJoin(userVO);
 		if(ret < 0) return ret;
 		
@@ -122,7 +122,7 @@ public class JoinService {
 		if(userVO.getNickname().isEmpty()) userVO.setNickname(userVO.getUsername());
 		ret = userDao.insert(userVO);
 		List<AuthorityVO> authList = new ArrayList<>();
-		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority("ROLE_USER").build());
+		authList.add(AuthorityVO.builder().username(userVO.getUsername()).authority(authority).build());
 		ret += authDao.insert(authList);
 		return ret;
 	}

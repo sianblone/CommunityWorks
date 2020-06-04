@@ -6,10 +6,10 @@ public class CreateTableSQL {
 		= "CREATE TABLE IF NOT EXISTS tbl_users ( "
 		+ " username VARCHAR(50) PRIMARY KEY, "
 		+ " password VARCHAR(125), "
-		+ " enabled BOOLEAN default true, "
-		+ " accountNonExpired BOOLEAN default true, "
-		+ " accountNonLocked BOOLEAN default true, "
-		+ " credentialsNonExpired BOOLEAN default true, "
+		+ " enabled BOOLEAN DEFAULT true, "
+		+ " accountNonExpired BOOLEAN DEFAULT true, "
+		+ " accountNonLocked BOOLEAN DEFAULT true, "
+		+ " credentialsNonExpired BOOLEAN DEFAULT true, "
 		+ " nickname VARCHAR(30) NOT NULL, "
 		+ " email VARCHAR(50), "
 		+ " phone VARCHAR(20), "
@@ -30,11 +30,31 @@ public class CreateTableSQL {
 		+ " ) "
 	;
 	
+	public static String create_tbl_board_info
+		= "CREATE TABLE IF NOT EXISTS tbl_board_info ( "
+		+ " bi_id BIGINT PRIMARY KEY AUTO_INCREMENT, "
+		+ " bi_name VARCHAR(20) NOT NULL "
+		+ " ) "
+	;
+	
+	public static String create_tbl_category
+		= "CREATE TABLE IF NOT EXISTS tbl_category ( "
+		+ " cate_id BIGINT PRIMARY KEY AUTO_INCREMENT, "
+		+ " cate_bi_id BIGINT NOT NULL, "
+		+ " cate_text VARCHAR(20), "
+		
+		+ " CONSTRAINT FK_BI_CATEGORY_bi_id "
+		+ " FOREIGN KEY (cate_bi_id) "
+		+ " REFERENCES tbl_board_info(bi_id) "
+		+ " ON DELETE CASCADE "
+		+ " ) "
+	;
+	
 	public static String create_tbl_board
-		= " CREATE TABLE IF NOT EXISTS tbl_board ( " 
+		= "CREATE TABLE IF NOT EXISTS tbl_board ( " 
 		+ " board_no BIGINT PRIMARY KEY AUTO_INCREMENT, " 
 		+ " board_p_no BIGINT NOT NULL DEFAULT 0, " 
-		+ " board_name VARCHAR(20) NOT NULL, "
+		+ " board_info BIGINT, "
 		+ " board_writer VARCHAR(50) NOT NULL, "
 		+ " board_date DATE, "
 		+ " board_time VARCHAR(10), "
@@ -44,25 +64,38 @@ public class CreateTableSQL {
 		+ " board_filename VARCHAR(256), "
 		+ " board_delete TINYINT NOT NULL DEFAULT 0, "
 		+ " board_recommend TINYINT NOT NULL DEFAULT 0, "
-		+ " board_category VARCHAR(20), "
+		+ " board_category BIGINT, "
+		
+		+ " CONSTRAINT FK_BI_BOARD_board_info "
+		+ " FOREIGN KEY (board_info) "
+		+ " REFERENCES tbl_board_info(bi_id), "
 		
 		+ " CONSTRAINT FK_USERS_BOARD_board_writer "
 		+ " FOREIGN KEY (board_writer) "
-		+ " REFERENCES tbl_users(username) "
-		+ " ON DELETE CASCADE "
+		+ " REFERENCES tbl_users(username), "
+		
+		+ " CONSTRAINT FK_CATEGORY_BOARD_board_category "
+		+ " FOREIGN KEY (board_category) "
+		+ " REFERENCES tbl_category(cate_id) "
 		+ " ) "
 	;
+	
 	public static String create_tbl_comment
-			= " CREATE TABLE IF NOT EXISTS tbl_comment ( "
-			+ " cmt_board_no BIGINT	NOT NULL, "
-			+ " cmt_no BIGINT PRIMARY KEY AUTO_INCREMENT, "
-			+ " cmt_p_no VARCHAR(20) NOT NULL, "
-			+ " cmt_writer VARCHAR(50) NOT NULL, "
-			+ " cmt_date DATE, "
-			+ " cmt_time VARCHAR(10), "
-			+ " cmt_content	VARCHAR(1000) NOT NULL,	" 
-			+ " cmt_delete TINYINT NOT NULL, "
-			+ " cmt_recommend BIGINT NOT NULL " 
-			+ " ) "
-		;
+		= "CREATE TABLE IF NOT EXISTS tbl_comment ( "
+		+ " cmt_no BIGINT PRIMARY KEY AUTO_INCREMENT, "
+		+ " cmt_board_no BIGINT	NOT NULL, "
+		+ " cmt_p_no VARCHAR(20) NOT NULL, "
+		+ " cmt_writer VARCHAR(50) NOT NULL, "
+		+ " cmt_date DATE, "
+		+ " cmt_time VARCHAR(10), "
+		+ " cmt_content	VARCHAR(1000) NOT NULL,	" 
+		+ " cmt_delete TINYINT NOT NULL DEFAULT 0, "
+		+ " cmt_recommend BIGINT NOT NULL DEFAULT 0, "
+		
+		+ " CONSTRAINT FK_BOARD_COMMENT_board_no "
+		+ " FOREIGN KEY (cmt_board_no) "
+		+ " REFERENCES tbl_board(board_no) "
+		+ " ) "
+	;
+	
 }

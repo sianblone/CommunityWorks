@@ -7,18 +7,22 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 <style>
-	tbody tr {
+	tbody tr[data-id] {
 		cursor: pointer;
 	}
 	
 	.deleted {
 		color: gray;
 	}
+	
+	.container-fluid {
+		border: none;
+	}
 </style>
 <script>
 	$(function(){
 		$("button.btn-writer").click(function(){
-			let url = "${rootPath}/board/save?board_name=${BOARD_LIST[0].board_name}";
+			let url = "${rootPath}/board/save?board_name=${BOARD_NAME}";
 			
 			let currPage = "${param.currPage}"
 			if(currPage != "") url += "&currPage=" + currPage
@@ -26,9 +30,9 @@
 			document.location.href = url
 		})
 		
-		$(document).on("click", "tbody tr", function() {
+		$(document).on("click", "tbody tr[data-id]", function() {
 			let board_no = $(this).data("id")
-			let url = "${rootPath}/board/details?board_name=${BOARD_LIST[0].board_name}&board_no=" + board_no;
+			let url = "${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=" + board_no;
 			
 			let currPage = "${param.currPage}";
 			if(currPage != "") url += "&currPage=" + currPage;

@@ -10,7 +10,9 @@ import com.sif.community.model.UserDetailsVO;
 
 public interface AdminDao {
 	
-	public int update_user_from_admin(UserDetailsVO dbUserVO);
 	public List<BoardVO> selectAllByPageAdmin(@Param("boardVO") BoardVO boardVO, @Param("pageVO")PaginationVO pageVO);
+	public long countAll(BoardVO boardVO);
+	
+	public int update_user_from_admin(UserDetailsVO dbUserVO);
 
 }

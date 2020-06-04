@@ -117,8 +117,7 @@ public class BoardController {
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		
-		String defaultQuery = "board_name=" + boardVO.getBoard_name();
-		model.addAttribute("DEFAULT_QUERY", defaultQuery);
+		model.addAttribute("BOARD_NAME", boardVO.getBoard_name());
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
 		log.debug("페이지 데이터 : {}", boardList.toString());

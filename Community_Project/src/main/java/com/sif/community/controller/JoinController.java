@@ -79,8 +79,8 @@ public class JoinController {
 	
 	@ResponseBody
 	@RequestMapping(value="/test-join", method=RequestMethod.POST)
-	public int test_join(UserDetailsVO userVO) {
-		int ret = joinSvc.test_insert(userVO);
+	public int test_join(UserDetailsVO userVO, String authority) {
+		int ret = joinSvc.test_insert(userVO, authority);
 		
 		return ret;
 	}

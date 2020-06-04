@@ -337,6 +337,18 @@
 			<input id="day" name="day" placeholder="일" maxlength="2"/>
 		</div>
 		
+		<div class="form_item">
+			<label for="authority">권한</label><br/>
+		</div>
+		
+		<div class="form_item">
+			<select id="authority" name="authority">
+				<option value="">테스트 가입 시 아이디 권한 설정</option>
+				<option value="ROLE_USER">유저</option>
+				<option value="ROLE_ADMIN">관리자</option>
+			</select>
+		</div>
+		
 		<div class="form_item btn_box">
 			<button id="btn_join" type="button">회원가입</button>
 		</div>
