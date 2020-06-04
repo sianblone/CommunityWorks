@@ -97,7 +97,7 @@ public class BoardController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer currPage) {
 		boardSvc.save(boardVO);
-		String redirect = "redirect:/board/list?board_name=" + boardVO.getBoard_name();
+		String redirect = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
 		if(currPage != null) redirect += "&currPage=" + currPage;
 		return redirect;
 	}
@@ -117,10 +117,9 @@ public class BoardController {
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		
-		model.addAttribute("BOARD_NAME", boardVO.getBoard_name());
+		model.addAttribute("BOARD_INFO", boardVO.getBoard_info());
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
-		log.debug("페이지 데이터 : {}", boardList.toString());
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 	

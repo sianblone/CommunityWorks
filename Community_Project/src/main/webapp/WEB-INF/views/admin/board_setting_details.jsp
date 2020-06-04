@@ -4,7 +4,9 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 
 <form:form>
-	<c:forEach items="${BOARD_LIST}" var="B">
-		<div>${B.board_name}</div> 
+	<input name="bi_id" value="${BOARD_INFO.bi_id}">
+	<input name="bi_name" value="${BOARD_INFO.bi_name}">
+	<c:forEach items="bi_category" var="c">
+		<input name="${c.cate_text}">
 	</c:forEach>
 </form:form>

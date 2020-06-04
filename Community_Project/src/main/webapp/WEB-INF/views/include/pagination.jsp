@@ -5,9 +5,10 @@
 <script>
 	$(function() {
 		$("a.middot").on("click", function() {
-			let href_page = prompt('이동할 페이지 (1~' + ${PAGE_DTO.lastPageNo} + ")")
+			let href_page = prompt('이동할 페이지 (1~' + ${PAGE_DTO.lastPageNo} + ")");
+			
 			if(href_page != null) {
-				document.location.href = "?${DEFAULT_QUERY}&currPage=" + href_page
+				document.location.href = "?${DEFAULT_QUERY}&currPage=" + href_page;
 			}
 		})
 	})

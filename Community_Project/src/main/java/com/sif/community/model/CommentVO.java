@@ -15,14 +15,14 @@ import lombok.ToString;
 @Builder
 public class CommentVO {
 	
-	private int cmt_board_no;//	BIGINT
-	private int cmt_no;//	BIGINT
-	private String cmt_p_no;//	VARCHAR(20)
-	private String cmt_writer;//	VARCHAR(50)
-	private String cmt_date;//	DATE
-	private String cmt_time;//	VARCHAR(10)
-	private String cmt_content;//	VARCHAR(1000)
-	private int cmt_delete;//	TINYINT
-	private int cmt_recommend;//	BIGINT
+	private long cmt_no;//	BIGINT		PRIMARY KEY	AUTO_INCREMENT
+	private long cmt_board_no;//	BIGINT	NOT NULL		
+	private String cmt_p_no;//	VARCHAR(20)	NOT NULL		
+	private String cmt_writer;//	VARCHAR(50)	NOT NULL		
+	private String cmt_date;//	DATE			
+	private String cmt_time;//	VARCHAR(10)			
+	private String cmt_content;//	VARCHAR(1000)	NOT NULL		
+	private int cmt_delete;//	TINYINT	NOT NULL		DEFAULT 0
+	private long cmt_recommend;//	BIGINT	NOT NULL		DEFAULT 0
 
 }

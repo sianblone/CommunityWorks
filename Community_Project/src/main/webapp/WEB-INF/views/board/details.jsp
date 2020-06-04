@@ -66,7 +66,7 @@ $(function(){
 	$(document).on("click","button",function(){
 		let txt = $(this).text()
 		if(txt == '수정') {
-			document.location.href="${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
+			document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
 		} else if(txt == '삭제') {
 			if(confirm("삭제할까요?")) {
 				document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
@@ -105,10 +105,10 @@ $(function(){
 			})
 			return true
 		} else if(txt == "답글") {
-			document.location.href = "${rootPath}/board/save?board_name=${BOARD_VO.board_name}&board_p_no=${BOARD_VO.board_no}"
+			document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
 			return false
 		} else {
-			document.location.href="${rootPath}/board/list?board_name=${BOARD_VO.board_name}"
+			document.location.href="${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
 
 		}
 	})

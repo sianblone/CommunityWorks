@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
@@ -38,10 +40,25 @@ public class AdminController {
 	
 	@RequestMapping(value="/board_setting", method=RequestMethod.GET)
 	public String board_setting(Model model) {
-		List<UserDetailsVO> userList = userSvc.selectAll();
+		model.addAttribute("BOARD_INFO_LIST", adminSvc.selectBoardAll());
+		return "admin/board_setting";
+	}
+	
+	@RequestMapping(value="/board_setting_details", method=RequestMethod.GET)
+	public String board_setting_details(BoardInfoVO boardInfoOptionVO, Model model) {
+		BoardInfoVO boardInfoVO = adminSvc.selectByBoardInfo(boardInfoOptionVO);
+		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
-		model.addAttribute("USER_LIST", userList);
-		return "admin/user_list";
+		return "admin/board_setting_details";
+	}
+	
+	@RequestMapping(value="/create_board", method=RequestMethod.POST)
+	public String create_board(BoardInfoVO boardInfoVO, Model model) {
+		int result = adminSvc.create_board(boardInfoVO);
+		if (result > 0) {
+			model.addAttribute("BOARD_INFO_LIST", adminSvc.selectBoardAll());
+		}
+		return "admin/board_setting";
 	}
 	
 	@RequestMapping(value="/user_detail/{username}", method=RequestMethod.GET)

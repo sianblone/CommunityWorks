@@ -94,7 +94,7 @@
 			<ul>
 				<li><a id="user_list" href="javascript:void(0)">유저목록</a></li>
 				<li><a id="board_setting" href="javascript:void(0)">게시판 설정</a></li>
-				<li><a href="#">Menu2</a></li>
+				<li><a href="#">게시판 추가</a></li>
 			</ul>
 		</nav>
 		<article id="admin_content">

@@ -18,8 +18,8 @@ import lombok.ToString;
 public class BoardVO {
 	
 	private long board_no;// BIGINT PRIMARY KEY AUTO_INCREMENT 
-	private long board_p_no;// BIGINT NOT NULL DEFAULT 0 
-	private String board_name;// VARCHAR(20) NOT NULL
+	private long board_p_no;// BIGINT NOT NULL DEFAULT 0
+	private long board_info;// BIGINT
 	private String board_writer;// VARCHAR(50) NOT NULL
 	private String board_date;// DATE
 	private String board_time;// VARCHAR(10)
@@ -28,11 +28,12 @@ public class BoardVO {
 	private long board_count;// BIGINT DEFAULT 0
 	private String board_filename;// VARCHAR(256)
 	private int board_delete;// TINYINT NOT NULL DEFAULT 0
-	private int board_recommend;// TINYINT NOT NULL DEFAULT 0
-	private String board_category;// VARCHAR(20)
+	private long board_recommend;// BIGINT NOT NULL DEFAULT 0
 	
 	private String board_nickname;
+	private String board_name;
 	private List<BoardVO> board_reply;
+	private List<CategoryVO> board_category;
 	
 	private String search_type;
 	private String search_txt;

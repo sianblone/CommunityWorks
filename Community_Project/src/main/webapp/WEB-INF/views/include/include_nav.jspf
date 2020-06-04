@@ -67,7 +67,7 @@
 		    <a class="dropdown-item text-dark" href="#">자유게시판</a>
 		    <a class="dropdown-item text-dark" href="#">토론게시판</a>
 	  	</div>	
-	<a href="${rootPath}/board/list?board_name=gallery">갤러리</a>
+	<a href="${rootPath}/board/list?board_info=1">갤러리</a>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<a href="${rootPath}/admin">관리자</a>

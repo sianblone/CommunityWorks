@@ -22,7 +22,7 @@
 <script>
 	$(function(){
 		$("button.btn-writer").click(function(){
-			let url = "${rootPath}/board/save?board_name=${BOARD_NAME}";
+			let url = "${rootPath}/board/save?board_info=${BOARD_INFO}";
 			
 			let currPage = "${param.currPage}"
 			if(currPage != "") url += "&currPage=" + currPage
@@ -32,7 +32,7 @@
 		
 		$(document).on("click", "tbody tr[data-id]", function() {
 			let board_no = $(this).data("id")
-			let url = "${rootPath}/board/details?board_name=${BOARD_NAME}&board_no=" + board_no;
+			let url = "${rootPath}/board/details?board_info=${BOARD_INFO}&board_no=" + board_no;
 			
 			let currPage = "${param.currPage}";
 			if(currPage != "") url += "&currPage=" + currPage;

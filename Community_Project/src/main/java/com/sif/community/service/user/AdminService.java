@@ -10,6 +10,7 @@ import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.AuthoritiesDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.UserDetailsVO;
 
 import lombok.RequiredArgsConstructor;
@@ -59,6 +60,18 @@ public class AdminService {
 			authDao.insert(authList);
 		}
 		return ret;
+	}
+
+	public int create_board(BoardInfoVO boardInfoVO) {
+		return adminDao.create_board(boardInfoVO);
+	}
+
+	public List<BoardInfoVO> selectBoardAll() {
+		return adminDao.selectBoardAll();
+	}
+
+	public BoardInfoVO selectByBoardInfo(BoardInfoVO boardInfoOptionVO) {
+		return adminDao.selectByBoardInfo(boardInfoOptionVO);
 	}
 
 }
