@@ -4,22 +4,22 @@
 <mapper namespace="com.sif.community.dao.BoardDao">
 
 	<select id="selectAllByPage" resultMap="selectAllByPageRM">
-		SELECT b.*, u.nickname AS board_nickname, bi.bi_name AS board_name, c.cate_text AS board_category
+		SELECT b.*, u.nickname AS board_nickname, bi.bi_name AS board_name
 		FROM tbl_board b
-		WHERE
-			b.board_name = #{bi.bi_name}
-			AND
-			b.board_p_no = 0
-			AND
-			b.board_delete = 0
-			AND
-			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 		LEFT JOIN tbl_board_info bi
 		ON
 			b.board_info = bi.bi_id
 		LEFT JOIN tbl_users u
 		ON
 			b.board_writer = u.username
+		WHERE
+			b.board_info = #{boardVO.board_info}
+			AND
+			b.board_p_no = 0
+			AND
+			b.board_delete = 0
+			AND
+			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 		ORDER BY b.board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
@@ -28,7 +28,6 @@
 		<id property="board_no" column="board_no"/>
 		<result property="board_info" column="board_info"/>
 		<collection property="board_reply" column="board_no" ofType="boardVO" select="selectReply" />
-		<collection property="board_category" column="board_info" ofType="categoryVO" select="selectCategory" />
 	</resultMap>
 	
 	<select id="selectReply" resultType="boardVO">
@@ -43,7 +42,7 @@
 		ORDER BY b.board_no ASC
 	</select>
 	
-	<select id="selectCategory" resultType="categoryVO">
+	<select id="selectCategoryByBoard" resultType="categoryVO">
 		SELECT *
 		FROM tbl_category
 		WHERE cate_bi_id = #{board_info}

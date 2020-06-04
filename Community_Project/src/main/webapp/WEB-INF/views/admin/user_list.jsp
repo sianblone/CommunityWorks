@@ -44,7 +44,7 @@
 					<td>${s.count}</td>
 					<td>${user.username}</td>
 					<td>${user.nickname}</td>
-					<td>${user.enabled}</td>
+					<td><c:choose><c:when test="${user.enabled}">활성</c:when><c:otherwise>비활성</c:otherwise></c:choose></td>
 					<td>${user.email}</td>
 					<td>${user.phone}</td>
 					<td>${user.year}년 ${user.month}월 ${user.day}일</td>

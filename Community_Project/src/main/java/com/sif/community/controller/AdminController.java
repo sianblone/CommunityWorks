@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.UserDetailsVO;
@@ -24,7 +23,6 @@ public class AdminController {
 	private final UserService userSvc;
 	private final AdminService adminSvc;
 	
-	//@ResponseBody
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String admin() {
 		return "admin/admin_main";
@@ -36,6 +34,20 @@ public class AdminController {
 		
 		model.addAttribute("USER_LIST", userList);
 		return "admin/user_list";
+	}
+	
+	@RequestMapping(value="/user_details/{username}", method=RequestMethod.GET)
+	public String user_detail_view(@PathVariable("username")String username, Model model) {
+		UserDetailsVO userVO = userSvc.findByUsername(username);
+		model.addAttribute("USER_VO", userVO);
+		return "admin/user_details";
+	}
+	
+	@RequestMapping(value="/user_details", method=RequestMethod.POST)
+	public String mypage(UserDetailsVO userVO, String[] auth, Model model) {
+		int ret = adminSvc.update_user_from_admin(userVO, auth);
+		
+		return "redirect:/admin/user_details/" + userVO.getUsername();
 	}
 	
 	@RequestMapping(value="/board_setting", method=RequestMethod.GET)
@@ -52,28 +64,25 @@ public class AdminController {
 		return "admin/board_setting_details";
 	}
 	
-	@RequestMapping(value="/create_board", method=RequestMethod.POST)
-	public String create_board(BoardInfoVO boardInfoVO, Model model) {
-		int result = adminSvc.create_board(boardInfoVO);
-		if (result > 0) {
-			model.addAttribute("BOARD_INFO_LIST", adminSvc.selectBoardAll());
-		}
-		return "admin/board_setting";
-	}
-	
-	@RequestMapping(value="/user_detail/{username}", method=RequestMethod.GET)
-	public String user_detail_view(@PathVariable("username")String username, Model model) {
-		UserDetailsVO userVO = userSvc.findByUsername(username);
-		model.addAttribute("USER_VO", userVO);
-		return "admin/user_detail";
-	}
-	
-	@RequestMapping(value="/user_detail", method=RequestMethod.POST)
-	public String mypage(UserDetailsVO userVO, String[] auth, Model model) {
-		System.out.println(userVO.toString());
-		int ret = adminSvc.update_user_from_admin(userVO, auth);
+	@RequestMapping(value="/board_setting_details", method=RequestMethod.POST)
+	public String board_setting_details(BoardInfoVO boardInfoOptionVO, String[] cate_text, Model model) {
+		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
+		// category 배열에는 카테고리 목록이 들어있다
+		adminSvc.update_tbl_board_info(boardInfoOptionVO, cate_text);
 		
-		return "redirect:/admin/user_detail/" + userVO.getUsername();
+		return "redirect:/admin/board_setting_details";
+	}
+	
+	@RequestMapping(value="/board_setting_create_board", method=RequestMethod.GET)
+	public String create_board() {
+		return "admin/board_setting_create_board";
+	}
+	
+	@RequestMapping(value="/board_setting_create_board", method=RequestMethod.POST)
+	public String create_board(BoardInfoVO boardInfoVO, Model model) {
+		adminSvc.create_board(boardInfoVO);
+		
+		return "redirect:/admin/board_setting";
 	}
 
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sif.community.dao.CategoryDao">
+
+	<insert id="insert" parameterType="list">
+		INSERT INTO tbl_category(cate_bi_id, cate_text)
+		VALUES
+		<foreach collection="list" item="vo" separator=",">
+			(#{vo.cate_bi_id}, #{vo.cate_text})
+		</foreach>
+	</insert>
+	
+</mapper>

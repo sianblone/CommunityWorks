@@ -39,7 +39,7 @@ public class CreateTableSQL {
 	
 	public static String create_tbl_category
 		= "CREATE TABLE IF NOT EXISTS tbl_category ( "
-		+ " cate_id BIGINT PRIMARY KEY AUTO_INCREMENT, "
+		+ " cate_id INT UNIQUE AUTO_INCREMENT, "
 		+ " cate_bi_id BIGINT NOT NULL, "
 		+ " cate_text VARCHAR(20), "
 		
@@ -64,7 +64,7 @@ public class CreateTableSQL {
 		+ " board_filename VARCHAR(256), "
 		+ " board_delete TINYINT NOT NULL DEFAULT 0, "
 		+ " board_recommend TINYINT NOT NULL DEFAULT 0, "
-		+ " board_category BIGINT, "
+		+ " board_category INT, "
 		
 		+ " CONSTRAINT FK_BI_BOARD_board_info "
 		+ " FOREIGN KEY (board_info) "

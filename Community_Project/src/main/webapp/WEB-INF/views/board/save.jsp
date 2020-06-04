@@ -101,9 +101,10 @@
 				<input type="hidden" name="currPage" value="${param.currPage}"/>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
-						<option value="">카테고리</option>
-						<option value="잡담">잡담</option>
-						<option value="질문">질문</option>
+						<option value="0">카테고리</option>
+						<c:forEach items="${CATEGORY_LIST}" var="c">
+							<option value="${c.cate_id}">${c.cate_text}</option>
+						</c:forEach>
 					</select>
 				</div>
 				

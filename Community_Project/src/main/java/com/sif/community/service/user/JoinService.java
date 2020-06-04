@@ -44,8 +44,8 @@ public class JoinService {
 	@Transactional
 	public int insert(UserDetailsVO userVO) {
 		
-		int ret = this.validJoin(userVO);
-		// 유효성 검사 통과 실패 시 결과값 바로 리턴
+		int ret = this.valid_join(userVO);
+		// 유효성 검사 통과 실패 시 유효성 검사 결과값 바로 리턴
 		if(ret < 0) return ret;
 		
 		// 비밀번호 암호화하기
@@ -75,7 +75,7 @@ public class JoinService {
 		return ret;
 	}
 	
-	protected int validJoin(UserDetailsVO userVO) {
+	protected int valid_join(UserDetailsVO userVO) {
 		String password = userVO.getPassword();
 		String re_password = userVO.getRe_password();
 		String email = userVO.getEmail();
@@ -114,7 +114,7 @@ public class JoinService {
 	}
 	
 	public int test_insert(UserDetailsVO userVO, String authority) {
-		int ret = this.validJoin(userVO);
+		int ret = this.valid_join(userVO);
 		if(ret < 0) return ret;
 		
 		String encPW = bcryptEncoder.encode(userVO.getPassword());

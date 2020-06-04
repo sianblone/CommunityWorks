@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardVO;
+import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.BoardService;
 
@@ -92,11 +93,21 @@ public class BoardServiceImpl implements BoardService {
 		
 		return render;
 	}
+	
+	@Override
+	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO) {
+		return boardDao.selectCategoryByBoard(boardOptionVO);
+	}
 
 	@Override
 	public int save(BoardVO boardVO) {
 		
 		int ret = 0;
+		
+		// 카테고리 선택하지 않았을 경우 null로 만들어주기
+		if(boardVO.getBoard_category() == 0) {
+			boardVO.setBoard_category(null);
+		}
 		
 		if(boardVO.getBoard_no() != 0) {
 			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 있는 경우)
@@ -108,7 +119,7 @@ public class BoardServiceImpl implements BoardService {
 		} else {
 			// 신규작성 글이나 답글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없는 경우)
 			// 작성자, 날짜, 시간 세팅 후 INSERT
-			// 답글인 경우는 GET 쿼리에 board_p_no가 있기에 자동으로 세팅
+			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 자동으로 세팅됨
 			saveSetting(boardVO);
 			ret = boardDao.insert(boardVO);
 		}

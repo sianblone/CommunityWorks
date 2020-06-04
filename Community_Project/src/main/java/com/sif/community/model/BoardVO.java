@@ -29,11 +29,11 @@ public class BoardVO {
 	private String board_filename;// VARCHAR(256)
 	private int board_delete;// TINYINT NOT NULL DEFAULT 0
 	private long board_recommend;// BIGINT NOT NULL DEFAULT 0
+	private Integer board_category;// INT // int가 아니라 Integer인 이유는 외래키에 null값을 세팅할 수 있도록
 	
 	private String board_nickname;
 	private String board_name;
 	private List<BoardVO> board_reply;
-	private List<CategoryVO> board_category;
 	
 	private String search_type;
 	private String search_txt;

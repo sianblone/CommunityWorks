@@ -87,6 +87,7 @@ public class BoardController {
 	@RequestMapping(value="/save", method=RequestMethod.GET)
 	public String save(BoardVO boardOptionVO, Model model) {
 		String render = boardSvc.saveView(boardOptionVO, model);
+		model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
 		
 		return render;
 	}
@@ -135,7 +136,6 @@ public class BoardController {
 		}
 		
 		return saveName;
-
 	}
 
 }

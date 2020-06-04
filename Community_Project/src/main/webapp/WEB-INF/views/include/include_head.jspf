@@ -59,9 +59,11 @@
 		background-color: var(--button-bg-color);
 		color: white;
 	}
-	
 	button:hover {
 		opacity: 0.8;
+	}
+	button:focus {
+		outline: none;
 	}
 	
 	/* input number 화살표 지우기 */

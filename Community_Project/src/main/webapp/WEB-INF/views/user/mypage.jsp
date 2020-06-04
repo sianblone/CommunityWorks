@@ -7,7 +7,7 @@
 <head>
 	<%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 	<style>
-		.mypage_form {
+		.my_form {
 			display: block;
 			width: 50%;
 			margin: 10px auto;
@@ -17,21 +17,21 @@
 			box-shadow:0 1px 0 #cfcfcf;
 			padding: 20px;
 		}
-		.mypage-div {
+		.my_form_item {
 			display: flex;
 		}
-		.mypage-label {
+		.my_label {
 			flex: 1;
 			text-align: right;
 			align-self: center;
 			padding: 10px;
 		}
-		.mypage-content {
+		.my_content {
 			flex: 3;
 			align-self: center;
 			padding: 10px;
 		}
-		.mypage-content input {
+		.my_content input {
 			width: 70%;
 		}
 		
@@ -124,7 +124,7 @@
 					success : function(result) {
 						if(result == "-102") {
 							alert("이메일을 정확히 입력하세요.")
-						} else if(result == 'fail') {
+						} else if(result == "fail") {
 							alert("메일 발송이 실패했습니다.\n정확히 입력했는지 확인 후 다시 시도하세요.")
 						} else {
 							$(".auth_code_box").css("display", "block")
@@ -201,7 +201,7 @@
 				$.ajax({
 					url : "${rootPath}/user/mypage",
 					method : "POST",
-					data : $("#mypage_form").serialize(),
+					data : $("#my_form").serialize(),
 					success : function(result) {
 						if(result > 0) {
 							alert("정보가 수정되었습니다.")
@@ -225,46 +225,46 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>마이페이지</h2>
-	<form:form id="mypage_form" class="mypage_form" autocomplete="off">
-		<div class="mypage-div">
-			<span class="mypage-label">ID</span>
-			<div class="mypage-content">
+	<form:form id="my_form" class="my_form" autocomplete="off">
+		<div class="my_form_item">
+			<span class="my_label">ID</span>
+			<div class="my_content">
 				${loginVO.username}
 			</div>
 		</div>
 		
-		<div class="mypage-div">
-			<span class="mypage-label">닉네임</span>
-			<div class="mypage-content">
+		<div class="my_form_item">
+			<span class="my_label">닉네임</span>
+			<div class="my_content">
 				<input id="nickname" name="nickname" value="${loginVO.nickname}" />
 			</div>
 		</div>
 		
-		<div class="mypage-div">
-			<span class="mypage-label">비밀번호</span>
-			<div class="mypage-content">
+		<div class="my_form_item">
+			<span class="my_label">비밀번호</span>
+			<div class="my_content">
 				<button id="btn_change_pw" type="button">비밀번호 변경</button>
 			</div>
 		</div>
 		
-		<div class="mypage-div">
-			<span class="mypage-label">이메일</span>
-			<div class="mypage-content">
+		<div class="my_form_item">
+			<span class="my_label">이메일</span>
+			<div class="my_content">
 				<span>${loginVO.email}</span>
 				<button id="btn_email_change" data-toggle="modal" data-target="#email_change_modal" type="button">이메일 변경</button>
 			</div>
 		</div>
 		
-		<div class="mypage-div">
-			<span class="mypage-label">핸드폰</span>
-			<div class="mypage-content">
+		<div class="my_form_item">
+			<span class="my_label">핸드폰</span>
+			<div class="my_content">
 				<input type="tel" id="phone" name="phone" value="${loginVO.phone}" />
 			</div>
 		</div>
 		
-		<div class="mypage-div">
-			<span class="mypage-label">생년월일</span>
-			<div class="mypage-content age">
+		<div class="my_form_item">
+			<span class="my_label">생년월일</span>
+			<div class="my_content age">
 				<input id="year" name="year" placeholder="년" maxlength="4" value="${loginVO.year}"/>
 				<select id="month" name="month">
 					<option value="">월</option>
