@@ -20,4 +20,4 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-<button id="btn_create_board">게시판 추가</button>
+<button id="btn_add_board">게시판 추가</button>

@@ -135,22 +135,6 @@
 			})
 			// ------------------------------
 			
-			// board_setting_create_board.jsp
-			$(document).on("click", "#btn_create_board", function() {
-				$.ajax({
-					url: "${rootPath}/admin/board_setting_create_board",
-					type: "POST",
-					data: $("#create_board_form").serialize(),
-					success: function(result) {
-						$("#admin_content").html(result)
-					},
-					error: function(error) {
-						alert("서버 통신 오류")
-					}
-				})
-			})
-			// ------------------------------
-			
 			// board_setting.jsp
 			$(document).on("click", ".board_info", function() {
 				$.ajax({
@@ -166,10 +150,26 @@
 				})
 			})
 			
-			$(document).on("click", "#btn_create_board", function() {
+			$(document).on("click", "#btn_add_board", function() {
 				$.ajax({
 					url: "${rootPath}/admin/board_setting_create_board",
 					type: "GET",
+					success: function(result) {
+						$("#admin_content").html(result)
+					},
+					error: function(error) {
+						alert("서버 통신 오류")
+					}
+				})
+			})
+			// ------------------------------
+			
+			// board_setting_create_board.jsp
+			$(document).on("click", "#btn_create_board", function() {
+				$.ajax({
+					url: "${rootPath}/admin/board_setting_create_board",
+					type: "POST",
+					data: $("#create_board_form").serialize(),
 					success: function(result) {
 						$("#admin_content").html(result)
 					},
