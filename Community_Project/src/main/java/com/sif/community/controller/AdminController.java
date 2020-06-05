@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.sif.community.model.BoardInfoVO;
+import com.sif.community.model.CategoryVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value="/admin")
 @Controller
@@ -65,12 +68,13 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/board_setting_details", method=RequestMethod.POST)
-	public String board_setting_details(BoardInfoVO boardInfoOptionVO, String[] cate_text, Model model) {
+	public String board_setting_details(BoardInfoVO boardInfoOptionVO, CategoryVO categoryVO, Model model) {
 		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
 		// category 배열에는 카테고리 목록이 들어있다
-		adminSvc.update_tbl_board_info(boardInfoOptionVO, cate_text);
+		log.debug("카테고리:{}", categoryVO.toString());
+		adminSvc.update_tbl_board_info(boardInfoOptionVO, categoryVO);
 		
-		return "redirect:/admin/board_setting_details";
+		return "redirect:/admin/board_setting";
 	}
 	
 	@RequestMapping(value="/board_setting_create_board", method=RequestMethod.GET)

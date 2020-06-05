@@ -184,18 +184,22 @@
 			$(document).on("click","#btn_add_category",function(){
 				let cate_input = "<div class='my_form_item category_box'>"
 								+ "<span class='my_label'>새 카테고리</span>"
-								+ "<input class='my_data' name='cate_text'/>"
+								+ "<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
+								+ "<input class='my_data' name='cate_delete_list' type='hidden' value='false'/>"
+								+ "<input class='my_data' name='cate_text_list'/>"
+								//+ "<button class='delete'>삭제</button>"
 								+ "</div>"
 				$("div#cate_box").append(cate_input)
 			})
 			
 			$(document).on("click", "#btn_edit_board", function() {
-				/*
+				
 				if(!enable_btn_edit_board) return false
 				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 				enable_btn_edit_board = false
 				$("body").css("cursor", "wait")
-				*/
+				
+				/*
 				let arrCategory = $(".category_box").map(function() {
 					let o = {}
 					$(this).find("input").each(function() {
@@ -204,7 +208,8 @@
 					return o
 				}).get()
 				console.log(arrCategory)
-				/*
+				*/
+				
 				let formData = $("#board_setting_details_form").serialize()
 				formData += "&bi_id=" + $("#btn_edit_board").data("id")
 				
@@ -231,7 +236,7 @@
 					enable_btn_edit_board = true
 					$("body").css("cursor", "default")
 				})
-				*/
+				
 			})
 			// ------------------------------
 			

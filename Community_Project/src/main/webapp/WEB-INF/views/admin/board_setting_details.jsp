@@ -25,6 +25,10 @@
 		width: 60%;
 	}
 	
+	button.delete {
+		position: relative;
+	}
+	
 	.btn_box {
 		display: flex;
 	}
@@ -55,21 +59,27 @@
 		<input id="bi_name" class="my_data" name="bi_name" value="${BOARD_INFO.bi_name}" maxlength="20"/>
 	</div>
 	
+	<!-- 카테고리 영역 -->
 	<c:choose>
-		<c:when test="${empty BOARD_INFO.bi_category}">
-			<div class="my_form_item">
-				<span class="my_label">카테고리</span>
-				<input class="my_data" name="cate_text" maxlength="20"/>
-			</div>
-		</c:when>
-		<c:otherwise>
+		<c:when test="${not empty BOARD_INFO.bi_category}">
 			<c:forEach items="${BOARD_INFO.bi_category}" var="vo" varStatus="s">
-				<div class="my_form_item category_box">
-					<span class="my_label">카테고리${s.count}</span>
-					<input class="my_data" name="cate_id" type="hidden" value="${vo.cate_id}"/>
-					<input class="my_data" name="cate_text" value="${vo.cate_text}" maxlength="20"/>
+				<div class="ddd">
+					<div class="my_form_item category_box">
+						<span class="my_label">카테고리${s.count}</span>
+						<input class="my_data" name="cate_id_list" type="hidden" value="${vo.cate_id}"/>
+						<input class="my_data" name="cate_delete_list" type="hidden" value="false"/>
+						<input class="my_data" name="cate_text_list" value="${vo.cate_text}" maxlength="20"/>
+					</div>
 				</div>
 			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<div class="my_form_item category_box">
+				<span class="my_label">새 카테고리</span>
+				<input class="my_data" name="cate_id_list" type="hidden" value="0"/>
+				<input class="my_data" name="cate_delete_list" type="hidden" value="false"/>
+				<input class="my_data" name="cate_text_list" maxlength="20"/>
+			</div>
 		</c:otherwise>
 	</c:choose>
 	

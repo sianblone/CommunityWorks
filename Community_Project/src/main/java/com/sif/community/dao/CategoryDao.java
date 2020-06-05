@@ -15,9 +15,11 @@ public interface CategoryDao {
 	
 	// 카테고리 테이블 INSERT
 	public int insert(List<CategoryVO> categoryList);
+	// 카테고리 테이블 UPDATE
+	public int update(CategoryVO categoryVO);
 	
-	// 게시판 ID를 기준으로 카테고리 전부 삭제
-	@Delete("DELETE FROM tbl_category WHERE cate_bi_id= #{bi_id}")
-	public int delete(long bi_id);
+	// 카테고리 삭제
+	@Delete("DELETE FROM tbl_category WHERE cate_id = #{cate_id}")
+	public int delete(long cate_id);
 
 }
