@@ -21,23 +21,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service("userDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
-	
+
 	private final UserDao userDao;
 	private final AuthoritiesDao authDao;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
+
 		UserDetailsVO userDetailsVO = userDao.findByUsername(username);
 		if(userDetailsVO == null) {
 			return null;
 		}
-		
+
 		userDetailsVO.setAuthorities(this.getAuthoritiesCS(username));
-		
+
 		return userDetailsVO;
 	}
-	
+
 	private Collection<GrantedAuthority> getAuthoritiesCS(String username) {
 		List<AuthorityVO> authList = authDao.findByUsername(username);
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -45,8 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			SimpleGrantedAuthority sAuth = new SimpleGrantedAuthority(vo.getAuthority());
 			authorities.add(sAuth);
 		}
-		
+
 		return authorities;
 	}
-	
+
 }
