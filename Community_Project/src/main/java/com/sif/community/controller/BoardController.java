@@ -118,6 +118,9 @@ public class BoardController {
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		
+		String page_default_query = "board_info=" + boardVO.getBoard_info();
+		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
+		
 		model.addAttribute("BOARD_INFO", boardVO.getBoard_info());
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);

@@ -14,10 +14,6 @@
 	.deleted {
 		color: gray;
 	}
-	
-	.container-fluid {
-		border: none;
-	}
 </style>
 <script>
 	$(function(){
@@ -45,7 +41,7 @@
 
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<section class="container-fluid">
+	<main>
 		<article>
 			<table class="table table-hover text-center">
 				<thead>
@@ -97,7 +93,7 @@
 		<article class="d-flex justify-content-end">
 			<button class="btn btn-primary text-white btn-writer">글쓰기</button>
 		</article>
-	</section>
+	</main>
 	
 	<%@ include file="/WEB-INF/views/include/pagination.jsp" %>
 </body>

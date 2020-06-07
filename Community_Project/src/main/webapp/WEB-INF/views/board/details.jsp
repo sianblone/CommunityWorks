@@ -122,60 +122,61 @@ $(function(){
 </style>
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<section class="container-fluid">
-		<div class="text-right">
-			<h2 class="p-1">${BOARD_VO.board_subject}</h2>
-			<small class="m-3">작성일시 : ${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
-		</div>
-		<hr/>
-		<div class="details_info">
-			<small class="m-3">카테고리 : ${BOARD_VO.board_category}</small>
-			<small class="m-3">작성자 : ${BOARD_VO.board_nickname}</small>
-			<small class="m-3">조회수 : ${BOARD_VO.board_count}</small>
-			<small class="m-3">추천수 : ${BOARD_VO.board_recommend}</small>
-		</div>
-		<hr/>
-		<div class="p-3">
-			${BOARD_VO.board_content}
-		</div>
-	</section>
-	<div class="form-group d-flex justify-content-end">
-		<c:if test="${IS_WRITER}">
-			<button class="btn btn-primary mr-3">수정</button>
-			<button class="btn btn-danger mr-3">삭제</button>
-		</c:if>
-		<button class="btn btn-info mr-3">답글</button>
-		<button class="btn btn-success">목록으로</button>
-	</div>
-	<hr/>
-	<section class="container-fluid p-4">
-		<div class="p-2">
-			<b>댓글을 남겨주세요</b>
-		</div>
-		<form method="POST" class="main">
-			<div class="row p-4 bg-light">
-				<input type="hidden" name="cmt_no" id="cmt_no" value="0">
-				<input type="hidden" name="cmt_board_no" value="${B.board_no}">
-				<div class="col-2">
-					<input name="cmt_writer" id="cmt_writer"
-							class="form-control" placeholder="작성자">
-				</div>
-				<div class="col-8">
-					<input name="cmt_content" id="cmt_content"
-							class="form-control" placeholder="댓글을 입력하세요">
-				</div>
-				<div class="col-2 d-flex justify-content-center">
-					<button type="button" class="btn btn-success btn-cmt-save">저장</button>
-				</div>
+	<main>
+		<section class="container-fluid">
+			<div class="text-right">
+				<h2 class="p-1">${BOARD_VO.board_subject}</h2>
+				<small class="m-3">작성일시 : ${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
 			</div>
-		</form>
-		<div class="p-2">
-			<b>댓글 리스트</b>
+			<hr/>
+			<div class="details_info">
+				<small class="m-3">카테고리 : ${BOARD_VO.board_category}</small>
+				<small class="m-3">작성자 : ${BOARD_VO.board_nickname}</small>
+				<small class="m-3">조회수 : ${BOARD_VO.board_count}</small>
+				<small class="m-3">추천수 : ${BOARD_VO.board_recommend}</small>
+			</div>
+			<hr/>
+			<div class="p-3">
+				${BOARD_VO.board_content}
+			</div>
+		</section>
+		<div class="form-group d-flex justify-content-end">
+			<c:if test="${IS_WRITER}">
+				<button class="btn btn-primary mr-3">수정</button>
+				<button class="btn btn-danger mr-3">삭제</button>
+			</c:if>
+			<button class="btn btn-info mr-3">답글</button>
+			<button class="btn btn-success">목록으로</button>
 		</div>
-		<div class="p-4 cmt-list">
-			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
-		</div>
-
-	</section>
+		<hr/>
+		<section class="container-fluid p-4">
+			<div class="p-2">
+				<b>댓글을 남겨주세요</b>
+			</div>
+			<form method="POST" class="main">
+				<div class="row p-4 bg-light">
+					<input type="hidden" name="cmt_no" id="cmt_no" value="0">
+					<input type="hidden" name="cmt_board_no" value="${B.board_no}">
+					<div class="col-2">
+						<input name="cmt_writer" id="cmt_writer"
+								class="form-control" placeholder="작성자">
+					</div>
+					<div class="col-8">
+						<input name="cmt_content" id="cmt_content"
+								class="form-control" placeholder="댓글을 입력하세요">
+					</div>
+					<div class="col-2 d-flex justify-content-center">
+						<button type="button" class="btn btn-success btn-cmt-save">저장</button>
+					</div>
+				</div>
+			</form>
+			<div class="p-2">
+				<b>댓글 리스트</b>
+			</div>
+			<div class="p-4 cmt-list">
+				<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
+			</div>
+		</section>
+	</main>
 </body>
 </html>

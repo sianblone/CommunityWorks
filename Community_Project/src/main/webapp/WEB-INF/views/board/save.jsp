@@ -92,7 +92,7 @@
 
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<section class="container-fluid">
+	<main>
 		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
 			<fieldset>
 				<input type="hidden" name="board_info" value="${param.board_info}"/>
@@ -122,6 +122,6 @@
 				</div>
 			</fieldset>
 		</form:form>
-	</section>
+	</main>
 </body>
 </html>

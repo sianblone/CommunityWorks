@@ -7,10 +7,10 @@
 	#navbar {
 		display: flex;
 		background-color : #333;
-		position: fixed;
-		top: 0;
-		width: 100%;
+		width: 1024px;
 		transition: top 0.3s;
+		margin: 0 auto;
+		margin-bottom: 100px;
 	}
 	
 	#navbar a {
@@ -27,8 +27,7 @@
 		background-color: #ddd;
 		color: black;
 	}
-	
-	#navbar a:nth-child(5) {
+	#navbar a:nth-child(4) {
 		margin-left: auto;
 	}
 </style>
@@ -57,17 +56,15 @@
 		})
 	})
 </script>
-
 <nav id="navbar">
 	<a href="${rootPath}/">HOME</a>
-	<a type="button" class="dropdown-toggle" data-toggle="dropdown">게시판</a>
-	 	<div class="dropdown-menu">
-		    <a class="dropdown-item text-dark" href="#">유머게시판</a>
-		    <a class="dropdown-item text-dark" href="#">감동게시판</a>
-		    <a class="dropdown-item text-dark" href="#">자유게시판</a>
-		    <a class="dropdown-item text-dark" href="#">토론게시판</a>
-	  	</div>	
-	<a href="${rootPath}/board/list?board_info=1">갤러리</a>
+	<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">게시판</a>
+ 	<div class="dropdown-menu">
+	    <a class="dropdown-item text-dark" href="${rootPath}/board/list?board_info=1">자유게시판</a>
+	    <a class="dropdown-item text-dark" href="#">유머게시판</a>
+	    <a class="dropdown-item text-dark" href="#">감동게시판</a>
+	    <a class="dropdown-item text-dark" href="#">토론게시판</a>
+  	</div>
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<a href="${rootPath}/admin">관리자</a>

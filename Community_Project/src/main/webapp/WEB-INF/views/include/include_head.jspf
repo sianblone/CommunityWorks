@@ -36,12 +36,12 @@
 	}
 	
 	body {
-		margin-top: 120px;
 		height: 2000px;
 	}
-	.container-fluid {
-		margin-top: 0px;
-		border: 1px solid #eee;
+	main {
+		min-width: 720px;
+		max-width: 1024px;
+		margin: 0 auto;
 	}
 	h2 {
 		text-align: center;
@@ -50,6 +50,9 @@
 	input {
 		padding: 0.5rem 1rem;
 		font-size: 0.9rem;
+	}
+	input:focus {
+		outline: none
 	}
 	button {
 		cursor: pointer;
@@ -64,6 +67,7 @@
 	}
 	button:focus {
 		outline: none;
+		box-shadow :0 0 0 0.2rem rgba(38,143,255,.5);
 	}
 	
 	/* input number 화살표 지우기 */
