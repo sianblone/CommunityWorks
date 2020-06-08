@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,9 +45,15 @@ public class BoardController {
 	// 리스트 + 게시판 이름 + 검색 + 페이지 메소드
 	// 검색 값과 현재 페이지로 페이지네이션 select하기
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public String list(Model model,
+	public String list(
+					Model model,
 					BoardVO boardVO,
 					Integer currPage) {
+		
+		log.debug("INFO:{} TYPE:{} TXT:{}",boardVO.getBoard_info(), boardVO.getSearch_type(), boardVO.getSearch_txt());
+		
+		// 없는 게시판(0)을 입력받으면 메인페이지로
+		if(boardVO.getBoard_info() == 0) return "redirect:/";
 		
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
@@ -86,6 +93,9 @@ public class BoardController {
 	// 현재 사용자와 DB의 게시글id 작성자가 다르면 오류 페이지로 보내기
 	@RequestMapping(value="/save", method=RequestMethod.GET)
 	public String save(BoardVO boardOptionVO, Model model) {
+		// 없는 게시판(0)을 입력받으면 메인페이지로
+		if(boardOptionVO.getBoard_info() == 0) return "redirect:/";
+				
 		String render = boardSvc.saveView(boardOptionVO, model);
 		model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
 		
@@ -97,6 +107,9 @@ public class BoardController {
 	// form에서 입력받은 값으로 DB에 저장하기(INSERT 또는 UPDATE)
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer currPage) {
+		// 없는 게시판(0)을 입력받으면 메인페이지로
+		if(boardVO.getBoard_info() == 0) return "redirect:/";
+				
 		boardSvc.save(boardVO);
 		String redirect = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
 		if(currPage != null) redirect += "&currPage=" + currPage;

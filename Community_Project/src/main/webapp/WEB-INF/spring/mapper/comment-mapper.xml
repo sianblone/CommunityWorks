@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sif.community.dao.CommentDao">
+		
+	<insert id="insert">
+		INSERT INTO tbl_comment (
+			cmt_board_no,
+			cmt_no,
+			cmt_p_no,
+			cmt_writer,
+			cmt_date,
+			cmt_time,
+			cmt_content,
+			cmt_delete,
+			cmt_recommend
+		) VALUES (
+			#{cmt_board_no},
+			#{cmt_no},
+			#{cmt_p_no},
+			#{cmt_writer},
+			#{cmt_date},
+			#{cmt_time},
+			#{cmt_content},
+			#{cmt_delete},
+			#{cmt_recommend}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tbl_comment
+		SET
+			cmt_board_no, = #{cmt_board_no},
+			cmt_no, = #{cmt_no},
+			cmt_p_no, = #{cmt_p_no},
+			cmt_writer, = #{cmt_writer},
+			cmt_date, = #{cmt_date},
+			cmt_time, = #{cmt_time},
+			cmt_content, = #{cmt_content},
+			cmt_delete, = #{cmt_delete},
+			cmt_recommend = #{cmt_recommend}
+		WHERE cmt_no = #{cmt_no}
+	</update>
+	
+</mapper>

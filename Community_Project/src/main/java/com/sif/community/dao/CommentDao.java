@@ -23,8 +23,8 @@ public interface CommentDao {
 			+ " ORDER BY cmt_date, cmt_time DESC")
 	public List<CommentVO> findByPNo(long cmt_p_no);
 	
-	@Insert("INSERT INTO tbl_comment (cmt_no,cmt_writer,cmt_content ) "
-			+ " VALUES (#{cmt_no}, #{cmt_writer}, #{cmt_content} ) " )
+//	@Insert("INSERT INTO tbl_comment (cmt_no,cmt_writer,cmt_content ) "
+//			+ " VALUES (#{cmt_no}, #{cmt_writer}, #{cmt_content} ) " )
 	public int insert(CommentVO commentVO);
 	
 	public int update(CommentVO commentVO);

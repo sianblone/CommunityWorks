@@ -20,12 +20,12 @@
 		<property name="password" value="${mysql.password}"/>
 	</bean>
 	
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+	<bean id="ssfb" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="mysqlDS" />
 		<property name="typeAliasesPackage" value="com.sif.community.model" />
 		<property name="mapperLocations" value="/WEB-INF/spring/mapper/*-mapper.xml" />
 	</bean>
-		
+			
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="mysqlDS"/>
 	</bean>

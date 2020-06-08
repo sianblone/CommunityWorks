@@ -95,7 +95,7 @@
 	<main>
 		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
 			<fieldset>
-				<input type="hidden" name="board_info" value="${param.board_info}"/>
+				<input type="hidden" name="board_info" value="<c:out value='${param.board_info}' default='0'/>"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
 				<input type="hidden" name="board_p_no" value="<c:out value='${param.board_p_no}' default='0'/>"/>
 				<input type="hidden" name="currPage" value="${param.currPage}"/>
