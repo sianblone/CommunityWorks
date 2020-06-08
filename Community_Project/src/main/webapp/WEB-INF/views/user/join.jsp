@@ -82,7 +82,7 @@
 			}
 			
 			function regYear(year) {
-				let regex = /^[0-9]{4}$/
+				let regex = /^(19|20)[0-9]{2}$/
 				return regex.test(year)
 			}
 			

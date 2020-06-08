@@ -78,7 +78,7 @@ tbody tr[data-id] {
 									<td>${B.board_category}</td>
 									<td><c:if test="${B.board_delete == 1}">[삭제됨] </c:if>${B.board_subject}</td>
 									<td>${B.board_nickname}</td>
-									<td>${B.board_date}${B.board_time}</td>
+									<td>${B.board_date} ${B.board_time}</td>
 									<td>${B.board_count}</td>
 									<td>${B.board_recommend}</td>
 								</tr>

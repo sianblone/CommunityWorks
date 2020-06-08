@@ -57,6 +57,8 @@ public class UserService {
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
 	public int update_user(UserDetailsVO userVO) {
+		// 년도 유효성 검사
+		if( !userVO.getYear().matches("^(19|20)[0-9]{2}$") ) return -103;
 		// 생년월일 유효성 검사
 		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
 		if( !this.dateCheck(birth) ) return -103;
@@ -89,7 +91,7 @@ public class UserService {
 	}
 	
 	protected boolean dateCheck(String date) {
-		SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		try {
 			dateFormat.parse(date);
