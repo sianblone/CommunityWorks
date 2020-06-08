@@ -14,10 +14,6 @@ public interface AdminDao {
 	public List<BoardVO> selectAllByPageAdmin(@Param("boardVO") BoardVO boardVO, @Param("pageVO")PaginationVO pageVO);
 	public long countAll(BoardVO boardVO);
 	
-	// 게시판 생성
-	public List<BoardInfoVO> selectBoardAll();
-	public BoardInfoVO selectByBoardInfo(BoardInfoVO boardInfoOptionVO);
-	
 	public int update_user_from_admin(UserDetailsVO dbUserVO);
 	public int create_board(BoardInfoVO boardInfoVO);
 	public int update_tbl_board_info(BoardInfoVO dbBoardInfoVO);

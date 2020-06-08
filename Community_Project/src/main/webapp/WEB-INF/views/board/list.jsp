@@ -19,7 +19,7 @@ tbody tr[data-id] {
 <script>
 	$(function() {
 		$("button.btn-writer").click(function() {
-			let url = "${rootPath}/board/save?board_info=${BOARD_INFO}";
+			let url = "${rootPath}/board/save?board_info=${BOARD_INFO.bi_id}";
 
 			let currPage = "${param.currPage}"
 			if (currPage != "")
@@ -34,7 +34,7 @@ tbody tr[data-id] {
 						"tbody tr[data-id]",
 						function() {
 							let board_no = $(this).data("id")
-							let url = "${rootPath}/board/details?board_info=${BOARD_INFO}&board_no="
+							let url = "${rootPath}/board/details?board_info=${BOARD_INFO.bi_id}&board_no="
 									+ board_no;
 
 							let currPage = "${param.currPage}";
