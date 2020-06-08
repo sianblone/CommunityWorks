@@ -19,7 +19,7 @@ public class BoardInfoVO {
 	
 	private long bi_id;//	BIGINT		PRIMARY KEY	AUTO_INCREMENT
 	private String bi_name;//	VARCHAR(20)	NOT NULL
-	
+		
 	private List<CategoryVO> bi_category;
 	
 }

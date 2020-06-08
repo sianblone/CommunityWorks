@@ -60,11 +60,11 @@
 	<a href="${rootPath}/">HOME</a>
 	<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">게시판</a>
  	<div class="dropdown-menu">
-	    <a class="dropdown-item text-dark" href="${rootPath}/board/list?board_info=1">자유게시판</a>
-	    <a class="dropdown-item text-dark" href="#">유머게시판</a>
-	    <a class="dropdown-item text-dark" href="#">감동게시판</a>
-	    <a class="dropdown-item text-dark" href="#">토론게시판</a>
+ 		<c:forEach items="${topMenuList}" var="t">
+		    <a class="dropdown-item text-dark" href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
+	    </c:forEach>
   	</div>
+  	
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
 		<a href="${rootPath}/admin">관리자</a>

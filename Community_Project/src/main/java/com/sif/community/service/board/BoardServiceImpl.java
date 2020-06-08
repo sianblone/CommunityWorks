@@ -44,7 +44,10 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
-		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
+		// boardVO에는 게시판이름, search_type, search_txt가 들어있다.
+		
+		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
+		
 		
 		List<BoardVO> boardList = null;
 		
