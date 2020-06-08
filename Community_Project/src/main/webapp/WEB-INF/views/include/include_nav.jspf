@@ -67,7 +67,7 @@
   	
 	
 	<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<a href="${rootPath}/admin">관리자</a>
+		<a href="${rootPath}/admin">관리자</a>0
 	</sec:authorize>
 	<sec:authorize access="isAnonymous()">
 		<a href="${rootPath}/user/login">로그인</a>

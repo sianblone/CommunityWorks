@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.ui.Model;
 
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationVO;
@@ -23,5 +24,9 @@ public interface BoardService {
 	public String delete(long board_no, Integer currPage);
 
 	public BoardVO findByNo(long board_no);
+	
+	public List<BoardInfoVO> selectAllBoardInfo();
+	
+	public BoardInfoVO findByBoardInfo(long board_info);
 
 }

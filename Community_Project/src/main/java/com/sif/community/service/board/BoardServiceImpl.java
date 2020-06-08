@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 
 import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationVO;
@@ -173,6 +174,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO findByNo(long board_no) {
 		return boardDao.findByNo(board_no);
+	}
+
+	@Override
+	public BoardInfoVO findByBoardInfo(long board_info) {
+		return boardDao.findByBoardInfo(board_info);
+	}
+
+	@Override
+	public List<BoardInfoVO> selectAllBoardInfo() {
+		return boardDao.selectAllBoardInfo();
 	}
 
 }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.FileService;
@@ -134,7 +134,8 @@ public class BoardController {
 		String page_default_query = "board_info=" + boardVO.getBoard_info();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
-		model.addAttribute("BOARD_INFO", boardVO.getBoard_info());
+		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardVO.getBoard_info());		
+		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
 		model.addAttribute("BOARD_LIST", boardList);

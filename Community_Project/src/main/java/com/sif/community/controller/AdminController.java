@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
 
@@ -25,6 +26,7 @@ public class AdminController {
 	
 	private final UserService userSvc;
 	private final AdminService adminSvc;
+	private final BoardService boardSvc;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String admin() {
@@ -55,13 +57,13 @@ public class AdminController {
 	
 	@RequestMapping(value="/board_setting", method=RequestMethod.GET)
 	public String board_setting(Model model) {
-		model.addAttribute("BOARD_INFO_LIST", adminSvc.selectBoardAll());
+		model.addAttribute("BOARD_INFO_LIST", boardSvc.selectAllBoardInfo());
 		return "admin/board_setting";
 	}
 	
 	@RequestMapping(value="/board_setting_details", method=RequestMethod.GET)
-	public String board_setting_details(BoardInfoVO boardInfoOptionVO, Model model) {
-		BoardInfoVO boardInfoVO = adminSvc.selectByBoardInfo(boardInfoOptionVO);
+	public String board_setting_details(long board_info, Model model) {
+		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(board_info);
 		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
 		return "admin/board_setting_details";

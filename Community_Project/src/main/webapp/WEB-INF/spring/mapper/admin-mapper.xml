@@ -46,28 +46,6 @@
 			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
 	</select>
 	
-	<select id="selectBoardAll" resultType="boardInfoVO">
-		SELECT *
-		FROM tbl_board_info
-	</select>
-	
-	<select id="selectByBoardInfo" resultMap="boardInfoRM">
-		SELECT *
-		FROM tbl_board_info
-		WHERE bi_id = #{bi_id}
-	</select>
-	
-	<resultMap id="boardInfoRM" type="boardInfoVO">
-		<id property="bi_id" column="bi_id" />
-		<collection property="bi_category" column="bi_id" ofType="categoryVO" select="selectCategoryById" />
-	</resultMap>
-	
-	<select id="selectCategoryById" resultType="categoryVO">
-		SELECT *
-		FROM tbl_category
-		WHERE cate_bi_id = #{bi_id}
-	</select>
-	
 	<insert id="create_board">
 		INSERT INTO tbl_board_info(bi_name)
 		VALUES (#{bi_name})
