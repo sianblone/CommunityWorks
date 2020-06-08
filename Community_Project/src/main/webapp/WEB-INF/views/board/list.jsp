@@ -50,6 +50,7 @@ tbody tr[data-id] {
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf"%>
 	<main>
+	<%@ include file="/WEB-INF/views/include/include_header.jsp"%>
 		<article>
 			<table class="table table-hover text-center">
 				<thead>
