@@ -90,7 +90,7 @@ tbody tr[data-id] {
 											data-id="${RE.board_no}">
 											<td>${RE.board_no}</td>
 											<td>${RE.board_category}</td>
-											<td><c:if test="${RE.board_delete == 1}">[삭제됨] </c:if>ㄴ
+											<td><c:if test="${RE.board_delete == 1}">[삭제됨] </c:if>
 												${RE.board_subject}</td>
 											<td>${RE.board_nickname}</td>
 											<td>${RE.board_date}${RE.board_time}</td>

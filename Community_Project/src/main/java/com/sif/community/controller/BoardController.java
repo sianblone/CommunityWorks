@@ -128,6 +128,7 @@ public class BoardController {
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
 		if(currPage == null) currPage = 1;
 		long totalCount = boardSvc.countAll(boardVO);
+		log.debug("컨트롤러 totalCount : {}",totalCount);
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
 		model.addAttribute("PAGE_DTO", pageVO);
 		

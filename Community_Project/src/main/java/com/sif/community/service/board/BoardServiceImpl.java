@@ -20,7 +20,9 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.BoardService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service(value = "boardSvc")
 public class BoardServiceImpl implements BoardService {
@@ -46,7 +48,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다.
-		
+		log.debug("페이지: {}", pageVO.toString());
 		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
 		
 		
