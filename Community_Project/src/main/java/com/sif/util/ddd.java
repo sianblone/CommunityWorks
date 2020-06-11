@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer;
+import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 public class ddd {
 	
@@ -19,9 +19,9 @@ public class ddd {
 		String encryptKey = null;
 		
 		try {
-			fr = new FileReader("./src/main/webapp/WEB-INF/spring/properties/encryptKey.properties");
+			fr = new FileReader("./src/main/webapp/WEB-INF/spring/properties/encrypt-key.properties");
 			readFile = new BufferedReader(fr);
-			encryptKey = readFile.readLine();
+			encryptKey = readFile.readLine().split("encrypt-key=")[1];
 		} catch (Exception e) {
 			// 파일이 없는 경우 encryptKey는 null
 		}
@@ -47,17 +47,17 @@ public class ddd {
 			
 			if(intMenu == 1) {
 				// 파일 저장하기
-				String saveFile = "./src/main/webapp/WEB-INF/spring/properties/encryptKey.properties";
+				String saveFile = "./src/main/webapp/WEB-INF/spring/properties/encrypt-key.properties";
 				System.out.print("암호화에 사용할 Key값을 입력하세요 >> ");
 				String newEncryptKey = keyInput.readLine();
 				
 				PrintWriter pw = new PrintWriter(saveFile);
-				pw.print(String.format("encryptKey=%s", newEncryptKey));
+				pw.print(String.format("encrypt-key=%s", newEncryptKey));
 				pw.flush();
 				pw.close();
 				
 				encryptKey = newEncryptKey;
-				System.out.println("encryptKey.txt 저장 완료!");
+				System.out.println("encrypt-key.properties 저장 완료!");
 			} else if(intMenu == 2) {
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
 				else System.out.println("암호화 Key : " + encryptKey);
