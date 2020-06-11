@@ -25,7 +25,7 @@ public class EncGmail {
 		String username = scanner.nextLine();
 		
 		System.out.print("Gmail Password >> ");
-		String password= scanner.nextLine();
+		String password = scanner.nextLine();
 		
 		String encUserName = pbe.encrypt(username);
 		String encPassword = pbe.encrypt(password);
