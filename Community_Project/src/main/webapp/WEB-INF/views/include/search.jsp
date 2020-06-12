@@ -16,6 +16,7 @@
 		<option value="sc" <c:out value=""/>>제목+내용</option>
 		<option value="subject" <c:out value=""/>>제목</option>
 		<option value="content" <c:out value=""/>>내용</option>
+		<option value="nickname" <c:out value=""/>>닉네임</option>
 		<option value="writer" <c:out value=""/>>작성자</option>
 	</select>
 	<input name="search_txt" id="search_txt" placeholder="검색어를 입력하세요" />

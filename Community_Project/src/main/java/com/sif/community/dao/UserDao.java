@@ -15,6 +15,7 @@ public interface UserDao {
 	public UserDetailsVO findByUsername(String username);
 	@Select("SELECT username FROM tbl_users WHERE email = #{email}")
 	public List<UserDetailsVO> findByEmail(String email);
+	public List<UserDetailsVO> findByNickname(String nickname);
 	
 	public int insert(UserDetailsVO userVO);
 	public int update_user(UserDetailsVO userVO);
