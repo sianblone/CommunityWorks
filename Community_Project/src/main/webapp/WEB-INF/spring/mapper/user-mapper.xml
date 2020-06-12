@@ -34,6 +34,12 @@
 		WHERE a.username = #{username}
 	</select>
 	
+	<select id="findByNickname" resultType="userDetailsVO">
+		SELECT username, nickname
+		FROM tbl_users
+		WHERE nickname LIKE CONCAT('%', #{nickname}, '%')
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO `tbl_users` (
 			username,

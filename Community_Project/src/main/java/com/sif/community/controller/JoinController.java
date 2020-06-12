@@ -27,7 +27,8 @@ public class JoinController {
 	// 회원가입 화면 보여주기
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String join(UserDetailsVO userVO, Model model) {
-		return "user/join";
+		//return "user/join";
+		return "user/join-test";
 	}
 	
 	/*

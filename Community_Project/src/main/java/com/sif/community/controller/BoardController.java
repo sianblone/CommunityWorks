@@ -58,6 +58,7 @@ public class BoardController {
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
+		
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		this.selectAllByPage(model, boardVO, currPage);
 		
@@ -129,6 +130,9 @@ public class BoardController {
 		if(currPage == null) currPage = 1;
 		
 		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
+		else if(boardVO.getSearch_type().equals("content")) boardVO.setSearch_type("board_content");
+		else if(boardVO.getSearch_type().equals("writer")) boardVO.setSearch_type("board_writer");
+		
 		log.debug("boardVO : {}", boardVO.toString());
 		long totalCount = boardSvc.countAll(boardVO);
 		log.debug("카운트 : {}", totalCount);

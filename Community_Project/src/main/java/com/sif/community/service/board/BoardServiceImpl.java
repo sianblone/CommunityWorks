@@ -2,7 +2,6 @@ package com.sif.community.service.board;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -17,7 +16,9 @@ import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationVO;
+import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.itf.BoardService;
+import com.sif.community.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,17 +30,21 @@ public class BoardServiceImpl implements BoardService {
 	
 	private final BoardDao boardDao;
 	private final AdminDao adminDao;
+	private final UserService userSvc;
 	
 	@Override
 	public long countAll(BoardVO boardVO) {
 		long totalCount = 0;
+		
+		List<UserDetailsVO> usernameList = null;
+		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
 		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			totalCount = adminDao.countAll(boardVO);
 		} else {
 			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물 리스트에서 숨기기
-			totalCount = boardDao.countAll(boardVO);
+			totalCount = boardDao.countAll(boardVO, usernameList);
 		}
 		
 		return totalCount;
@@ -49,12 +54,16 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
 		List<BoardVO> boardList = null;
 		
+		List<UserDetailsVO> usernameList = null;
+		// 닉네임 검색인 경우
+		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
+		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			boardList = adminDao.selectAllByPageAdmin(boardVO, pageVO);
 		} else {
 			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
-			boardList = boardDao.selectAllByPage(boardVO, pageVO);
+			boardList = boardDao.selectAllByPage(boardVO, pageVO, usernameList);
 		}
 		
 		return boardList;

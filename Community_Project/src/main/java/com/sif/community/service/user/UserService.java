@@ -296,5 +296,10 @@ public class UserService {
 		
 		return ret;
 	}
+	
+	// 닉네임과 일치하는 유저 정보 가져오기
+	public List<UserDetailsVO> findByNickname(String nickname) {
+		return userDao.findByNickname(nickname);
+	}
 
 }

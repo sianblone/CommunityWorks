@@ -83,6 +83,11 @@
 				return regex.test(username)
 			}
 			
+			function regYear(year) {
+				let regex = /^[0-9]{4}$/
+				return regex.test(year)
+			}
+			
 			function regMonthOrDay(monthOrDay) {
 				let regex = /^[0-9]{1,2}$/
 				return regex.test(monthOrDay)
@@ -125,7 +130,7 @@
 					alert("올바른 형식의 이메일이 아닙니다.")
 					email.focus()
 					return false
-				} else if ( year.val() > new Date().getFullYear() || year.val() < 1900 ) {
+				} else if ( !regYear(year.val()) ) {
 					alert("생년을 정확히 입력하세요.")
 					year.focus()
 					return false
@@ -264,10 +269,6 @@
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>회원가입</h2>
 	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="off" onSubmit="return false">
-		<!--
-		<input name="${_csrf.parameterName}" value="${_csrf.token}">
-		-->
-		
 		<div class="form_item">
 			<label for="username">ID</label>
 		</div>
@@ -333,20 +334,6 @@
 			</select>
 			<input id="day" name="day" placeholder="일" maxlength="2"/>
 		</div>
-		
-		<!--
-		<div class="form_item">
-			<label for="authority">권한</label><br/>
-		</div>
-		
-		<div class="form_item">
-			<select id="authority" name="authority">
-				<option value="">테스트 가입 시 아이디 권한 설정</option>
-				<option value="ROLE_USER">유저</option>
-				<option value="ROLE_ADMIN">관리자</option>
-			</select>
-		</div>
-		-->
 		
 		<div class="form_item btn_box">
 			<button id="btn_join" type="button">회원가입</button>

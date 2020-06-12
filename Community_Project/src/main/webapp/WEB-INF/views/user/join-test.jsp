@@ -12,7 +12,6 @@
 			display: flex;
 			flex-direction: column;
 			width: 420px;
-			height: 445px;
 			margin: 0 auto;
 		}
 		.form_item {
@@ -65,6 +64,9 @@
 		}
 		#m_username {
 			display: none;
+		}
+		#m_nickname, #m_email {
+			color: blue;
 		}
 	</style>
 	<script>
@@ -266,11 +268,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>회원가입</h2>
-	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="off">
-		<!--
-		<input name="${_csrf.parameterName}" value="${_csrf.token}">
-		-->
-		
+	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="off" onSubmit="return false">
 		<div class="form_item">
 			<label for="username">ID</label>
 		</div>
@@ -282,11 +280,11 @@
 		
 		<div class="form_item">
 			<label for="nickname">닉네임</label><br/>
-			<span id="m_nickname" class="message">* 입력하지 않으면 아이디와 똑같이 설정되며 마이페이지에서 수정할 수 있습니다.</span>
 		</div>
 		
 		<div class="form_item">
 			<input id="nickname" name="nickname" />
+			<span id="m_nickname" class="message">* 입력하지 않으면 아이디와 똑같이 설정되며 추후 수정할 수 있습니다.</span>
 		</div>
 		
 		<div class="form_item">
