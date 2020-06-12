@@ -46,7 +46,7 @@
 * jackson-databind
 * logback
 
-### 시작하기
+### Spring Security
 #### 기본설정
 1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml
 2. servlet-context.xml 설정 : component-scan controller, service 추가
