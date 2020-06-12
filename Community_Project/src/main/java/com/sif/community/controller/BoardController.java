@@ -132,6 +132,7 @@ public class BoardController {
 		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
 		else if(boardVO.getSearch_type().equals("content")) boardVO.setSearch_type("board_content");
 		else if(boardVO.getSearch_type().equals("writer")) boardVO.setSearch_type("board_writer");
+		else if(boardVO.getSearch_type().equals("sc")) boardVO.setSearch_type("board_sc");
 		
 		log.debug("boardVO : {}", boardVO.toString());
 		long totalCount = boardSvc.countAll(boardVO);
