@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
-public class ddd {
+public class DefaultSetting {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader keyInput = new BufferedReader(new InputStreamReader(System.in));
