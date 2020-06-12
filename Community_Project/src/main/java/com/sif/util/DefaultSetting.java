@@ -79,7 +79,8 @@ public class DefaultSetting {
 		else if(menuName.equals("Gmail")) prefix = "gmail";
 		
 		String saveFile = "./src/main/webapp/WEB-INF/spring/properties/" + prefix + ".connection.properties";
-
+		
+		if(schema != null)  schema = String.format("%s.schema=%s", menuName.toLowerCase(), schema);
 		String saveUserName = String.format("%s.username=ENC(%s)", menuName.toLowerCase(), encUserName);
 		String savePassword = String.format("%s.password=ENC(%s)", menuName.toLowerCase(), encPassword);
 		
