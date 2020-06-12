@@ -12,6 +12,8 @@ public interface PaginationService {
 	
 	// DB, API에서 받아온 totalCount(총 게시물 수)
 	// 페이지에서 받아온 currPageNo(현재 페이지 번호)를 가지고 페이지네이션 세팅하기(PaginationVO)
-	public PaginationVO makePageInfo(long totalCount, int currPage);
+	public PaginationVO makePageInfoMiddle(long totalCount, int currPage);
+	
+	public PaginationVO makePageInfoStartToEnd(long totalCount, int currPage);
 	
 }

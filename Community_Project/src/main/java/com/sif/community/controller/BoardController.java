@@ -132,7 +132,7 @@ public class BoardController {
 		log.debug("boardVO : {}", boardVO.toString());
 		long totalCount = boardSvc.countAll(boardVO);
 		log.debug("카운트 : {}", totalCount);
-		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
 		log.debug("페이지 : {}", pageVO.toString());
 		model.addAttribute("PAGE_DTO", pageVO);
 		
