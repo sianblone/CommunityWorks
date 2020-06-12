@@ -19,8 +19,19 @@
 			<if test="!isAdmin">
 				AND b.board_delete = 0
 			</if>
-			<if test="boardVO.search_type != null and !boardVO.search_type.equals('') and !boardVO.search_type.equals('nickname') and boardVO.search_txt != null and !boardVO.search_txt.equals('')">
-				AND ${boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			<if test="boardVO.search_txt != null and !boardVO.search_txt.trim().equals('')">
+				<if test="boardVO.search_type.equals('subject')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('content')">
+					AND board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('writer')">
+					AND board_writer LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('sc')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%') OR board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
 			</if>
 			<if test="usernameList != null">
 				<foreach collection="usernameList" item="userVO">
@@ -85,8 +96,19 @@
 			board_info = #{boardVO.board_info}
 			AND
 			board_delete = 0
-			<if test="boardVO.search_type != null and !boardVO.search_type.equals('') and !boardVO.search_type.equals('nickname') and boardVO.search_txt != null and !boardVO.search_txt.equals('')">
-				AND ${boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			<if test="boardVO.search_txt != null and !boardVO.search_txt.trim().equals('')">
+				<if test="boardVO.search_type.equals('subject')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('content')">
+					AND board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('writer')">
+					AND board_writer LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('sc')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%') OR board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
 			</if>
 			<if test="usernameList != null">
 				<foreach collection="usernameList" item="userVO">
