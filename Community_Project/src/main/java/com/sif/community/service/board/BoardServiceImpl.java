@@ -47,8 +47,6 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
-		// boardVO에는 게시판이름, search_type, search_txt가 들어있다.
-		
 		List<BoardVO> boardList = null;
 		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기

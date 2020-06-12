@@ -73,8 +73,7 @@ tbody tr[data-id] {
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
-								<tr class="<c:if test="${B.board_delete == 1}">deleted</c:if>"
-									data-id="${B.board_no}">
+								<tr class="<c:if test="${B.board_delete == 1}">deleted</c:if>" data-id="${B.board_no}">
 									<td>${B.board_no}</td>
 									<td>${B.board_category}</td>
 									<td><c:if test="${B.board_delete == 1}">[삭제됨] </c:if>${B.board_subject}</td>
@@ -86,14 +85,13 @@ tbody tr[data-id] {
 								<c:if test="${not empty B.board_reply}">
 									<c:forEach items="${B.board_reply}" var="RE" varStatus="status">
 										<tr
-											class="<c:if test="${RE.board_delete == 1}">deleted</c:if>"
-											data-id="${RE.board_no}">
+											class="<c:if test="${RE.board_delete == 1}">deleted</c:if>" data-id="${RE.board_no}">
 											<td>${RE.board_no}</td>
 											<td>${RE.board_category}</td>
 											<td><c:if test="${RE.board_delete == 1}">[삭제됨] </c:if>
 												${RE.board_subject}</td>
 											<td>${RE.board_nickname}</td>
-											<td>${RE.board_date}${RE.board_time}</td>
+											<td>${RE.board_date} ${RE.board_time}</td>
 											<td>${RE.board_count}</td>
 											<td>${RE.board_recommend}</td>
 										</tr>

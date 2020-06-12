@@ -60,8 +60,8 @@
 		</security:authentication-provider>
 	</security:authentication-manager>
 	-->
-	<context:component-scan base-package="com.sif.community.service.security"/>
-	<bean id="authProvider" class="com.sif.community.service.security.AuthenticationProviderImpl"/>
+	<context:component-scan base-package="com.sif.community.service.secure"/>
+	<bean id="authProvider" class="com.sif.community.service.secure.AuthenticationProviderImpl"/>
 	
 	<!--
 		hasRole()에서 ROLE_USER와 USER의 값 검사

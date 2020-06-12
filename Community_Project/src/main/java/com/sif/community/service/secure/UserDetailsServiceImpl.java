@@ -1,4 +1,4 @@
-package com.sif.community.service.security;
+package com.sif.community.service.secure;
 
 import java.util.ArrayList;
 import java.util.Collection;

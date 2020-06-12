@@ -1,38 +1,28 @@
 package com.sif.util;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Map;
 
 import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
-import org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig;
 
 public class DefaultSetting {
 	
 	public static void main(String[] args) throws IOException {
 		BufferedReader keyInput = new BufferedReader(new InputStreamReader(System.in));
 		
-		FileReader fr = null;
-		BufferedReader readFile = null;
+		StandardPBEStringEncryptor pbe = new StandardPBEStringEncryptor();
+		pbe.setAlgorithm("PBEWithMD5AndDES");
 		String encryptKey = null;
-		
-		try {
-			fr = new FileReader("./src/main/webapp/WEB-INF/spring/properties/encrypt-key.properties");
-			readFile = new BufferedReader(fr);
-			encryptKey = readFile.readLine().split("encrypt-key=")[1];
-		} catch (Exception e) {
-			// 파일이 없는 경우 encryptKey는 null
-		}
 		
 		while(true) {
 			// 메뉴 표시
 			System.out.println("---------- 기본 설정 -----------");
-			System.out.println("1. 암호화 Key 설정");
-			System.out.println("2. 암호화 Key 보기");
-			System.out.println("3. DB 유저,비밀번호 세팅");
-			System.out.println("4. Gmail ID,앱비밀번호 세팅");
+			System.out.println("1. 암호화 Key 보기");
+			System.out.println("2. DB 유저,비밀번호 세팅");
+			System.out.println("3. Gmail ID,앱비밀번호 세팅");
 			System.out.println("0. 종료");
 			System.out.println("--------------------------------");
 			System.out.print("메뉴를 선택하세요(숫자 입력) >> ");
@@ -46,41 +36,34 @@ public class DefaultSetting {
 			}
 			
 			if(intMenu == 1) {
-				// 파일 저장하기
-				String saveFile = "./src/main/webapp/WEB-INF/spring/properties/encrypt-key.properties";
-				System.out.print("암호화에 사용할 Key값을 입력하세요 >> ");
-				String newEncryptKey = keyInput.readLine();
-				
-				PrintWriter pw = new PrintWriter(saveFile);
-				pw.print(String.format("encrypt-key=%s", newEncryptKey));
-				pw.flush();
-				pw.close();
-				
-				encryptKey = newEncryptKey;
-				System.out.println("encrypt-key.properties 저장 완료!");
-			} else if(intMenu == 2) {
+				encryptKey = System.getenv("ENV_PASS");
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
 				else System.out.println("암호화 Key : " + encryptKey);
+			} else if(intMenu == 2) {
+				encryptKey = System.getenv("ENV_PASS");
+				pbe.setPassword(encryptKey);
+				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
+				else encrypt(keyInput, pbe, "Mysql");
 			} else if(intMenu == 3) {
+				encryptKey = System.getenv("ENV_PASS");
+				pbe.setPassword(encryptKey);
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
-				else encrypt(keyInput, encryptKey, "Mysql");
-			} else if(intMenu == 4) {
-				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
-				else encrypt(keyInput, encryptKey, "Gmail");
+				else encrypt(keyInput, pbe, "Gmail");
 			} else if(intMenu == 0) {
 				System.out.println("설정을 종료합니다.");
 				keyInput.close();
-				readFile.close();
-				fr.close();
 				break;
 			}
 		}
 	}
 	
-	public static void encrypt(BufferedReader keyInput, String encryptKey, String menuName) throws IOException {
-		StandardPBEStringEncryptor pbe = new StandardPBEStringEncryptor();
-		pbe.setAlgorithm("PBEWithMD5AndDES");
-		pbe.setPassword(encryptKey);
+	public static void encrypt(BufferedReader keyInput, StandardPBEStringEncryptor pbe, String menuName) throws IOException {
+		String schema = null;
+		
+		if(menuName.equals("Mysql")) {
+			System.out.print(menuName + " Schema(Database) >> ");
+			schema = keyInput.readLine();
+		}
 		
 		System.out.print(menuName + " Username >> ");
 		String username = keyInput.readLine();
@@ -97,10 +80,12 @@ public class DefaultSetting {
 		
 		String saveFile = "./src/main/webapp/WEB-INF/spring/properties/" + prefix + ".connection.properties";
 		
+		if(schema != null)  schema = String.format("%s.schema=%s", menuName.toLowerCase(), schema);
 		String saveUserName = String.format("%s.username=ENC(%s)", menuName.toLowerCase(), encUserName);
 		String savePassword = String.format("%s.password=ENC(%s)", menuName.toLowerCase(), encPassword);
 		
 		PrintWriter pw = new PrintWriter(saveFile);
+		if(schema != null) pw.println(schema);
 		pw.println(saveUserName);
 		pw.println(savePassword);
 		pw.flush();
