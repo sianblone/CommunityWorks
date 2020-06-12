@@ -24,6 +24,12 @@
 		<property name="dataSource" ref="mysqlDS" />
 		<property name="typeAliasesPackage" value="com.sif.community.model" />
 		<property name="mapperLocations" value="/WEB-INF/spring/mapper/*-mapper.xml" />
+		<property name="configuration">
+			<bean class="org.apache.ibatis.session.Configuration">
+				<property name="jdbcTypeForNull" value="VARCHAR" />
+				<property name="logPrefix" value="마이바티스" />
+			</bean>
+		</property>
 	</bean>
 			
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
