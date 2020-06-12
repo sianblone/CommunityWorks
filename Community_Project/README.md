@@ -39,7 +39,7 @@
 * apache DBCP
 * MyBatis
 * MyBatis-Spring
-* MySQL-J(ava)
+* MySQL-J
 
 ### Basic Dependency
 * lombok
