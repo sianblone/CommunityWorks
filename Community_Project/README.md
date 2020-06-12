@@ -46,12 +46,11 @@
 * jackson-databind
 * logback
 
-### Spring Security
-#### 기본설정
+### 프로젝트 설정
 1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml
 2. servlet-context.xml 설정 : component-scan controller, service 추가
 
-#### Spring Security 기본 설정
+### Spring Security 설정
 1. spring 폴더 아래에 [jasypt-context.xml] 생성 후 설정
 2. spring 폴더 아래에 [db-context.xml] 생성 후 설정
 3. spring 폴더 아래에 [security-context.xml] 생성 후 설정
@@ -61,7 +60,6 @@
 7. [AuthenticationProviderImpl](implements AuthenticationProvider) -> [UserDetailsService] -> [UserDao], [AuthoritiesDao] 만들고 설정
 8. spring 폴더 아래에 mapper 폴더 생성 후 [auth-mapper.xml], [user-mapper.xml] 생성 및 설정. user-mapper는 resultMap을 이용해 authorities 테이블 조회 결과도 가져오기
 
-### Spring Security 설정
 #### web.xml 설정
 * 반드시 springSecurityFilterChain, springSecurityFilterChain 설정
 * 반드시 contextConfigLocation에 jasypt -> db -> security 순서로 context를 로드하도록 설정한다. 논리적인 연동 순서대로 로드하지 않으면 오류 발생
