@@ -136,6 +136,7 @@ NaverConfig.*
 DataGoConfig.*
 naver.email.secret.properties
 *.connection.properties
+encrypt-key.txt
 
 naver_secret.*
 dataGoKr.*
