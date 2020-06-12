@@ -49,6 +49,7 @@ public class BoardServiceImpl implements BoardService {
 		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
 		
 		
+		
 		List<BoardVO> boardList = null;
 		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기

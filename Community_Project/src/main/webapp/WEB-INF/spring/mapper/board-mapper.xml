@@ -19,7 +19,7 @@
 			AND
 			b.board_delete = 0
 			AND
-			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			${boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 		ORDER BY b.board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
