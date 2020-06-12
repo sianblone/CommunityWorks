@@ -16,8 +16,9 @@
 			b.board_info = #{boardVO.board_info}
 			AND
 			b.board_p_no = 0
-			AND
-			b.board_delete = 0
+			<if test="!isAdmin">
+				AND b.board_delete = 0
+			</if>
 			<if test="boardVO.search_type != null and !boardVO.search_type.equals('') and !boardVO.search_type.equals('nickname') and boardVO.search_txt != null and !boardVO.search_txt.equals('')">
 				AND ${boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
 			</if>
@@ -42,9 +43,10 @@
 		WHERE
 			b.board_p_no = #{board_no}
 			AND
-			b.board_delete = 0
-			AND
 			b.board_writer = u.username
+			<if test="!isAdmin">
+				AND b.board_delete = 0
+			</if>
 		ORDER BY b.board_no ASC
 	</select>
 	
@@ -141,10 +143,15 @@
 		WHERE `board_no` = #{board_no}
 	</update>
 	
-	<update id="delete">
+	<update id="update_delete">
 		UPDATE tbl_board
 		SET
 			board_delete = #{board_delete}
 		WHERE board_no = #{board_no}
 	</update>
+	
+	<delete id="delete">
+		DELETE FROM tbl_board
+		WHERE board_no = #{board_no}
+	</delete>
 </mapper>

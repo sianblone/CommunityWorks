@@ -15,6 +15,9 @@
 	.details_info small:nth-child(3) {
 		margin-left: auto !important;
 	}
+	.deleted {
+		color: gray;
+	}
 </style>
 <script>
 $(function(){
@@ -68,7 +71,7 @@ $(function(){
 		if(txt == '수정') {
 			document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
 		} else if(txt == '삭제') {
-			if(confirm("삭제할까요?")) {
+			if(confirm("정말 삭제하시겠습니까?")) {
 				document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
 			}
 		} else if(txt == '답변저장') {
@@ -107,9 +110,14 @@ $(function(){
 		} else if(txt == "답글") {
 			document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
 			return false
-		} else {
+		} else if(txt == "목록"){
 			document.location.href="${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
-
+		} else if(txt == "완전삭제"){
+			if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
+			document.location.replace("${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=delete")
+		} else if(txt == "글 복구"){
+			if(confirm("이 글을 복구하시겠습니까?"))
+			document.location.href="${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=restore"
 		}
 	})
 })
@@ -125,7 +133,7 @@ $(function(){
 	<main>
 		<section class="container-fluid">
 			<div class="text-right">
-				<h2 class="p-1">${BOARD_VO.board_subject}</h2>
+				<h2 class="p-1 <c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject}</h2>
 				<small class="m-3">작성일시 : ${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
 			</div>
 			<hr/>
@@ -141,12 +149,18 @@ $(function(){
 			</div>
 		</section>
 		<div class="form-group d-flex justify-content-end">
-			<c:if test="${IS_WRITER}">
+			<c:if test="${IS_ADMIN}">
+				<button class="btn btn-warning mr-3">완전삭제</button>
+			</c:if>
+			<c:if test="${IS_ADMIN && IS_DELETED}">
+				<button class="btn btn-warning mr-3">글 복구</button>
+			</c:if>
+			<c:if test="${IS_WRITER || IS_ADMIN}">
 				<button class="btn btn-primary mr-3">수정</button>
 				<button class="btn btn-danger mr-3">삭제</button>
 			</c:if>
 			<button class="btn btn-info mr-3">답글</button>
-			<button class="btn btn-success">목록으로</button>
+			<button class="btn btn-success">목록</button>
 		</div>
 		<hr/>
 		<section class="container-fluid p-4">

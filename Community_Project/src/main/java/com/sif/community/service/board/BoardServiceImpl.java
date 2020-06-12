@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImpl implements BoardService {
 	
 	private final BoardDao boardDao;
-	private final AdminDao adminDao;
 	private final UserService userSvc;
 	
 	@Override
@@ -39,13 +38,12 @@ public class BoardServiceImpl implements BoardService {
 		List<UserDetailsVO> usernameList = null;
 		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
 		
+		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			totalCount = adminDao.countAll(boardVO);
-		} else {
-			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물 리스트에서 숨기기
-			totalCount = boardDao.countAll(boardVO, usernameList);
+			isAdmin = true;
 		}
+		totalCount = boardDao.countAll(boardVO, usernameList, isAdmin);
 		
 		return totalCount;
 	}
@@ -58,13 +56,12 @@ public class BoardServiceImpl implements BoardService {
 		// 닉네임 검색인 경우
 		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
 		
+		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			boardList = adminDao.selectAllByPageAdmin(boardVO, pageVO);
-		} else {
-			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
-			boardList = boardDao.selectAllByPage(boardVO, pageVO, usernameList);
+			isAdmin = true;
 		}
+		boardList = boardDao.selectAllByPage(boardVO, pageVO, usernameList, isAdmin);
 		
 		return boardList;
 	}
@@ -160,7 +157,7 @@ public class BoardServiceImpl implements BoardService {
 			// 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 삭제하기
 			if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 				boardVO.setBoard_delete(1);
-				boardDao.delete(boardVO);
+				boardDao.update_delete(boardVO);
 				
 				long board_info = boardVO.getBoard_info();
 				render = "redirect:/board/list?board_info=" + board_info;
@@ -172,6 +169,31 @@ public class BoardServiceImpl implements BoardService {
 		} else {
 			// DB에 baord_no로 검색한 데이터가 없으면 에러페이지 보여주기
 			render = "board/error";
+		}
+		
+		return render;
+	}
+	
+	@Override
+	public String admin(long board_no, Integer currPage, String order) {
+		String render = "";
+		BoardVO boardVO = this.findByNo(board_no);
+		
+		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			render = "board/error";
+		} else if(order.equals("restore")) {
+			boardVO.setBoard_delete(0);
+			boardDao.update_delete(boardVO);
+			
+			long board_info = boardVO.getBoard_info();
+			render = "redirect:/board/list?board_info=" + board_info;
+			if(currPage != null) render += "&currPage=" + currPage;
+		} else if(order.equals("delete")) {
+			boardDao.delete(board_no);
+			
+			long board_info = boardVO.getBoard_info();
+			render = "redirect:/board/list?board_info=" + board_info;
+			if(currPage != null) render += "&currPage=" + currPage;
 		}
 		
 		return render;

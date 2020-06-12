@@ -78,13 +78,19 @@ public class BoardController {
 		}
 		
 		boolean isWriter = false;
+		boolean isAdmin = false;
+		boolean isDeleted = false;
+		
+		if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) isAdmin = true;
 		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
-		if(boardVO.getBoard_writer().equals(auth.getName()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			isWriter = true;
-		}
+		if( boardVO.getBoard_writer().equals(auth.getName()) ) isWriter = true;
+		if(boardVO.getBoard_delete() == 1) isDeleted = true;
 		
 		model.addAttribute("BOARD_VO",boardVO);
 		model.addAttribute("IS_WRITER", isWriter);
+		model.addAttribute("IS_ADMIN", isAdmin);
+		model.addAttribute("IS_DELETED", isDeleted);
+		
 		return "board/details";
 	}
 	
@@ -125,6 +131,12 @@ public class BoardController {
 		return render;
 	}
 	
+	@RequestMapping(value = "/admin", method=RequestMethod.GET)
+	public String admin(long board_no, Integer currPage, String order) {
+		String render = boardSvc.admin(board_no, currPage, order);
+		return render;
+	}
+	
 	// 페이지네이션
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
 		if(currPage == null) currPage = 1;
@@ -137,7 +149,7 @@ public class BoardController {
 		log.debug("boardVO : {}", boardVO.toString());
 		long totalCount = boardSvc.countAll(boardVO);
 		log.debug("카운트 : {}", totalCount);
-		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
 		log.debug("페이지 : {}", pageVO.toString());
 		model.addAttribute("PAGE_DTO", pageVO);
 		
