@@ -83,11 +83,6 @@
 				return regex.test(username)
 			}
 			
-			function regYear(year) {
-				let regex = /^(19|20)[0-9]{2}$/
-				return regex.test(year)
-			}
-			
 			function regMonthOrDay(monthOrDay) {
 				let regex = /^[0-9]{1,2}$/
 				return regex.test(monthOrDay)
@@ -130,7 +125,7 @@
 					alert("올바른 형식의 이메일이 아닙니다.")
 					email.focus()
 					return false
-				} else if ( !regYear(year.val()) ) {
+				} else if ( year.val() > new Date().getFullYear() || year.val() < 1900 ) {
 					alert("생년을 정확히 입력하세요.")
 					year.focus()
 					return false
@@ -268,7 +263,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>회원가입</h2>
-	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="off">
+	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="off" onSubmit="return false">
 		<!--
 		<input name="${_csrf.parameterName}" value="${_csrf.token}">
 		-->

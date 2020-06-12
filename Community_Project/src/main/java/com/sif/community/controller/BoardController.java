@@ -127,9 +127,13 @@ public class BoardController {
 	// 페이지네이션
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
 		if(currPage == null) currPage = 1;
+		
+		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
+		log.debug("boardVO : {}", boardVO.toString());
 		long totalCount = boardSvc.countAll(boardVO);
-		log.debug("컨트롤러 totalCount : {}",totalCount);
+		log.debug("카운트 : {}", totalCount);
 		PaginationVO pageVO = pageSvc.makePageInfo(totalCount, currPage);
+		log.debug("페이지 : {}", pageVO.toString());
 		model.addAttribute("PAGE_DTO", pageVO);
 		
 		String page_default_query = "board_info=" + boardVO.getBoard_info();

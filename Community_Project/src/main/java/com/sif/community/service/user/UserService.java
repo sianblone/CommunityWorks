@@ -2,6 +2,7 @@ package com.sif.community.service.user;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -57,12 +58,6 @@ public class UserService {
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
 	public int update_user(UserDetailsVO userVO) {
-		// 년도 유효성 검사
-		if( !userVO.getYear().matches("^(19|20)[0-9]{2}$") ) return -103;
-		// 생년월일 유효성 검사
-		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
-		if( !this.dateCheck(birth) ) return -103;
-		
 		// 유저 정보는 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
 		
 		// SecurityContextHolder에서 인증정보 가져오기
@@ -79,8 +74,12 @@ public class UserService {
 		loginUserVO.setMonth(userVO.getMonth());
 		loginUserVO.setDay(userVO.getDay());
 		
+		int ret = this.valid_update(loginUserVO);
+		// 유효성 검사 통과 실패 시 유효성 검사 결과값 바로 리턴
+		if(ret < 0) return ret;
+		
 		// DB에 업데이트 된 유저정보 저장
-		int ret = userDao.update_user(loginUserVO);
+		ret = userDao.update_user(loginUserVO);
 		if(ret > 0) {
 			// 업데이트 성공시, 전역으로 쓰는 SecurityContextHolder(현재 로그인 된 사용자 정보)에 새로운 Authentication 업데이트 시켜주기
 			Authentication newAuth = new UsernamePasswordAuthenticationToken(loginUserVO, auth.getCredentials(), auth.getAuthorities());
@@ -90,7 +89,38 @@ public class UserService {
 		return ret;
 	}
 	
+	protected int valid_update(UserDetailsVO userVO) {
+		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
+		int result = 0;
+		
+		if( !this.dateCheck(birth) ) {
+			// 생년월일 유효성 검사
+			result = -103;
+		} else if(this.findByUsername(userVO.getUsername()) != null) {
+			// 이미 DB에 있는 아이디인지 검사
+			result = -200;
+		}
+		
+		return result;
+	}
+	
 	protected boolean dateCheck(String date) {
+		// 년도 유효성 검사
+		LocalDate localDate = LocalDate.now();
+		String inputStrYear = date.split("-")[0];
+		int inputYear = 0;
+		try {
+			inputYear = Integer.parseInt(inputStrYear);
+		} catch (Exception e) {
+			// 입력받은 생년을 int로 변환할 수 없으면 return false
+			return false;
+		}
+		
+		// 입력받은 생년 값이 올해보다 크거나 1900년보다 작으면 return false
+		if(inputYear > localDate.getYear() || inputYear < 1900) {
+			return false;
+		}
+		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		try {

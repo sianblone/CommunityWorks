@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			totalCount = adminDao.countAll(boardVO);
 		} else {
-			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
+			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물 리스트에서 숨기기
 			totalCount = boardDao.countAll(boardVO);
 		}
 		
@@ -48,9 +48,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다.
-		log.debug("페이지: {}", pageVO.toString());
-		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
-		
 		
 		List<BoardVO> boardList = null;
 		

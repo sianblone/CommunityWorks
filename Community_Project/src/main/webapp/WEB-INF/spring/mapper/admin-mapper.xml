@@ -16,8 +16,9 @@
 			b.board_info = #{boardVO.board_info}
 			AND
 			b.board_p_no = 0
-			AND
-			#{boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			<if test="boardVO.search_type != null and !boardVO.search_type.equals('') and boardVO.search_txt != null and !boardVO.search_txt.equals('')">
+				AND ${boardVO.search_type} LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+			</if>
 		ORDER BY b.board_no DESC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
@@ -42,8 +43,9 @@
 		FROM tbl_board
 		WHERE
 			board_info = #{board_info}
-			AND
-			#{search_type} LIKE CONCAT('%', #{search_txt}, '%')
+			<if test="search_type != null and !search_type.equals('') and search_txt != null and !search_txt.equals('')">
+				AND ${search_type} LIKE CONCAT('%', #{search_txt}, '%')
+			</if>
 	</select>
 	
 	<insert id="create_board">
