@@ -29,4 +29,6 @@ public interface BoardService {
 	
 	public BoardInfoVO findByBoardInfo(long board_info);
 
+	public String admin(long board_no, Integer currPage, String order);
+
 }
