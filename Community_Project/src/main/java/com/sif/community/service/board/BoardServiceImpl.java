@@ -13,13 +13,16 @@ import org.springframework.ui.Model;
 
 import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
+import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.BoardService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service(value = "boardSvc")
 public class BoardServiceImpl implements BoardService {
@@ -35,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			totalCount = adminDao.countAll(boardVO);
 		} else {
-			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물도 리스트에서 숨기기
+			// 현재 사용자가 관리자 권한이 아닐 때 delete = 1인 게시물 리스트에서 숨기기
 			totalCount = boardDao.countAll(boardVO);
 		}
 		
@@ -44,12 +47,6 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
-		// boardVO에는 게시판이름, search_type, search_txt가 들어있다.
-		
-		if(boardVO.getSearch_type().equals("subject")) boardVO.setSearch_type("board_subject");
-		
-		
-		
 		List<BoardVO> boardList = null;
 		
 		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
@@ -174,6 +171,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO findByNo(long board_no) {
 		return boardDao.findByNo(board_no);
+	}
+
+	@Override
+	public BoardInfoVO findByBoardInfo(long board_info) {
+		return boardDao.findByBoardInfo(board_info);
+	}
+
+	@Override
+	public List<BoardInfoVO> selectAllBoardInfo() {
+		return boardDao.selectAllBoardInfo();
 	}
 
 }

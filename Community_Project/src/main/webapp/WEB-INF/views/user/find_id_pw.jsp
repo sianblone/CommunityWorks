@@ -170,8 +170,6 @@
 							email.val("")
 						} else if (result == 4) {
 							alert("메일 발송에 실패했습니다.\n다시 시도하세요.")
-						} else {
-							alert("문제가 발생했습니다.\n다시 시도하세요.")
 						}
 					},
 					error : function() {

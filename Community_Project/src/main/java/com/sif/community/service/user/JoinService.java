@@ -2,6 +2,7 @@ package com.sif.community.service.user;
 
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,6 +104,22 @@ public class JoinService {
 	}
 	
 	protected boolean dateCheck(String date) {
+		// 년도 유효성 검사
+		LocalDate localDate = LocalDate.now();
+		String inputStrYear = date.split("-")[0];
+		int inputYear = 0;
+		try {
+			inputYear = Integer.parseInt(inputStrYear);
+		} catch (Exception e) {
+			// 입력받은 생년을 int로 변환할 수 없으면 return false
+			return false;
+		}
+		
+		// 입력받은 생년 값이 올해보다 크거나 1900년보다 작으면 return false
+		if(inputYear > localDate.getYear() || inputYear < 1900) {
+			return false;
+		}
+		
 		SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		try {

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.PaginationService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service(value = "pageSvc")
 public class PaginationServiceImpl implements PaginationService {
 	
@@ -22,6 +25,7 @@ public class PaginationServiceImpl implements PaginationService {
 
 	public PaginationVO makePageInfo(long totalCount, int currPage) {
 		
+		log.debug("카운터{}",totalCount);
 		if(totalCount < 1) {
 			PaginationVO pageVO = PaginationVO.builder()
 					.startPageNo(1)

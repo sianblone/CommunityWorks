@@ -9,8 +9,10 @@
 		#email_auth {
 			position: absolute;
 			top: 58px;
-			width: 100%;
+			width: 1024px;
 			padding: 20px;
+			left: 50%;
+			transform: translateX(-50%);
 			text-align: center;
 			background-color: black;
 			color: white;

@@ -19,7 +19,7 @@ tbody tr[data-id] {
 <script>
 	$(function() {
 		$("button.btn-writer").click(function() {
-			let url = "${rootPath}/board/save?board_info=${BOARD_INFO}";
+			let url = "${rootPath}/board/save?board_info=${BOARD_INFO.bi_id}";
 
 			let currPage = "${param.currPage}"
 			if (currPage != "")
@@ -34,7 +34,7 @@ tbody tr[data-id] {
 						"tbody tr[data-id]",
 						function() {
 							let board_no = $(this).data("id")
-							let url = "${rootPath}/board/details?board_info=${BOARD_INFO}&board_no="
+							let url = "${rootPath}/board/details?board_info=${BOARD_INFO.bi_id}&board_no="
 									+ board_no;
 
 							let currPage = "${param.currPage}";
@@ -50,6 +50,7 @@ tbody tr[data-id] {
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf"%>
 	<main>
+	<%@ include file="/WEB-INF/views/include/include_header.jsp"%>
 		<article>
 			<table class="table table-hover text-center">
 				<thead>
@@ -78,7 +79,7 @@ tbody tr[data-id] {
 									<td>${B.board_category}</td>
 									<td><c:if test="${B.board_delete == 1}">[삭제됨] </c:if>${B.board_subject}</td>
 									<td>${B.board_nickname}</td>
-									<td>${B.board_date}${B.board_time}</td>
+									<td>${B.board_date} ${B.board_time}</td>
 									<td>${B.board_count}</td>
 									<td>${B.board_recommend}</td>
 								</tr>
@@ -89,7 +90,7 @@ tbody tr[data-id] {
 											data-id="${RE.board_no}">
 											<td>${RE.board_no}</td>
 											<td>${RE.board_category}</td>
-											<td><c:if test="${RE.board_delete == 1}">[삭제됨] </c:if>ㄴ
+											<td><c:if test="${RE.board_delete == 1}">[삭제됨] </c:if>
 												${RE.board_subject}</td>
 											<td>${RE.board_nickname}</td>
 											<td>${RE.board_date}${RE.board_time}</td>

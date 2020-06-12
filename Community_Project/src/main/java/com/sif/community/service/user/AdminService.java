@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.AuthoritiesDao;
+import com.sif.community.dao.BoardDao;
 import com.sif.community.dao.CategoryDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
@@ -25,6 +26,7 @@ public class AdminService {
 	private final UserDao userDao;
 	private final AdminDao adminDao;
 	private final AuthoritiesDao authDao;
+	private final BoardDao boardDao;
 	private final CategoryDao cateDao;
 	
 	// 관리자가 다른 유저 정보 수정하기
@@ -102,14 +104,6 @@ public class AdminService {
 	public int create_board(BoardInfoVO boardInfoVO) {
 		return adminDao.create_board(boardInfoVO);
 	}
-
-	public List<BoardInfoVO> selectBoardAll() {
-		return adminDao.selectBoardAll();
-	}
-
-	public BoardInfoVO selectByBoardInfo(BoardInfoVO boardInfoOptionVO) {
-		return adminDao.selectByBoardInfo(boardInfoOptionVO);
-	}
 	
 	@Transactional
 	public int update_tbl_board_info(BoardInfoVO boardInfoOptionVO, CategoryVO categoryOptionVO) {
@@ -117,7 +111,7 @@ public class AdminService {
 		// category 배열에는 카테고리 목록이 들어있다
 		
 		// DB의 게시판 정보(tbl_board_info) 불러오기
-		BoardInfoVO dbBoardInfoVO = adminDao.selectByBoardInfo(boardInfoOptionVO);
+		BoardInfoVO dbBoardInfoVO = boardDao.findByBoardInfo(boardInfoOptionVO.getBi_id());
 		
 		// 유효성 검사 시작
 		if(boardInfoOptionVO.getBi_name().length() > 20) {

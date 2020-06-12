@@ -18,6 +18,6 @@
 		<option value="content" <c:out value=""/>>내용</option>
 		<option value="writer" <c:out value=""/>>작성자</option>
 	</select>
-	<input name="search_txt" id="search_txt" placeholder="검색어를 입력하세요" value="" />
+	<input name="search_txt" id="search_txt" placeholder="검색어를 입력하세요" />
 	<button id="search_btn">검색</button>
 </form:form>
