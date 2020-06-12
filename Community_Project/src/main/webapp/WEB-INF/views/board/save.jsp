@@ -118,7 +118,6 @@
 				
 				<div class="form-group d-flex justify-content-end">
 					<button id="btn_save" class="btn btn-primary mr-2">저장</button>
-					<button id="btn_list" class="btn btn-success" type="button">목록으로</button>
 				</div>
 			</fieldset>
 		</form:form>
