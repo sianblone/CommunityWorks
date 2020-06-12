@@ -26,7 +26,6 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/spring/root-context.xml
-			/WEB-INF/spring/property-context.xml
 			/WEB-INF/spring/jasypt-context.xml
 			/WEB-INF/spring/db-context.xml
 			/WEB-INF/spring/security-context.xml
