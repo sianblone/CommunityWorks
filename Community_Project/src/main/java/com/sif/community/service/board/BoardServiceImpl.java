@@ -20,7 +20,9 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.BoardService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service(value = "boardSvc")
 public class BoardServiceImpl implements BoardService {
