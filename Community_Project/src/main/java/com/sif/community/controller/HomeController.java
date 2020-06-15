@@ -27,8 +27,6 @@ public class HomeController {
 		boardIdList.add((long) 2);
 		boardIdList.add((long) 3);
 		
-		
-		List<BoardInfoVO> boardinfoList = boardSvc.findByBoardInfo(board_info);
 		return "home";
 	}
 	

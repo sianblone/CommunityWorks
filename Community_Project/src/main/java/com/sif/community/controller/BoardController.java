@@ -139,6 +139,9 @@ public class BoardController {
 	
 	// 페이지네이션
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
+		// 사용법
+		// 1. 페이징 할 곳에서 Service-Dao-DB를 통해 totalCount(총 데이터 수) 가져오기
+		// 2. 
 		if(currPage == null) currPage = 1;
 		
 		log.debug("boardVO : {}", boardVO.toString());
