@@ -28,6 +28,13 @@
 		--label-text-color: #18181b;
 		--color-danger: #DC3545;
 		--color-success: #28A745;
+		
+		--nav-min-width: 768px;
+		--nav-max-width: 1024px;
+		--main-min-width: 768px;
+		--main-max-width: 1024px;
+		--footer-min-width: 768px;
+		--footer-max-width: 1024px;
 	}
 	* {
 		box-sizing: border-box;
@@ -39,8 +46,8 @@
 		height: 2000px;
 	}
 	main {
-		min-width: 720px;
-		max-width: 1024px;
+		min-width: var(--main-min-width);
+		max-width: var(--main-max-width);
 		margin: 0 auto;
 	}
 	h2 {

@@ -61,6 +61,10 @@
 		ORDER BY b.board_no ASC
 	</select>
 	
+	<select id="selectMainPage" resultType="boardVO">
+		
+	</select>
+	
 	<select id="selectCategoryByBoard" resultType="categoryVO">
 		SELECT *
 		FROM tbl_category
