@@ -81,8 +81,12 @@
 			// user_details.jsp
 			$(document).on("click","#btn_add_auth",function(){
 				let auth_input = "<div class='my_form_item'>"
-								+ "<span class='my_label'>새 권한</span>"
-								+ "<input class='my_data' name='auth'/>"
+								+ "	<span class='my_label'>새 권한</span>"
+								+ "	<select class='my_data' name='auth'/>"
+								+ "		<option value=''>없음</option>"
+								+ "		<option value='ROLE_USER'>유저</option>"
+								+ "		<option value='ROLE_ADMIN'>관리자</option>"
+								+ "	</select>"
 								+ "</div>"
 				//auth_input.append($("<p/>", {"text":"제거","class":"auth_delete"}))
 				$("div#auth_box").append(auth_input)
@@ -140,7 +144,7 @@
 				$.ajax({
 					url: "${rootPath}/admin/board_setting_details",
 					type: "GET",
-					data: { bi_id : $(this).data("id") },
+					data: { board_info : $(this).data("id") },
 					success: function(result) {
 						$("#admin_content").html(result)
 					},
@@ -166,6 +170,11 @@
 			
 			// board_setting_create_board.jsp
 			$(document).on("click", "#btn_create_board", function() {
+				if($("#bi_name").val() == "") {
+					alert("게시판 이름을 입력하세요.")
+					return false
+				}
+				
 				$.ajax({
 					url: "${rootPath}/admin/board_setting_create_board",
 					type: "POST",
@@ -183,10 +192,10 @@
 			// board_setting_details.jsp
 			$(document).on("click","#btn_add_category",function(){
 				let cate_input = "<div class='my_form_item category_box'>"
-								+ "<span class='my_label'>새 카테고리</span>"
-								+ "<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
-								+ "<input class='my_data' name='cate_delete_list' type='hidden' value='false'/>"
-								+ "<input class='my_data' name='cate_text_list'/>"
+								+ "	<span class='my_label'>새 카테고리</span>"
+								+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
+								+ "	<input class='my_data' name='cate_delete_list' type='hidden' value='false'/>"
+								+ "	<input class='my_data' name='cate_text_list'/>"
 								//+ "<button class='delete'>삭제</button>"
 								+ "</div>"
 				$("div#cate_box").append(cate_input)

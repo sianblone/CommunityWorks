@@ -138,7 +138,7 @@ $(function(){
 			</div>
 			<hr/>
 			<div class="details_info">
-				<small class="m-3">카테고리 : ${BOARD_VO.board_category}</small>
+				<small class="m-3">카테고리 : <c:if test="${BOARD_VO.board_category == null}">없음</c:if><c:if test="${BOARD_VO.board_category != null}">${BOARD_VO.board_category}</c:if></small>
 				<small class="m-3">작성자 : ${BOARD_VO.board_nickname}</small>
 				<small class="m-3">조회수 : ${BOARD_VO.board_count}</small>
 				<small class="m-3">추천수 : ${BOARD_VO.board_recommend}</small>
@@ -151,8 +151,6 @@ $(function(){
 		<div class="form-group d-flex justify-content-end">
 			<c:if test="${IS_ADMIN}">
 				<button class="btn btn-warning mr-3">완전삭제</button>
-			</c:if>
-			<c:if test="${IS_ADMIN && IS_DELETED}">
 				<button class="btn btn-warning mr-3">글 복구</button>
 			</c:if>
 			<c:if test="${IS_WRITER || IS_ADMIN}">

@@ -28,7 +28,7 @@ public class JoinController {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String join(UserDetailsVO userVO, Model model) {
 		//return "user/join";
-		return "user/join-test";
+		return "user/join_test";
 	}
 	
 	/*

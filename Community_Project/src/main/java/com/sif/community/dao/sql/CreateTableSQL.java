@@ -88,7 +88,7 @@ public class CreateTableSQL {
 		+ " cmt_writer VARCHAR(50) NOT NULL, "
 		+ " cmt_date DATE, "
 		+ " cmt_time VARCHAR(10), "
-		+ " cmt_content	VARCHAR(1000) NOT NULL,	" 
+		+ " cmt_content	VARCHAR(1000) NOT NULL,	"
 		+ " cmt_delete TINYINT NOT NULL DEFAULT 0, "
 		+ " cmt_recommend BIGINT NOT NULL DEFAULT 0, "
 		

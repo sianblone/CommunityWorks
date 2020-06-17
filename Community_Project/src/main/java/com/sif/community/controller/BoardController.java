@@ -151,7 +151,7 @@ public class BoardController {
 		log.debug("페이지 : {}", pageVO.toString());
 		model.addAttribute("PAGE_DTO", pageVO);
 		
-		String page_default_query = "board_info=" + boardVO.getBoard_info();
+		String page_default_query = "&board_info=" + boardVO.getBoard_info();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
 		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardVO.getBoard_info());		

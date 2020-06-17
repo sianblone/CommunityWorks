@@ -63,7 +63,7 @@
 	var check = $("input[type='checkbox']");
 	check.click(function(){
 		$("p").toggle();
-	});
+	})
 </script>
 <form:form id="user_details_form" action="${rootPath}/user/mypage">
 	<div class="my_form_item">
@@ -108,19 +108,26 @@
 		</div>
 	</div>
 	
-	
 	<c:choose>
 		<c:when test="${empty USER_VO.authorities}">
 			<div class="my_form_item">
 				<span class="my_label">권한</span>
-				<input class="my_data" name="auth" />
+				<select class="my_data" name="auth">
+					<option value="">없음</option>
+					<option value="ROLE_USER">유저</option>
+					<option value="ROLE_ADMIN">관리자</option>
+				</select>
 			</div>
 		</c:when>
 		<c:otherwise>
 			<c:forEach items="${USER_VO.authorities}" var="auth" varStatus="s">
 				<div class="my_form_item">
 					<span class="my_label">권한${s.count}</span>
-					<input class="my_data" name="auth" value="${auth.authority}" />
+					<select class="my_data" name="auth">
+						<option value="">없음</option>
+						<option value="ROLE_USER" <c:if test="${auth.authority == 'ROLE_USER'}">selected="selected"</c:if>>유저</option>
+						<option value="ROLE_ADMIN" <c:if test="${auth.authority == 'ROLE_ADMIN'}">selected="selected"</c:if>>관리자</option>
+					</select>
 				</div>
 			</c:forEach>
 		</c:otherwise>
