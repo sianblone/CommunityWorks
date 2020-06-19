@@ -9,6 +9,10 @@
 		display: flex;
 		justify-content: center;
 	}
+	
+	#search_type, #search_txt {
+		margin-right: 10px;
+	}
 </style>
 <form:form id="search_form" method="GET" action="${rootPath}/board/list">
 	<input type="hidden" name="board_info" value="<c:out value='${param.board_info}' default='0'/>" />

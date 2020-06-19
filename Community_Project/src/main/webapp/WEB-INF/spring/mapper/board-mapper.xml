@@ -2,9 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sif.community.dao.BoardDao">
-
-	<select id="selectAllByPage" resultMap="selectAllByPageRM">
-		SELECT b.*, u.nickname AS board_nickname, bi.bi_name AS board_name
+	<!--
+	1. tbl_board의 모든 칼럼 가져오기
+	2. tbl_board_info의 bi_name은 VO에 만들어 둔 board_name에 매핑
+	3. tbl_users의 nickname은 VO에 만들어 둔 board_nickname에 매핑
+	4. b.board_info = bi.bi_id + b.board_writer = u.username 조인
+	5. WHERE 조건으로 결과 가져오기
+	6. 관리자 확인
+	7. 검색옵션, 검색값 확인
+	7-1. 닉네임으로 검색 시 ID List 가져와서 매개변수에 전달, 작성자 검색
+	8. 그룹으로 정렬 : 1. board_group > 2. board_order
+	-->
+	<select id="selectAllByPage" resultType="boardVO">
+		SELECT
+			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime, b.board_subject, b.board_content,
+			u.nickname AS board_nickname, bi.bi_name AS board_name
 		FROM tbl_board b
 		LEFT JOIN tbl_board_info bi
 		ON
@@ -14,8 +26,6 @@
 			b.board_writer = u.username
 		WHERE
 			b.board_info = #{boardVO.board_info}
-			AND
-			b.board_p_no = 0
 			<if test="!isAdmin">
 				AND b.board_delete = 0
 			</if>
@@ -38,27 +48,8 @@
 					AND board_writer = #{userVO.username}
 				</foreach>
 			</if>
-		ORDER BY b.board_no DESC
+		ORDER BY b.board_group DESC, b.board_order ASC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
-	</select>
-	
-	<resultMap id="selectAllByPageRM" type="boardVO">
-		<id property="board_no" column="board_no"/>
-		<result property="board_info" column="board_info"/>
-		<collection property="board_reply" column="board_no" ofType="boardVO" select="selectReply" />
-	</resultMap>
-	
-	<select id="selectReply" resultType="boardVO">
-		SELECT b.*, u.nickname AS board_nickname
-		FROM tbl_board b, tbl_users u
-		WHERE
-			b.board_p_no = #{board_no}
-			AND
-			b.board_writer = u.username
-			<if test="!isAdmin">
-				AND b.board_delete = 0
-			</if>
-		ORDER BY b.board_no ASC
 	</select>
 	
 	<select id="selectMainPage" resultType="boardVO">
@@ -130,9 +121,18 @@
 			b.board_writer = u.username
 	</select>
 	
+	<select id="maxOrderByBoardGroup" resultType="int">
+		SELECT IFNULL(MAX(board_order),0)
+		FROM tbl_board
+		WHERE board_group = #{board_group}
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO tbl_board (
 			board_p_no,
+			board_group,
+			board_order,
+			board_depth,
 			board_info,
 			board_writer,
 			board_datetime,
@@ -142,7 +142,10 @@
 			board_category
 		) VALUES (
 			#{board_p_no},
-			#{board_info},
+			#{board_group},
+			#{board_order},
+			#{board_depth},
+			#{board_info},						
 			#{board_writer},
 			#{board_datetime},
 			#{board_subject},
@@ -150,15 +153,21 @@
 			#{board_filename},
 			#{board_category}
 		)
+		<selectKey keyProperty="board_no" resultType="long" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
 	</insert>
 	
 	<update id="update">
 		UPDATE `community`.`tbl_board`
 		SET
 			`board_p_no` = #{board_p_no},
+			`board_group` = #{board_group},
+			`board_order` = #{board_order},
+			`board_depth` = #{board_depth},
 			`board_info` = #{board_info},
 			`board_writer` = #{board_writer},
-			`board_date` = #{board_datetime},
+			`board_datetime` = #{board_datetime},
 			`board_subject` = #{board_subject},
 			`board_content` = #{board_content},
 			`board_filename` = #{board_filename},

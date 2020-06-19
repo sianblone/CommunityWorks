@@ -17,7 +17,10 @@ public class CommentVO {
 	
 	private long cmt_no;//	BIGINT		PRIMARY KEY	AUTO_INCREMENT
 	private long cmt_board_no;//	BIGINT	NOT NULL		
-	private String cmt_p_no;//	VARCHAR(20)	NOT NULL		
+	private String cmt_p_no;//	VARCHAR(20)	NOT NULL
+	private long cmt_group;//	NOT NULL
+	private long cmt_order;//	NOT NULL
+	private long cmt_depth;//	NOT NULL
 	private String cmt_writer;//	VARCHAR(50)	NOT NULL		
 	private String cmt_date;//	DATE			
 	private String cmt_time;//	VARCHAR(10)			

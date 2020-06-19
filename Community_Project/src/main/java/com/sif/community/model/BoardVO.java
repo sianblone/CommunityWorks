@@ -22,6 +22,9 @@ public class BoardVO {
 
 	private long board_no;// BIGINT PRIMARY KEY AUTO_INCREMENT
 	private long board_p_no;// BIGINT NOT NULL DEFAULT 0
+	private long board_group;//	NOT NULL
+	private int board_order;//	NOT NULL
+	private int board_depth;//	NOT NULL
 	private long board_info;// BIGINT
 	private String board_writer;// VARCHAR(50) NOT NULL
 	@Getter(AccessLevel.NONE) private Date board_datetime;// TIMESTAMP, lombok에서 getter 생성 안함
@@ -35,7 +38,6 @@ public class BoardVO {
 
 	private String board_nickname;
 	private String board_name;
-	private List<BoardVO> board_reply;
 
 	private String search_type;
 	private String search_txt;

@@ -45,6 +45,9 @@ CREATE TABLE IF NOT EXISTS tbl_category (
 REATE TABLE IF NOT EXISTS tbl_board ( 
 	board_no	BIGINT		PRIMARY KEY	AUTO_INCREMENT,
 	board_p_no	BIGINT	NOT NULL		DEFAULT 0,
+	board_group	INT	NOT NULL,
+	board_order	INT	NOT NULL,
+	board_depth	INT	NOT NULL,
 	board_info	BIGINT,
 	board_writer	VARCHAR(50)	NOT NULL,
 	board_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP,
@@ -75,7 +78,7 @@ CREATE TABLE IF NOT EXISTS tbl_comment (
 	cmt_board_no BIGINT	NOT NULL,
 	cmt_p_no VARCHAR(20) NOT NULL,
 	cmt_group	INT	NOT NULL,
-	cmt_seq	INT	NOT NULL,	
+	cmt_order	INT	NOT NULL,	
 	cmt_depth	INT	NOT NULL,
 	cmt_writer	VARCHAR(50)	NOT NULL,
 	cmt_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP,

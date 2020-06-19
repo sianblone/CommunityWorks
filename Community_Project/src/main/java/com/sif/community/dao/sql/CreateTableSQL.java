@@ -54,6 +54,9 @@ public class CreateTableSQL {
 		= "CREATE TABLE IF NOT EXISTS tbl_board ( " 
 		+ " board_no	BIGINT		PRIMARY KEY	AUTO_INCREMENT, "
 		+ " board_p_no	BIGINT	NOT NULL		DEFAULT 0, "
+		+ " board_group	INT	NOT NULL, "
+		+ " board_order	INT	NOT NULL, "
+		+ " board_depth	INT	NOT NULL, "
 		+ " board_info	BIGINT, "
 		+ " board_writer	VARCHAR(50)	NOT NULL, "
 		+ " board_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP, "
@@ -63,19 +66,7 @@ public class CreateTableSQL {
 		+ " board_filename	VARCHAR(256), "
 		+ " board_delete	TINYINT	NOT NULL		DEFAULT 0, "
 		+ " board_recommend	BIGINT	NOT NULL		DEFAULT 0, "
-		+ " board_category	INT, "
-		
-		+ " CONSTRAINT FK_BI_BOARD_board_info "
-		+ " FOREIGN KEY (board_info) "
-		+ " REFERENCES tbl_board_info(bi_id), "
-		
-		+ " CONSTRAINT FK_USERS_BOARD_board_writer "
-		+ " FOREIGN KEY (board_writer) "
-		+ " REFERENCES tbl_users(username), "
-		
-		+ " CONSTRAINT FK_CATEGORY_BOARD_board_category "
-		+ " FOREIGN KEY (board_category) "
-		+ " REFERENCES tbl_category(cate_id) "
+		+ " board_category	INT "
 		+ " ) "
 	;
 	
@@ -85,7 +76,7 @@ public class CreateTableSQL {
 		+ " cmt_board_no BIGINT	NOT NULL, "
 		+ " cmt_p_no VARCHAR(20) NOT NULL, "
 		+ " cmt_group	INT	NOT NULL, "
-		+ " cmt_seq	INT	NOT NULL, "	
+		+ " cmt_order	INT	NOT NULL, "	
 		+ " cmt_depth	INT	NOT NULL, "
 		+ " cmt_writer	VARCHAR(50)	NOT NULL, "
 		+ " cmt_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP, "
@@ -96,6 +87,7 @@ public class CreateTableSQL {
 		+ " CONSTRAINT FK_BOARD_COMMENT_board_no "
 		+ " FOREIGN KEY (cmt_board_no) "
 		+ " REFERENCES tbl_board(board_no) "
+		+ " ON DELETE CASCADE "
 		+ " ) "
 	;
 	

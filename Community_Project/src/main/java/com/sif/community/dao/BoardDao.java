@@ -18,6 +18,7 @@ public interface BoardDao {
 	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO);
 	public BoardInfoVO findByBoardInfo(long board_info);
 	public List<BoardInfoVO> selectAllBoardInfo();
+	public int maxOrderByBoardGroup(long board_group);
 	
 	public int insert(BoardVO boardVO);
 	public int update(BoardVO boardVO);
