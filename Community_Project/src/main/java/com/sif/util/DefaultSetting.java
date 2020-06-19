@@ -15,7 +15,8 @@ public class DefaultSetting {
 		
 		StandardPBEStringEncryptor pbe = new StandardPBEStringEncryptor();
 		pbe.setAlgorithm("PBEWithMD5AndDES");
-		String encryptKey = null;
+		String encryptKey = System.getenv("ENV_PASS");
+		pbe.setPassword(encryptKey);
 		
 		while(true) {
 			// 메뉴 표시
@@ -36,17 +37,12 @@ public class DefaultSetting {
 			}
 			
 			if(intMenu == 1) {
-				encryptKey = System.getenv("ENV_PASS");
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
 				else System.out.println("암호화 Key : " + encryptKey);
 			} else if(intMenu == 2) {
-				encryptKey = System.getenv("ENV_PASS");
-				pbe.setPassword(encryptKey);
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
 				else encrypt(keyInput, pbe, "Mysql");
 			} else if(intMenu == 3) {
-				encryptKey = System.getenv("ENV_PASS");
-				pbe.setPassword(encryptKey);
 				if(encryptKey == null || encryptKey.isEmpty()) System.out.println("암호화 Key가 없습니다.");
 				else encrypt(keyInput, pbe, "Gmail");
 			} else if(intMenu == 0) {
