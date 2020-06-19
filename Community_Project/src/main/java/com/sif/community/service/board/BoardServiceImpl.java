@@ -1,7 +1,8 @@
 package com.sif.community.service.board;
 
+import java.util.Date;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -10,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
@@ -125,7 +125,7 @@ public class BoardServiceImpl implements BoardService {
 			ret = boardDao.update(dbBoardVO);
 		} else {
 			// 신규작성 글이나 답글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없는 경우)
-			// 작성자, 날짜, 시간 세팅 후 INSERT
+			// 작성자, 날짜+시간 세팅 후 INSERT
 			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 자동으로 세팅됨
 			saveSetting(boardVO);
 			ret = boardDao.insert(boardVO);
@@ -135,14 +135,14 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	protected BoardVO saveSetting(BoardVO boardVO) {
+		// 작성자 세팅
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		boardVO.setBoard_writer(username);
 		
+		// 날짜+시간 세팅
 		LocalDateTime ldt = LocalDateTime.now();
-		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		DateTimeFormatter dt = DateTimeFormatter.ofPattern("HH:mm:ss");
-		boardVO.setBoard_date(ldt.format(df).toString());
-		boardVO.setBoard_time(ldt.format(dt).toString());
+		Date date = Date.from( ldt.atZone( ZoneId.systemDefault()).toInstant() );
+		boardVO.setBoard_datetime(date);
 		
 		return boardVO;
 	}

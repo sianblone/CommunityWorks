@@ -58,7 +58,6 @@ public class BoardController {
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
-		
 		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
 		this.selectAllByPage(model, boardVO, currPage);
 		

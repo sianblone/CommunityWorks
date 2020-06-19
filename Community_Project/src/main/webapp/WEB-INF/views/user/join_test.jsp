@@ -30,7 +30,7 @@
 			border: none;
 			line-height: 1.5;
 		}
-		.age {
+		.birth {
 			display: flex;
 			justify-content: space-between;
 		}
@@ -324,7 +324,7 @@
 			<label for="year">생년월일</label><br/>
 		</div>
 		
-		<div class="age">
+		<div class="birth">
 			<input id="year" name="year" placeholder="년" maxlength="4"/>
 			<select id="month" name="month">
 				<option value="">월</option>

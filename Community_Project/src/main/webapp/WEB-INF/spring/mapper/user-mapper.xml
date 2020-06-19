@@ -15,20 +15,20 @@
 	</select>
 	
 	<select id="selectAll" resultMap="userDetailsRM">
-		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		SELECT a.*, YEAR(b.birth) as year, MONTH(b.birth) as month, DAY(b.birth) as day
 		FROM tbl_users as a JOIN tbl_users as b
 		ON a.username = b.username
 	</select>
 
 	<select id="findById" resultMap="userDetailsRM">
-		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		SELECT a.*, YEAR(b.birth) as year, MONTH(b.birth) as month, DAY(b.birth) as day
 		FROM tbl_users as a JOIN tbl_users as b
 		ON a.username = b.username
 		WHERE a.username = #{username}
 	</select>
 	
 	<select id="findByUsername" resultMap="userDetailsRM">
-		SELECT a.*, YEAR(b.age) as year, MONTH(b.age) as month, DAY(b.age) as day
+		SELECT a.*, YEAR(b.birth) as year, MONTH(b.birth) as month, DAY(b.birth) as day
 		FROM tbl_users as a JOIN tbl_users as b
 		ON a.username = b.username
 		WHERE a.username = #{username}
@@ -47,7 +47,7 @@
 			nickname,
 			email,
 			phone,
-			age
+			birth
 		) VALUES (
 			#{username},
 			#{password},
@@ -63,7 +63,7 @@
 		SET
 		`nickname` = #{nickname},
 		`phone` = #{phone},
-		`age` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
+		`birth` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
 		WHERE `username` = #{username}
 	</update>
 	

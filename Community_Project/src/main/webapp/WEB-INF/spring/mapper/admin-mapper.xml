@@ -15,7 +15,7 @@
 			`nickname` = #{nickname},
 			`email` = #{email},
 			`phone` = #{phone},
-			`age` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
+			`birth` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
 		WHERE `username` = #{username}
 	</update>
 	

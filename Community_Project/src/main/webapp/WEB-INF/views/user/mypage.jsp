@@ -35,7 +35,7 @@
 			width: 70%;
 		}
 		
-		.age {
+		.birth {
 			display: flex;
 		}
 		#year, #month, #day {
@@ -264,7 +264,7 @@
 		
 		<div class="my_form_item">
 			<span class="my_label">생년월일</span>
-			<div class="my_content age">
+			<div class="my_content birth">
 				<input id="year" name="year" placeholder="년" maxlength="4" value="${loginVO.year}"/>
 				<select id="month" name="month">
 					<option value="">월</option>

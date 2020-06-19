@@ -134,7 +134,7 @@ $(function(){
 		<section class="container-fluid">
 			<div class="text-right">
 				<h2 class="p-1 <c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject}</h2>
-				<small class="m-3">작성일시 : ${BOARD_VO.board_date} ${BOARD_VO.board_time}</small>
+				<small class="m-3">작성일시 : ${BOARD_VO.board_datetime}</small>
 			</div>
 			<hr/>
 			<div class="details_info">
