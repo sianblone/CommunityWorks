@@ -119,14 +119,14 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		if(boardVO.getBoard_no() != 0) {
-			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 있는 경우)
+			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 있는 경우)
 			BoardVO dbBoardVO = this.findByNo(boardVO.getBoard_no());
 			dbBoardVO.setBoard_category(boardVO.getBoard_category());
 			dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
 			dbBoardVO.setBoard_content(boardVO.getBoard_content());
 			ret = boardDao.update(dbBoardVO);
 		} else if(boardVO.getBoard_p_no() != 0) {
-			// 답글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없고 board_p_no가 있는 경우)
+			// 답글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 없고 board_p_no가 있는 경우)
 			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 boardVO에 세팅되어 있다
 			
 			// 1. 부모글의 board_group 가져와서 group 세팅하기
@@ -142,9 +142,10 @@ public class BoardServiceImpl implements BoardService {
 			saveSetting(boardVO);
 			ret = boardDao.insert(boardVO);
 		} else {
-			// 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 게시글번호가 없는 경우)
+			// 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no와 board_p_no가 없는 경우)
 			// 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(boardVO);
+			log.debug("save boardVO : {}", boardVO);
 			ret = boardDao.insert(boardVO);
 			log.debug("selectKey : {}", boardVO.getBoard_no());
 			// 방금 작성한 글을 다시 DB에서 가져와서 글 그룹, 글 순서, 글 깊이 업데이트
@@ -168,7 +169,7 @@ public class BoardServiceImpl implements BoardService {
 		// 날짜+시간 세팅
 		LocalDateTime ldt = LocalDateTime.now();
 		Date date = Date.from( ldt.atZone( ZoneId.systemDefault()).toInstant() );
-		boardVO.setBoard_datetime(date);
+		boardVO.setDb_insert_datetime(date);
 		
 		return boardVO;
 	}

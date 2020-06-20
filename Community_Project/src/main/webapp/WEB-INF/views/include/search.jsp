@@ -5,7 +5,7 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
 <style>
 	#search_form {
-		margin-top: 100px;
+		margin-top: 10px;
 		display: flex;
 		justify-content: center;
 	}

@@ -1,0 +1,54 @@
+@charset "UTF-8";
+/* context css */
+.context {
+	position: absolute;
+	border: 1px solid gray;
+	border-radius: 10px;
+	width: 100px;
+	text-align: center;
+	background-color: white;
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.4);
+}
+.context ul {
+	list-style: none;
+}
+.context li {
+	padding: 8px 0;
+}
+.context li:hover {
+	background-color: skyblue;
+	color: white;
+	cursor: pointer;
+}
+.context > ul > li:first-child:hover {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+/*
+.context li:last-child:hover{
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+*/
+
+.context_inactive {
+	display: none;
+}
+.context_active {
+	display: block;
+}
+
+/* order_box css */
+.order_box {
+	display: flex;
+}
+
+.order_box > li {
+	flex: 1;
+}
+.order_box > li:first-child {
+	border-bottom-left-radius: 10px;
+}
+.order_box >  li:last-child:hover{
+	border-bottom-right-radius: 10px;
+}
