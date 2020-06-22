@@ -14,6 +14,7 @@
 		})
 		
 		$(document).on("click", "#btn_cmt_save", function() {
+			/*
 			if($("#isAuth").length == 0) {
 				if(confirm("로그인 하시겠습니까?")) {
 					document.location.href = "${rootPath}/user/login"
@@ -22,6 +23,7 @@
 					return false
 				}
 			}
+			*/
 			
 			$.ajax({
 				url: "${rootPath}/comment/save",
@@ -39,9 +41,12 @@
 </script>
 <form id="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 	<div class="row p-4 bg-light">
+		<!--
 		<sec:authorize access="hasAnyRole('ADMIN','USER')">
 			<input id="isAuth" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</sec:authorize>
+		-->
+		<input id="isAuth" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		<input type="hidden" name="cmt_board_no" value="${param.board_no}">
 		<input type="hidden" name="cmt_p_no" value="">
 		<div class="col-2">

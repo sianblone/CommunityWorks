@@ -1,8 +1,7 @@
 package com.sif.community.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sif.community.model.CommentVO;
-import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.CommentService;
 import com.sif.community.service.board.itf.PaginationService;
 
@@ -44,7 +42,7 @@ public class CommentController {
 	}
 	
 	// 댓글 저장 시 사용할 메소드
-	// 
+	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(CommentVO commentVO, Integer currPage) {
 				
