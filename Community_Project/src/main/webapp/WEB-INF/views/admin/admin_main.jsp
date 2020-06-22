@@ -234,8 +234,8 @@
 						} else if(result == -200) {
 							alert("등록되지 않은 게시판 ID입니다.")
 						} else {
-							$("#admin_content").html(result)
 							alert("변경사항이 저장되었습니다.")
+							document.location.replace(document.location.href)
 						}
 					},
 					error : function() {

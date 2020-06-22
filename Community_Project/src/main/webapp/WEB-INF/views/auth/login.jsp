@@ -74,7 +74,7 @@
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<!-- Spring Security는 보통 Spring Form 태그와 연계하여 사용한다 -->
 	<h2>로그인</h2>
-	<form:form class="login_form" action="${rootPath}/login" method="POST" autocomplete="off">
+	<form:form class="login_form" action="${rootPath}/login" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div>
 			<span id="message">
 				<c:if test="${not empty param['error']}">

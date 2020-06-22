@@ -5,8 +5,7 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
 	#navbar {
-		display: flex;
-		background-color : #333;
+		background-color : #303A50;
 		min-width: var(--nav-min-width);
 		max-width: var(--nav-max-width);
 		transition: top 0.3s;
@@ -14,38 +13,58 @@
 		margin-bottom: 30px;
 	}
 	
-	#navbar a {
-		display: block;
-		flex: 0 1 auto;
-		padding: 1rem;
-		color: #f2f2f2;
+	#navbar ul {
+		display: flex;
+		list-style: none;
+	}
+	
+	#navbar li, #navbar a {
 		text-align: center;
-		text-decoration: none;
+		color: #f2f2f2;
 		font-size: 1.2rem;
 	}
 	
-	#navbar a:hover {
-		background-color: #ddd;
-		color: black;
+	#navbar li {
+		display: flex;
+		justify-content: center;
+		flex: 0 1 auto;
 	}
-	#navbar a:nth-child(4) {
+	
+	#navbar a {
+		display: block;
+		text-decoration: none;
+		padding: 1rem;
+		cursor: pointer;
+	}
+	
+	#navbar li:hover, #navbar a:hover {
+		background-color: black;
+	}
+	
+	#navbar li:nth-child(3) {
 		margin-left: auto;
+	}
+	#navbar .main_menu > li {
+		position: relative;
+	}
+	#navbar .sub_menu {
+		display: none;
+		position: absolute;
+		white-space: nowrap;
+		width: auto;
+		align-self: center;
+    	background-color: #303A50;
+    	z-index: 5;
+    	top: 60px;
+	    border: 2px solid #fff;
 	}
 </style>
 <script>
 	$(function() {
-		var preScroll = $(window).scrollTop()
-		
-		$(window).scroll(function() {
-			let currentScroll = $(window).scrollTop()
-			
-			if(preScroll > currentScroll) {
-				$("#navbar").css("top", 0)
-			} else {
-				$("#navbar").css("top", "-60px")
-			}
-			
-			preScroll = currentScroll
+		$(".main_menu > li").hover(function(){
+			$(this).find(".sub_menu").stop().slideDown(100);
+		}, function(){
+			$(this).find(".sub_menu").stop().slideUp(100);
 		})
 		
 		$(document).on("click", "a#logout", function() {
@@ -55,27 +74,48 @@
 						document.location.replace("${rootPath}/")
 					})
 		})
+		
 	})
 </script>
 <nav id="navbar">
-	<a href="${rootPath}/">HOME</a>
-	<a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0)">게시판</a>
- 	<div class="dropdown-menu">
- 		<c:forEach items="${topMenuList}" var="t">
-		    <a class="dropdown-item text-dark" href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
-	    </c:forEach>
-  	</div>
-  	
-	
-	<sec:authorize access="hasRole('ROLE_ADMIN')">
-		<a href="${rootPath}/admin">관리자</a>
-	</sec:authorize>
-	<sec:authorize access="isAnonymous()">
-		<a href="${rootPath}/user/login">로그인</a>
-		<a href="${rootPath}/join">회원가입</a>
-	</sec:authorize>
-	<sec:authorize access="isAuthenticated()">
-		<a href="javascript:void(0)" id="logout">로그아웃</a>
-		<a href="${rootPath}/user/mypage">마이페이지</a>
-	</sec:authorize>
+	<ul class="main_menu">
+		<li>
+			<a href="${rootPath}/">홈</a>
+		</li>
+		
+		<li>
+			<a href="javascript:void(0)">게시판</a>
+			<ul class="sub_menu">
+				<c:forEach items="${topMenuList}" var="t">
+					<li>
+						<a href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
+					</li>
+				</c:forEach>
+			</ul>
+		</li>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<li>
+				<a href="${rootPath}/admin">관리자</a>
+			</li>
+		</sec:authorize>
+		<sec:authorize access="isAnonymous()">
+			<li>
+				<a href="${rootPath}/user/login">로그인</a>
+			</li>
+			
+			<li>
+				<a href="${rootPath}/join">회원가입</a>
+			</li>
+		</sec:authorize>
+		<sec:authorize access="isAuthenticated()">
+			<li>
+				<a href="javascript:void(0)" id="logout">로그아웃</a>
+			</li>
+			
+			<li>
+				<a href="${rootPath}/user/mypage">마이페이지</a>
+			</li>
+		</sec:authorize>
+	</ul>
 </nav>

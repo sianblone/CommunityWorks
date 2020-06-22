@@ -21,5 +21,6 @@ public class BoardInfoVO {
 	private String bi_name;//	VARCHAR(20)	NOT NULL
 		
 	private List<CategoryVO> bi_category;
+	private List<BoardVO> bi_board_list;
 	
 }

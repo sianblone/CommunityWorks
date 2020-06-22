@@ -138,24 +138,26 @@ public class BoardController {
 	
 	// 페이지네이션
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
-		// 사용법
-		// 1. 페이징 할 곳에서 Service-Dao-DB를 통해 totalCount(총 데이터 수) 가져오기
-		// 2. 
 		if(currPage == null) currPage = 1;
 		
 		log.debug("boardVO : {}", boardVO.toString());
+		// 1. 페이징 할 곳에서 totalCount(총 데이터 수) 가져오기
 		long totalCount = boardSvc.countAll(boardVO);
 		log.debug("카운트 : {}", totalCount);
+		// 2. 페이지네이션 정보 만들기
 		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
 		log.debug("페이지 : {}", pageVO.toString());
+		// 3. 페이지네이션 정보 view로 보내주기
 		model.addAttribute("PAGE_DTO", pageVO);
-		
+		// 4. 페이지네이션 기본 쿼리 view로 보내주기
 		String page_default_query = "&board_info=" + boardVO.getBoard_info();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
+		// 게시판 제목 표시
 		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardVO.getBoard_info());		
 		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
+		// 게시판 내용
 		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
 		model.addAttribute("BOARD_LIST", boardList);
 	}

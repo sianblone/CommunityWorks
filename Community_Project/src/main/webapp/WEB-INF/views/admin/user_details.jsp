@@ -65,7 +65,7 @@
 		$("p").toggle();
 	})
 </script>
-<form:form id="user_details_form" action="${rootPath}/user/mypage">
+<form:form id="user_details_form" action="${rootPath}/user/mypage" autocomplete="${FORM_AUTOCOMPLETE}">
 	<div class="my_form_item">
 		<span class="my_label">ID</span>
 		<span class="my_data">${USER_VO.username}</span>

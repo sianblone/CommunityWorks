@@ -1,7 +1,7 @@
 $(function() {
 	
 	let last_click_tr_data_id
-	
+	let nickname
 	// .use_context 클릭 시 컨텍스트 메뉴 보이기
 	$(document).on("click", ".use_context", function(event) {
 		event.stopPropagation()
@@ -25,11 +25,11 @@ $(function() {
 			$(".context").removeClass("context_inactive")
 			$(".context").addClass("context_active")
 			
-			// 컨텍스트 메뉴 박스에 data-id 추가하기(data 함수는 읽기전용이기 때문에 attr 함수로 추가)
-			$(".context").attr("data-id", data_id)
-			
 			// 2. last_click_tr_data_id는 지금 클릭한 tr의 data-id로 변경
 			last_click_tr_data_id = data_id
+			
+			// 3. nickname 값 설정하기
+			nickname = $(this).closest(".board_nickname").text()
 		}
 	})
 	
@@ -39,6 +39,10 @@ $(function() {
 			$(".context").removeClass("context_active")
 			$(".context").addClass("context_inactive")
 		}
+	})
+	
+	$(document).on("click", ".search_nickname", function() {
+		document.location.href = rootPath + "/board/list?board_info=" + bi_id + "&search_type=nickname" + "&search_txt=" + nickname
 	})
 	
 })

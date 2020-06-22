@@ -165,7 +165,7 @@ $(function(){
 			<div class="p-2">
 				<b>댓글을 남겨주세요</b>
 			</div>
-			<form method="POST" class="main">
+			<form method="POST" class="main" autocomplete="${FORM_AUTOCOMPLETE}">
 				<div class="row p-4 bg-light">
 					<input type="hidden" name="cmt_no" id="cmt_no" value="0">
 					<input type="hidden" name="cmt_board_no" value="${B.board_no}">

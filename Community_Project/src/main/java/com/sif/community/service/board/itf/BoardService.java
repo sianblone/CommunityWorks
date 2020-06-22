@@ -25,6 +25,8 @@ public interface BoardService {
 
 	public BoardVO findByNo(long board_no);
 	
+	public List<BoardInfoVO> selectMainPage(int limit);
+	
 	public List<BoardInfoVO> selectAllBoardInfo();
 	
 	public BoardInfoVO findByBoardInfo(long board_info);

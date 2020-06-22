@@ -8,7 +8,9 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf"%>
 <style>
-
+h2.header {
+	cursor: pointer;
+}
 table {
 	table-layout: fixed;
 	font-family: gulim, 굴림;
@@ -43,7 +45,11 @@ span.board_p_no {
 	font-size: 11px;
 }
 span.board_nickname {
+	padding: 6px 0px;
 	cursor: pointer;
+}
+span.board_nickname:hover {
+	text-decoration: underline;
 }
 
 tr[data-reply] .subject {
@@ -56,6 +62,9 @@ tr[data-reply] .subject {
 
 </style>
 <script>
+	let rootPath = "${rootPath}"
+	let bi_id = "${BOARD_INFO.bi_id}"
+	
 	$(function() {
 		$("button.btn-writer").click(function() {
 			let url = "${rootPath}/board/save?board_info=${BOARD_INFO.bi_id}";
@@ -66,6 +75,10 @@ tr[data-reply] .subject {
 
 			document.location.href = url
 		})
+		
+		$("h2.header").click(function() {
+			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
+		})
 	})
 </script>
 </head>
@@ -73,7 +86,7 @@ tr[data-reply] .subject {
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf"%>
 	<main>
-	<%@ include file="/WEB-INF/views/include/include_header.jsp"%>
+	<h2 class="header">${BOARD_INFO.bi_name}</h2>
 		<article>
 			<table>
 				<colgroup>
@@ -107,7 +120,7 @@ tr[data-reply] .subject {
 									<td class="c_num text-center">${B.board_no}</td>
 									<td class="c_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><a
 									href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}">${B.board_category} ${B.board_subject}</a></td>
-									<td class="c_nickname text-center"><span class="board_nickname">${B.board_nickname}</span></td>
+									<td class="c_nickname text-center"><span class="board_nickname use_context">${B.board_nickname}</span></td>
 									<td class="c_date text-center">${B.board_datetime}</td>
 									<td class="c_count text-center">${B.board_count}</td>
 									<td class="c_recommend text-center">${B.board_recommend}</td>
@@ -125,5 +138,6 @@ tr[data-reply] .subject {
 	</main>
 
 	<%@ include file="/WEB-INF/views/include/pagination.jsp"%>
+	<%@ include file="/WEB-INF/views/include/context_menu.jsp" %>
 </body>
 </html>

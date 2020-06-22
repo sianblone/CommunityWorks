@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 
-<form method="POST" class="repl">
+<form method="POST" class="repl" autocomplete="${FORM_AUTOCOMPLETE}">
 	<div class="row p-4 bg-light">
 		<input type="hidden" name="cmt_p_no" id="cmt_p_no" value="${CMT.cmt_p_no}"> 
 		<input type="hidden" name="cmt_board_no" value="${CMT.cmt_board_no}">

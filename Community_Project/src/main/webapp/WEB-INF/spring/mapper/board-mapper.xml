@@ -52,8 +52,31 @@
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
 	
-	<select id="selectMainPage" resultType="boardVO">
-		
+	<select id="selectMainPage" resultMap="selectMainPageRM">
+		SELECT *
+		FROM tbl_board_info
+	</select>
+	<resultMap id="selectMainPageRM" type="boardInfoVO">
+		<id property="bi_id" column="bi_id"/>
+		<collection property="bi_board_list" column="bi_id" ofType="boardVO" select="selectMainPageBoard"/>
+	</resultMap>
+	<select id="selectMainPageBoard" resultType="boardVO">
+		SELECT
+			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime, b.board_subject, b.board_content,
+			u.nickname AS board_nickname, bi.bi_name AS board_name
+		FROM tbl_board b
+		LEFT JOIN tbl_board_info bi
+		ON
+			b.board_info = bi.bi_id
+		LEFT JOIN tbl_users u
+		ON
+			b.board_writer = u.username
+		WHERE
+			b.board_info = #{bi_id}
+			AND
+			b.board_delete = 0
+		ORDER BY b.board_group DESC, b.board_order ASC
+		LIMIT 5
 	</select>
 	
 	<select id="selectCategoryByBoard" resultType="categoryVO">

@@ -47,7 +47,7 @@
 	}
 </style>
 
-<form:form id="board_setting_details_form">
+<form:form id="board_setting_details_form" autocomplete="${FORM_AUTOCOMPLETE}">
 	
 	<div class="my_form_item">
 		<span class="my_label">게시판 ID</span>

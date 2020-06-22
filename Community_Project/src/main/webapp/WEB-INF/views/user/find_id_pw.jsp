@@ -188,7 +188,7 @@
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<h2>ID/PW 찾기</h2>
 	<section class="forms">
-		<form:form id="find_id_form" action="${rootPath}/user/find-id" method="POST" autocomplete="off">
+		<form:form id="find_id_form" action="${rootPath}/user/find-id" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 			<h3>ID 찾기</h3>
 			<div class="form_item">
 				<p>회원가입 시 등록한 메일을 입력하세요</p>
@@ -208,7 +208,7 @@
 			</div>
 		</form:form>
 		
-		<form:form id="find_pw_form" action="${rootPath}/user/find-pw" method="POST" autocomplete="off">
+		<form:form id="find_pw_form" action="${rootPath}/user/find-pw" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 			<h3>비밀번호 찾기</h3>
 			<div class="form_item">
 				<p>회원가입 시 등록한 ID와 메일을 입력하세요</p>

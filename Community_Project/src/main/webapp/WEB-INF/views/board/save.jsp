@@ -93,7 +93,7 @@
 <body>
 <%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<main>
-		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save">
+		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save" autocomplete="${FORM_AUTOCOMPLETE}">
 			<fieldset>
 				<input type="hidden" name="board_info" value="<c:out value='${param.board_info}' default='0'/>"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>

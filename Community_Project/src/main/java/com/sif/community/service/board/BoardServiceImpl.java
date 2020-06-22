@@ -235,7 +235,12 @@ public class BoardServiceImpl implements BoardService {
 	public BoardInfoVO findByBoardInfo(long board_info) {
 		return boardDao.findByBoardInfo(board_info);
 	}
-
+	
+	@Override
+	public List<BoardInfoVO> selectMainPage(int limit) {
+		return boardDao.selectMainPage(limit);
+	}
+	
 	@Override
 	public List<BoardInfoVO> selectAllBoardInfo() {
 		return boardDao.selectAllBoardInfo();
