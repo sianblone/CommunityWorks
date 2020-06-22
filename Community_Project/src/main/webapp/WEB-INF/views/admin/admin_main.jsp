@@ -15,30 +15,31 @@
 		#body nav {
 			width: 20%;
 			text-align: center;
-			border-right: 1px solid gray;
 			padding: 20px 0;
-			margin: 5px;
 		}
 		
 		#body nav ul {
 			list-style: none;
 		}
 		
-		#body nav a {
+		#body nav li {
 			display: block;
-			text-decoration: none;
-			color: black;
 			padding: 0.5rem 1rem;
+			cursor: pointer;
 		}
 		
-		#body nav a:hover {
+		#body nav li:hover {
 			background-color: #eee;
-			color: black;
 		}
 		
-		#body article {
+		#vertical_line {
+			width: 2px;
+			margin: 0px 20px;
+			border-right: 2px solid var(--color-dodgerblue);
+		}
+		
+		#admin_content {
 			width: 60%;
-			margin-left: 1rem;
 		}
 		
 		
@@ -258,11 +259,12 @@
 	<section id="body">
 		<nav>
 			<ul>
-				<li><a id="user_list" href="javascript:void(0)">유저 목록</a></li>
-				<li><a id="board_setting" href="javascript:void(0)">게시판 설정</a></li>
-				<li><a href="#">Menu1</a></li>
+				<li id="user_list">유저 목록</li>
+				<li id="board_setting">게시판 설정</li>
 			</ul>
 		</nav>
+		<article id="vertical_line">
+		</article>
 		<article id="admin_content">
 			
 		</article>

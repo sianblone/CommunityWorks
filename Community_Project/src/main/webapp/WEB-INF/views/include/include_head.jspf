@@ -29,6 +29,7 @@
 		--label-text-color: #18181b;
 		--color-danger: #DC3545;
 		--color-success: #28A745;
+		--color-dodgerblue: #1E90FF;
 		
 		--nav-min-width: 768px;
 		--nav-max-width: 1024px;
@@ -54,7 +55,7 @@
 	h2 {
 		text-align: center;
 		padding-bottom: 20px;
-		color: #1E90FF;
+		color: var(--color-dodgerblue);
 	}
 	input {
 		padding: 0.5rem 1rem;
