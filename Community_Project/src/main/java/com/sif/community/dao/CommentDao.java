@@ -2,34 +2,22 @@ package com.sif.community.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 import com.sif.community.model.CommentVO;
+import com.sif.community.model.PaginationVO;
 
 public interface CommentDao {
 	
-	public List<CommentVO> selectAll();
-	public CommentVO findByNo(long cmt_no);
+	public long countAll(@Param("commentVO") CommentVO commentVO, @Param("isAdmin") boolean isAdmin);
+	public List<CommentVO> selectAllByPage(@Param("commentVO") CommentVO commentVO, @Param("pageVO") PaginationVO pageVO, @Param("isAdmin") boolean isAdmin);
+	public CommentVO findByCmtNo(long comment_no);
+	public int maxOrderByCmtGroup(long cmt_group);
 	
-	@Select("SELECT * FROM tbl_comment "
-			+ " WHERE cmt_board_no = #{cmt_board_no} "
-			+ " AND cmt_p_no = 0 ORDER BY cmt_date, cmt_time DESC")
-	public List<CommentVO> findByBoardNo(long cmt_board_no);
-	
-	@Select("SELECT * FROM tbl_comment "
-			+ " WHERE cmt_p_no = #{cmt_p_no} "
-			+ " ORDER BY cmt_date, cmt_time DESC")
-	public List<CommentVO> findByPNo(long cmt_p_no);
-	
-//	@Insert("INSERT INTO tbl_comment (cmt_no,cmt_writer,cmt_content ) "
-//			+ " VALUES (#{cmt_no}, #{cmt_writer}, #{cmt_content} ) " )
 	public int insert(CommentVO commentVO);
-	
 	public int update(CommentVO commentVO);
+	public int update_delete(CommentVO commentVO);
+	public int delete(long comment_no);
 	
-	@Delete("DELETE FROM tbl_comment WHERE cmt_no = #{cmt_no}")
-	public int delete(long cmt_no);
 
 }

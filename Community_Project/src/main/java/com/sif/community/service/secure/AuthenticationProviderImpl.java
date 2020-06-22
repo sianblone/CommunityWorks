@@ -49,13 +49,6 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 			throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
 		}
 
-		/*
-		// 사용자 권한이 ROLE_UNAUTH 상태라면
-		if(authDao.findByUsername(username).stream().filter(o -> o.getAuthority().equals("ROLE_UNAUTH")).findFirst().isPresent()) {
-			throw new InsufficientAuthenticationException("이메일 인증을 완료해야 합니다.");
-		}
-		*/
-
 		// UserDetailsService에서 보내준 사용자 정보를 Controller로 보내기
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		return token;

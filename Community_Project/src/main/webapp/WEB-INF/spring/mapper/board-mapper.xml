@@ -13,6 +13,35 @@
 	7-1. 닉네임으로 검색 시 ID List 가져와서 매개변수에 전달, 작성자 검색
 	8. 그룹으로 정렬 : 1. board_group > 2. board_order
 	-->
+	<select id="countAll" resultType="long">
+		SELECT COUNT(*)
+		FROM tbl_board
+		WHERE
+			board_info = #{boardVO.board_info}
+			<if test="!isAdmin">
+				AND board_delete = 0
+			</if>
+			<if test="boardVO.search_txt != null and !boardVO.search_txt.trim().equals('')">
+				<if test="boardVO.search_type.equals('subject')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('content')">
+					AND board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('writer')">
+					AND board_writer LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+				<if test="boardVO.search_type.equals('sc')">
+					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%') OR board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
+				</if>
+			</if>
+			<if test="usernameList != null">
+				<foreach collection="usernameList" item="userVO">
+					AND board_writer = #{userVO.username}
+				</foreach>
+			</if>
+	</select>
+	
 	<select id="selectAllByPage" resultType="boardVO">
 		SELECT
 			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime, b.board_subject, b.board_content,
@@ -50,6 +79,15 @@
 			</if>
 		ORDER BY b.board_group DESC, b.board_order ASC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<select id="findByBoardNo" resultType="boardVO">
+		SELECT b.*, u.nickname AS board_nickname
+		FROM tbl_board b, tbl_users u
+		WHERE
+			board_no = #{board_no}
+			AND
+			b.board_writer = u.username
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">
@@ -107,43 +145,6 @@
 		WHERE cate_bi_id = #{bi_id}
 	</select>
 	
-	<select id="countAll" resultType="long">
-		SELECT COUNT(*)
-		FROM tbl_board
-		WHERE
-			board_info = #{boardVO.board_info}
-			AND
-			board_delete = 0
-			<if test="boardVO.search_txt != null and !boardVO.search_txt.trim().equals('')">
-				<if test="boardVO.search_type.equals('subject')">
-					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%')
-				</if>
-				<if test="boardVO.search_type.equals('content')">
-					AND board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
-				</if>
-				<if test="boardVO.search_type.equals('writer')">
-					AND board_writer LIKE CONCAT('%', #{boardVO.search_txt}, '%')
-				</if>
-				<if test="boardVO.search_type.equals('sc')">
-					AND board_subject LIKE CONCAT('%', #{boardVO.search_txt}, '%') OR board_content LIKE CONCAT('%', #{boardVO.search_txt}, '%')
-				</if>
-			</if>
-			<if test="usernameList != null">
-				<foreach collection="usernameList" item="userVO">
-					AND board_writer = #{userVO.username}
-				</foreach>
-			</if>
-	</select>
-	
-	<select id="findByNo" resultType="boardVO">
-		SELECT b.*, u.nickname AS board_nickname
-		FROM tbl_board b, tbl_users u
-		WHERE
-			board_no = #{board_no}
-			AND
-			b.board_writer = u.username
-	</select>
-	
 	<select id="maxOrderByBoardGroup" resultType="int">
 		SELECT IFNULL(MAX(board_order),0)
 		FROM tbl_board
@@ -182,7 +183,7 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE `community`.`tbl_board`
+		UPDATE `tbl_board`
 		SET
 			`board_p_no` = #{board_p_no},
 			`board_group` = #{board_group},

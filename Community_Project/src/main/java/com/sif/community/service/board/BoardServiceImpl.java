@@ -68,6 +68,16 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
+	public BoardVO findByBoardNo(long board_no) {
+		return boardDao.findByBoardNo(board_no);
+	}
+	
+	@Override
+	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO) {
+		return boardDao.selectCategoryByBoard(boardOptionVO);
+	}
+	
+	@Override
 	public String saveView(BoardVO boardOptionVO, Model model) {
 		String render = "";
 		long board_no = boardOptionVO.getBoard_no();
@@ -75,7 +85,7 @@ public class BoardServiceImpl implements BoardService {
 		if(board_no != 0) {
 			// save 메소드의 쿼리에서 board_no를 받은 경우(=글 수정)
 			
-			BoardVO boardVO = this.findByNo(board_no);
+			BoardVO boardVO = this.findByBoardNo(board_no);
 			// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기
 			if(boardVO != null) {
 				
@@ -103,14 +113,25 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO) {
-		return boardDao.selectCategoryByBoard(boardOptionVO);
+	public List<BoardInfoVO> selectMainPage(int limit) {
+		return boardDao.selectMainPage(limit);
 	}
-
+	
+	@Override
+	public List<BoardInfoVO> selectAllBoardInfo() {
+		return boardDao.selectAllBoardInfo();
+	}
+	
+	@Override
+	public BoardInfoVO findByBoardInfo(long board_info) {
+		return boardDao.findByBoardInfo(board_info);
+	}
+	
 	@Transactional
 	@Override
 	public int save(BoardVO boardVO) {
 		
+		String render = "";
 		int ret = 0;// MyBatis selectKey로 받아올 auto_increment 값
 		
 		// 카테고리 선택하지 않았을 경우 null로 만들어주기
@@ -120,17 +141,27 @@ public class BoardServiceImpl implements BoardService {
 		
 		if(boardVO.getBoard_no() != 0) {
 			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 있는 경우)
-			BoardVO dbBoardVO = this.findByNo(boardVO.getBoard_no());
-			dbBoardVO.setBoard_category(boardVO.getBoard_category());
-			dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
-			dbBoardVO.setBoard_content(boardVO.getBoard_content());
+			// 1. DB에 게시글번호로 검색한 데이터가 있는지 확인
+			BoardVO dbBoardVO = this.findByBoardNo(boardVO.getBoard_no());
+			if(dbBoardVO != null) {
+				// 2. 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 수정
+				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+				if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+					dbBoardVO.setBoard_category(boardVO.getBoard_category());
+					dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
+					dbBoardVO.setBoard_content(boardVO.getBoard_content());
+				}
+			} else {
+				// DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
+				render = "board/error";
+			}
 			ret = boardDao.update(dbBoardVO);
 		} else if(boardVO.getBoard_p_no() != 0) {
 			// 답글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 없고 board_p_no가 있는 경우)
 			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 boardVO에 세팅되어 있다
 			
 			// 1. 부모글의 board_group 가져와서 group 세팅하기
-			BoardVO parentBoardVO = this.findByNo(boardVO.getBoard_p_no());
+			BoardVO parentBoardVO = this.findByBoardNo(boardVO.getBoard_p_no());
 			long board_group = parentBoardVO.getBoard_group();
 			boardVO.setBoard_group(board_group);
 			// 2. 부모글의 board_group 가져와서 order를 maxOrder + 1로 세팅하기
@@ -149,7 +180,7 @@ public class BoardServiceImpl implements BoardService {
 			ret = boardDao.insert(boardVO);
 			log.debug("selectKey : {}", boardVO.getBoard_no());
 			// 방금 작성한 글을 다시 DB에서 가져와서 글 그룹, 글 순서, 글 깊이 업데이트
-			BoardVO insertedBoardVO = boardDao.findByNo(boardVO.getBoard_no());
+			BoardVO insertedBoardVO = boardDao.findByBoardNo(boardVO.getBoard_no());
 			// 1. 글 그룹 = 작성한 글 번호
 			insertedBoardVO.setBoard_group(insertedBoardVO.getBoard_no());
 			// 2. 글 순서 = 0(업데이트 할 필요 없음)
@@ -163,8 +194,11 @@ public class BoardServiceImpl implements BoardService {
 	
 	protected BoardVO saveSetting(BoardVO boardVO) {
 		// 작성자 세팅
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		boardVO.setBoard_writer(username);
+		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth.isAuthenticated()) {
+			boardVO.setBoard_writer(auth.getName());
+		}
 		
 		// 날짜+시간 세팅
 		LocalDateTime ldt = LocalDateTime.now();
@@ -177,7 +211,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String delete(long board_no, Integer currPage) {
 		String render = "";
-		BoardVO boardVO = this.findByNo(board_no);
+		BoardVO boardVO = this.findByBoardNo(board_no);
 		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
 		if(boardVO != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -194,7 +228,7 @@ public class BoardServiceImpl implements BoardService {
 				render = "board/error";
 			}
 		} else {
-			// DB에 baord_no로 검색한 데이터가 없으면 에러페이지 보여주기
+			// DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
 			render = "board/error";
 		}
 		
@@ -204,11 +238,14 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public String admin(long board_no, Integer currPage, String order) {
 		String render = "";
-		BoardVO boardVO = this.findByNo(board_no);
+		// 현재 글 데이터
+		BoardVO boardVO = this.findByBoardNo(board_no);
 		
 		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			// 유저권한이 관리자가 아닌 경우
 			render = "board/error";
 		} else if(order.equals("restore")) {
+			// 글 복구 클릭
 			boardVO.setBoard_delete(0);
 			boardDao.update_delete(boardVO);
 			
@@ -216,6 +253,7 @@ public class BoardServiceImpl implements BoardService {
 			render = "redirect:/board/list?board_info=" + board_info;
 			if(currPage != null) render += "&currPage=" + currPage;
 		} else if(order.equals("delete")) {
+			// 글 완전삭제 클릭
 			boardDao.delete(board_no);
 			
 			long board_info = boardVO.getBoard_info();
@@ -226,24 +264,4 @@ public class BoardServiceImpl implements BoardService {
 		return render;
 	}
 	
-	@Override
-	public BoardVO findByNo(long board_no) {
-		return boardDao.findByNo(board_no);
-	}
-
-	@Override
-	public BoardInfoVO findByBoardInfo(long board_info) {
-		return boardDao.findByBoardInfo(board_info);
-	}
-	
-	@Override
-	public List<BoardInfoVO> selectMainPage(int limit) {
-		return boardDao.selectMainPage(limit);
-	}
-	
-	@Override
-	public List<BoardInfoVO> selectAllBoardInfo() {
-		return boardDao.selectAllBoardInfo();
-	}
-
 }

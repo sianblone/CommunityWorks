@@ -58,7 +58,7 @@ public class BoardController {
 		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
-		// boardVO에는 게시판이름, search_type, search_txt가 들어있다
+		// boardVO에는 게시판번호(board_info), 검색옵션(search_type), 검색어(search_txt)가 들어있다
 		this.selectAllByPage(model, boardVO, currPage);
 		
 		return "board/list";
@@ -68,7 +68,7 @@ public class BoardController {
 	// id값으로 게시글 보여주기
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	public String details(BoardVO boardOptionVO, Model model) {
-		BoardVO boardVO = boardSvc.findByNo(boardOptionVO.getBoard_no());
+		BoardVO boardVO = boardSvc.findByBoardNo(boardOptionVO.getBoard_no());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		// 현재 로그인한 사용자가 관리자가 아닐 때 delete 값이 1인 게시물 열람 불가
@@ -76,6 +76,7 @@ public class BoardController {
 			return "board/error";
 		}
 		
+		// view로 보내줄 값
 		boolean isWriter = false;
 		boolean isAdmin = false;
 		boolean isDeleted = false;
@@ -109,8 +110,6 @@ public class BoardController {
 	}
 	
 	// form에서 저장버튼 클릭 시 사용할 메소드
-	// 현재 사용자와 DB의 게시글id 작성자가 같은지 다시 확인 후
-	// form에서 입력받은 값으로 DB에 저장하기(INSERT 또는 UPDATE)
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer currPage) {
 		// 없는 게시판(0)을 입력받으면 메인페이지로

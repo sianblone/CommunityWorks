@@ -2,44 +2,101 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sif.community.dao.CommentDao">
+
+	<select id="countAll" resultType="long">
+		SELECT COUNT(*)
+		FROM tbl_comment
+		WHERE
+			board_no = #{commentVO.cmt_board_no}
+			<if test="!isAdmin">
+				AND cmt_delete = 0
+			</if>
+	</select>
+	
+	<select id="selectAllByPage" resultType="commentVO">
+		SELECT
+			c.cmt_no, c.cmt_board_no, c.cmt_p_no, c.cmt_group, c.cmt_order, c.cmt_depth, c.cmt_writer, c.cmt_datetime, c.cmt_content,
+			u.nickname AS cmt_nickname
+		FROM tbl_comment c
+		LEFT JOIN tbl_users u
+		ON
+			c.cmt_writer = u.username
+		WHERE
+			c.cmt_board_no = #{commentVO.cmt_board_no}
+			<if test="!isAdmin">
+				AND c.cmt_delete = 0
+			</if>
+		ORDER BY c.cmt_group DESC, c.cmt_order ASC
+		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+	</select>
+	
+	<select id="findByCmtNo" resultType="commentVO">
+		SELECT c.*, u.nickname AS cmt_nickname
+		FROM tbl_board c, tbl_users u
+		WHERE
+			cmt_no = #{cmt_no}
+			AND
+			c.cmt_writer = u.username
+	</select>
+	
+	<select id="maxOrderByCmtGroup" resultType="int">
+		SELECT IFNULL(MAX(cmt_order),0)
+		FROM tbl_comment
+		WHERE cmt_group = #{cmt_group}
+	</select>
 		
 	<insert id="insert">
 		INSERT INTO tbl_comment (
 			cmt_board_no,
-			cmt_no,
 			cmt_p_no,
+			cmt_group,
+			cmt_order,
+			cmt_depth,
 			cmt_writer,
-			cmt_date,
-			cmt_time,
+			cmt_datetime,
 			cmt_content,
 			cmt_delete,
 			cmt_recommend
 		) VALUES (
 			#{cmt_board_no},
-			#{cmt_no},
 			#{cmt_p_no},
+			#{cmt_group},
+			#{cmt_order},
+			#{cmt_depth},
 			#{cmt_writer},
-			#{cmt_date},
-			#{cmt_time},
+			#{cmt_datetime},
 			#{cmt_content},
 			#{cmt_delete},
 			#{cmt_recommend}
 		)
+		<selectKey keyProperty="cmt_no" resultType="long" order="AFTER">
+        	SELECT LAST_INSERT_ID()
+    	</selectKey>
 	</insert>
 	
 	<update id="update">
+		UPDATE `tbl_comment`
+		SET
+			`cmt_board_no` = #{cmt_board_no},
+			`cmt_p_no` = #{cmt_p_no},
+			`cmt_group` = #{cmt_group},
+			`cmt_order` = #{cmt_order},
+			`cmt_depth` = #{cmt_depth},
+			`cmt_writer` = #{cmt_writer},
+			`cmt_content` = #{cmt_content}
+		WHERE `cmt_no` = #{cmt_no}
+	</update>
+	
+	<update id="update_delete">
 		UPDATE tbl_comment
 		SET
-			cmt_board_no, = #{cmt_board_no},
-			cmt_no, = #{cmt_no},
-			cmt_p_no, = #{cmt_p_no},
-			cmt_writer, = #{cmt_writer},
-			cmt_date, = #{cmt_date},
-			cmt_time, = #{cmt_time},
-			cmt_content, = #{cmt_content},
-			cmt_delete, = #{cmt_delete},
-			cmt_recommend = #{cmt_recommend}
+			cmt_delete = #{cmt_delete}
 		WHERE cmt_no = #{cmt_no}
 	</update>
+	
+	<delete id="delete">
+		DELETE FROM tbl_comment
+		WHERE cmt_no = #{cmt_no}
+	</delete>
 	
 </mapper>

@@ -11,10 +11,10 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.model.UserDetailsVO;
 
 public interface BoardDao {
-
-	public List<BoardVO> selectAllByPage(@Param("boardVO") BoardVO boardVO, @Param("pageVO") PaginationVO pageVO, @Param("usernameList") List<UserDetailsVO> usernameList, @Param("isAdmin") boolean isAdmin);
+	
 	public long countAll(@Param("boardVO") BoardVO boardVO, @Param("usernameList") List<UserDetailsVO> usernameList, @Param("isAdmin") boolean isAdmin);
-	public BoardVO findByNo(long board_no);
+	public List<BoardVO> selectAllByPage(@Param("boardVO") BoardVO boardVO, @Param("pageVO") PaginationVO pageVO, @Param("usernameList") List<UserDetailsVO> usernameList, @Param("isAdmin") boolean isAdmin);
+	public BoardVO findByBoardNo(long board_no);
 	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO);
 	public BoardInfoVO findByBoardInfo(long board_info);
 	public List<BoardInfoVO> selectMainPage(int limit);

@@ -22,9 +22,9 @@ public class BoardVO {
 
 	private long board_no;// BIGINT PRIMARY KEY AUTO_INCREMENT
 	private long board_p_no;// BIGINT NOT NULL DEFAULT 0
-	private long board_group;//	NOT NULL
-	private int board_order;//	NOT NULL
-	private int board_depth;//	NOT NULL
+	private long board_group;//	BIGINT	NOT NULL
+	private int board_order;//	INT	NOT NULL
+	private int board_depth;//	INT	NOT NULL
 	private long board_info;// BIGINT
 	private String board_writer;// VARCHAR(50) NOT NULL
 	private Date db_insert_datetime;// TIMESTAMP, DB에 INSERT 시 board_datetime에 넣을 칼럼
