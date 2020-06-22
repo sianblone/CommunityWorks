@@ -5,7 +5,7 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
 	#navbar {
-		background-color : #303A50;
+		background-color : var(--nav-bg-color);
 		min-width: var(--nav-min-width);
 		max-width: var(--nav-max-width);
 		transition: top 0.3s;
@@ -13,40 +13,47 @@
 		margin-bottom: 30px;
 	}
 	
-	#navbar ul {
+	#navbar > ul {
 		display: flex;
 		list-style: none;
 	}
 	
-	#navbar li, #navbar a {
+	#navbar li, #navbar .label {
+		min-width: 65px;
 		text-align: center;
-		color: #f2f2f2;
+		color: white;
 		font-size: 1.2rem;
 	}
 	
 	#navbar li {
 		display: flex;
+		flex-direction: column;
 		justify-content: center;
 		flex: 0 1 auto;
+	}
+	
+	#navbar .label {
+		padding: 1rem;
+		cursor: pointer;
 	}
 	
 	#navbar a {
 		display: block;
 		text-decoration: none;
-		padding: 1rem;
-		cursor: pointer;
 	}
 	
-	#navbar li:hover, #navbar a:hover {
-		background-color: black;
+	#navbar li.main_menu:hover, #navbar a:hover {
+		background-color: var(--color-dodgerblue);
 	}
 	
-	#navbar li:nth-child(3) {
-		margin-left: auto;
-	}
-	#navbar .main_menu > li {
+	#navbar ul > li {
 		position: relative;
 	}
+	
+	#navbar ul > li:nth-child(3) {
+		margin-left: auto;
+	}
+	
 	#navbar .sub_menu {
 		display: none;
 		position: absolute;
@@ -61,13 +68,13 @@
 </style>
 <script>
 	$(function() {
-		$(".main_menu > li").hover(function(){
+		$("ul > li").hover(function(){
 			$(this).find(".sub_menu").stop().slideDown(100);
 		}, function(){
 			$(this).find(".sub_menu").stop().slideUp(100);
 		})
 		
-		$(document).on("click", "a#logout", function() {
+		$(document).on("click", "#logout", function() {
 			$.post("${rootPath}/logout",
 					{ "${_csrf.parameterName}" : "${_csrf.token}" },
 					function(result){
@@ -78,43 +85,43 @@
 	})
 </script>
 <nav id="navbar">
-	<ul class="main_menu">
-		<li>
-			<a href="${rootPath}/">홈</a>
+	<ul>
+		<li class="main_menu">
+			<a class="label" href="${rootPath}/">홈</a>
 		</li>
 		
-		<li>
-			<a href="javascript:void(0)">게시판</a>
+		<li class="slide_menu">
+			<div class="label">게시판</div>
 			<ul class="sub_menu">
 				<c:forEach items="${topMenuList}" var="t">
 					<li>
-						<a href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
+						<a class="label" href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
 					</li>
 				</c:forEach>
 			</ul>
 		</li>
 		
 		<sec:authorize access="hasRole('ROLE_ADMIN')">
-			<li>
-				<a href="${rootPath}/admin">관리자</a>
+			<li class="main_menu">
+				<a class="label" href="${rootPath}/admin">관리자</a>
 			</li>
 		</sec:authorize>
 		<sec:authorize access="isAnonymous()">
-			<li>
-				<a href="${rootPath}/user/login">로그인</a>
+			<li class="main_menu">
+				<a class="label" href="${rootPath}/user/login">로그인</a>
 			</li>
 			
-			<li>
-				<a href="${rootPath}/join">회원가입</a>
+			<li class="main_menu">
+				<a class="label" href="${rootPath}/join">회원가입</a>
 			</li>
 		</sec:authorize>
 		<sec:authorize access="isAuthenticated()">
-			<li>
-				<a href="javascript:void(0)" id="logout">로그아웃</a>
+			<li class="main_menu">
+				<div id="logout" class="label">로그아웃</div>
 			</li>
 			
-			<li>
-				<a href="${rootPath}/user/mypage">마이페이지</a>
+			<li class="main_menu">
+				<a class="label" href="${rootPath}/user/mypage">마이페이지</a>
 			</li>
 		</sec:authorize>
 	</ul>

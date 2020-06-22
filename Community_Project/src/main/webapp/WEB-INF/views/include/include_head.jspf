@@ -31,6 +31,8 @@
 		--color-success: #28A745;
 		--color-dodgerblue: #1E90FF;
 		
+		--nav-bg-color: #303A50;
+		
 		--nav-min-width: 768px;
 		--nav-max-width: 1024px;
 		--main-min-width: 768px;

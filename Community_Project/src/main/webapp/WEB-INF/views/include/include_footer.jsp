@@ -5,7 +5,7 @@
 		min-width: var(--footer-min-width);
 		max-width: var(--footer-max-width);
 		margin: 0 auto;
-		font-size: 13px;
+		font-size: 14px;
 	}
 	hr {
 		margin-top: 50px;

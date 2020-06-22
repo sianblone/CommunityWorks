@@ -8,20 +8,19 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf"%>
 <style>
-#email_auth {
-	position: absolute;
-	top: 58px;
-	width: 1024px;
-	padding: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	text-align: center;
-	background-color: black;
-	color: white;
-	font-weight: bold;
-	font-size: large;
-}
-
+	#email_auth {
+		position: absolute;
+		top: 58px;
+		width: 1024px;
+		padding: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		text-align: center;
+		background-color: black;
+		color: white;
+		font-weight: bold;
+		font-size: large;
+	}
 </style>
 <script>
 	$(function() {
