@@ -7,6 +7,14 @@
 <html>
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
+<style>
+	header {
+		cursor: pointer;
+	}
+	#board_category {
+		width: auto;
+	}
+</style>
 <script>
 	$(function(){
 		
@@ -80,12 +88,14 @@
 			
 		})
 		
-		$("#btn_list").click(function(){
-			document.location.href="${rootPath}/board/list?board_info=1"
+		$("#btn_cancel").click(function() {
+			if(confirm("작성을 취소하고 목록으로 돌아가시겠습니까?")) {
+				document.location.href="${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
+			}
 		})
 		
-		$("header h2").click(function() {
-			document.location.href = "${rootPath}/board/list?board_info=${param.board_info}"
+		$("header").click(function() {
+			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
 		})
 		
 	})
@@ -95,12 +105,12 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>글쓰기</h2>
+		<h2>${BOARD_INFO.bi_name}</h2>
 	</header>
 	<main>
 		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save" autocomplete="${FORM_AUTOCOMPLETE}">
 			<fieldset>
-				<input type="hidden" name="board_info" value="<c:out value='${param.board_info}' default='0'/>"/>
+				<input type="hidden" name="board_info" value="<c:out value='${BOARD_INFO.bi_id}' default='0'/>"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
 				<input type="hidden" name="board_p_no" value="<c:out value='${param.board_p_no}' default='0'/>"/>
 				<input type="hidden" name="currPage" value="${param.currPage}"/>
@@ -121,7 +131,8 @@
 					<textarea id="board_content" name="board_content" id="board_content" rows="5" cols="30">${BOARD_VO.board_content}</textarea>
 				</div>
 				
-				<div class="form-group d-flex justify-content-end">
+				<div class="form-group text-right">
+					<button id="btn_cancel" class="btn btn-danger mr-2" type="button">취소</button>
 					<button id="btn_save" class="btn btn-primary mr-2">저장</button>
 				</div>
 			</fieldset>

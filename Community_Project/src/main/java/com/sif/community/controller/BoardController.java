@@ -99,9 +99,10 @@ public class BoardController {
 	}
 	
 	// 저장 메소드
-	// id값을 받지 않았으면, 값이 입력되지 않은 저장화면 보여주기
-	// id값을 받았으면, 현재 사용자와 DB 게시글id 작성자를 검색하여, 일치하면 값 채워서 저장화면 보여주기
-	// 현재 사용자와 DB의 게시글id 작성자가 다르면 오류 페이지로 보내기
+	// boardOptionVO에는 board_no, board_info, board_p_no가 들어간다
+	// board_no 값을 받지 않았으면 새 저장화면 보여주기(새 글 작성)
+	// board_no 값을 받았으면 현재 사용자와 DB 게시글 작성자를 대조하여 일치하면 값 채워서 저장화면 보여주기(글 수정)
+	// 현재 사용자와 DB의 게시글 작성자가 다르면 오류 페이지로 Redirect
 	@RequestMapping(value="/save", method=RequestMethod.GET)
 	public String save(BoardVO boardOptionVO, Model model) {
 		// 없는 게시판(0)을 입력받으면 메인페이지로
@@ -109,6 +110,7 @@ public class BoardController {
 				
 		String render = boardSvc.saveView(boardOptionVO, model);
 		model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
+		model.addAttribute("BOARD_INFO", boardSvc.findByBoardInfo(boardOptionVO.getBoard_info()));
 		
 		return render;
 	}

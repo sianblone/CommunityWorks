@@ -54,9 +54,9 @@
 		max-width: var(--main-max-width);
 		margin: 0 auto;
 	}
-	header h2 {
+	header {
 		text-align: center;
-		padding-bottom: 20px;
+		padding: 30px 0px;
 		color: var(--color-dodgerblue);
 		cursor: default;
 	}

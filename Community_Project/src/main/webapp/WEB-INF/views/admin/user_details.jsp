@@ -44,9 +44,13 @@
 		color: var(--color-dodgerblue);
 	}
 	#btn_add_auth, #cancel_auth {
-		border: 1px solid black;
+		border: 1px solid var(--color-dodgerblue);
 		background-color: white;
 		color: black;
+	}
+	#btn_add_auth:hover, #cancel_auth:hover {
+		background-color: var(--color-dodgerblue);
+		color: white;
 	}
 	#cancel_auth {
 		margin-left: 10px;

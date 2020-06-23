@@ -6,8 +6,11 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 <style>
-	header h2 {
+	header {
 		cursor: pointer;
+	}
+	.first_hr {
+		margin-top: 0;
 	}
 	.details_info {
 		display: flex;
@@ -28,7 +31,7 @@
 	.info_cate, .info_count, .info_recommend, .info_datetime {
 		font-size: 12px;
 	}
-	.info_subject, .info_nickname {
+	.info_subject {
 		font-weight: bold;
 	}
 	.deleted {
@@ -91,7 +94,7 @@
 			}
 		})
 		
-		$("header h2").click(function() {
+		$("header").click(function() {
 			document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
 		})
 	})
@@ -103,10 +106,10 @@
 		<h2>${BOARD_VO.board_name}</h2>
 	</header>
 	<main>
-		<hr/>
+		<hr class="first_hr"/>
 		<article class="details_info">
 			<div class="details_info_item">
-				<span class="info_cate">[<c:if test="${BOARD_VO.board_category == null}">없음</c:if><c:if test="${BOARD_VO.board_category != null}">${BOARD_VO.board_category}</c:if>]</span>
+				<span class="info_cate"><c:if test="${BOARD_VO.board_category != null}">[${BOARD_VO.board_category}]</c:if></span>
 				<span class="info_count">조회 ${BOARD_VO.board_count}</span>
 			</div>
 			

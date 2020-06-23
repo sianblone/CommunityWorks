@@ -8,7 +8,7 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf"%>
 <style>
-	header h2 {
+	header {
 		cursor: pointer;
 	}
 	table {
@@ -74,7 +74,7 @@
 			document.location.href = url
 		})
 		
-		$("header h2").click(function() {
+		$("header").click(function() {
 			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
 		})
 	})

@@ -35,6 +35,19 @@
 			width: 70%;
 		}
 		
+		#btn_change_pw, #btn_email_change {
+			border: 1px solid var(--color-dodgerblue);
+		    background-color: white;
+		    color: black;
+		}
+		#btn_change_pw:hover, #btn_email_change:hover {
+			background-color: var(--color-dodgerblue);
+			color: white;
+		}
+		#btn_email_change {
+			margin-left: 10px;
+		}
+		
 		.birth {
 			display: flex;
 		}
@@ -49,11 +62,11 @@
 			width: 100px;
 			padding: 10px;
 			margin-top: 20px;
+			margin-left: auto;
 		}
 		.flex {
 			display: flex;
 		}
-		
 		.email_change_item {
 			text-align: center;
 		}
@@ -69,9 +82,6 @@
 			display: none;
 		}
 		
-		#btn_edit {
-			margin-left: auto;
-		}
 		#btn_close {
 			cursor: pointer;
 		}

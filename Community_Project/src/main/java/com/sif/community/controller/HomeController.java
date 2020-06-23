@@ -27,12 +27,7 @@ public class HomeController {
 			Model model) {
 		
 		List<BoardInfoVO> boardInfoList = boardSvc.selectMainPage(limit);
-		log.debug("Limit : {}", limit);
-		log.debug("메인페이지 : {}", boardInfoList.toString());
-		log.debug("메인페이지 게시글 : {}", boardInfoList.get(0).getBi_board_list().toString());
-		log.debug("메인페이지 게시글 수 : {}", boardInfoList.get(0).getBi_board_list().size());
 		model.addAttribute("BOARD_INFO_LIST", boardInfoList);
-		
 		model.addAttribute("EMAIL_AUTH", email_auth);
 		
 		return "home";
