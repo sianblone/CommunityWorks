@@ -5,14 +5,14 @@
 <link rel="stylesheet" href="${rootPath}/resources/css/toggle.css"/>
 <style>
 	form {
-		width: 70%;
-		margin: 10px auto;
+		width: 100%;
+		margin: 0px auto;
 	}
 	
 	.my_form_item, .switch {
 		display: flex;
 		align-items: center;
-		padding: 5px 0;
+		padding: 5px 0px;
 	}
 	.switch {
 		margin-left: 5px;
@@ -24,7 +24,6 @@
 		width: 20%;
 		margin-right: 20px;
 	}
-	
 	.my_data {
 		padding: 0.5rem 1rem;
 		width: 60%;
@@ -41,8 +40,16 @@
 		min-width: 60px;
 	}
 	
-	#btn_add_auth {
-		background-color: var(--color-success);
+	.new_auth span, .new_auth select {
+		color: var(--color-dodgerblue);
+	}
+	#btn_add_auth, #cancel_auth {
+		border: 1px solid black;
+		background-color: white;
+		color: black;
+	}
+	#cancel_auth {
+		margin-left: 10px;
 	}
 	
 	.btn_box {
@@ -51,7 +58,7 @@
 	
 	.btn_box button {
 		display: block;
-		width: 100px;
+		width: 120px;
 		padding: 10px;
 		margin-top: 20px;
 	}
@@ -64,21 +71,26 @@
 		
 		let enable_btn_edit = true
 		
-		$("input[type='checkbox']").click(function(){
-			$("p").toggle();
-		})
+		function isEmail(email) {
+			let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
+			return regex.test(email)
+		}
 		
-		$(document).off("click", "#btn_add_auth").on("click","#btn_add_auth",function(){
-			let auth_input = "<div class='my_form_item'>"
+		$(document).off("click", "#btn_add_auth").on("click","#btn_add_auth",function() {
+			let auth_input = "<div class='my_form_item new_auth'>"
 							+ "	<span class='my_label'>새 권한</span>"
 							+ "	<select class='my_data' name='auth'/>"
 							+ "		<option value=''>없음</option>"
 							+ "		<option value='ROLE_USER'>유저</option>"
 							+ "		<option value='ROLE_ADMIN'>관리자</option>"
 							+ "	</select>"
+							+ " <button id='cancel_auth' type='button'>취소</button>"
 							+ "</div>"
-			//auth_input.append($("<p/>", {"text":"제거","class":"auth_delete"}))
-			$("div#auth_box").append(auth_input)
+			$("#auth_box").append(auth_input)
+		})
+		
+		$(document).off("click", "#cancel_auth").on("click","#cancel_auth",function() {
+			$(this).closest(".new_auth").remove()
 		})
 		
 		$(document).off("click", "#btn_edit").on("click", "#btn_edit", function() {
@@ -172,18 +184,9 @@
 		</div>
 	</div>
 	
+	<!-- 권한 영역 -->
 	<c:choose>
-		<c:when test="${empty USER_VO.authorities}">
-			<div class="my_form_item">
-				<span class="my_label">권한</span>
-				<select class="my_data" name="auth">
-					<option value="">없음</option>
-					<option value="ROLE_USER">유저</option>
-					<option value="ROLE_ADMIN">관리자</option>
-				</select>
-			</div>
-		</c:when>
-		<c:otherwise>
+		<c:when test="${!empty USER_VO.authorities}">
 			<c:forEach items="${USER_VO.authorities}" var="auth" varStatus="s">
 				<div class="my_form_item">
 					<span class="my_label">권한${s.count}</span>
@@ -194,14 +197,28 @@
 					</select>
 				</div>
 			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<div class="my_form_item new_auth">
+				<span class="my_label">권한</span>
+				<select class="my_data" name="auth">
+					<option value="">없음</option>
+					<option value="ROLE_USER">유저</option>
+					<option value="ROLE_ADMIN">관리자</option>
+				</select>
+			</div>
 		</c:otherwise>
 	</c:choose>
 	
 	<div id="auth_box">
 	</div>
 	
+	<div id="add_auth_box" class="my_form_item">
+		<span class="my_label"></span>
+		<button id="btn_add_auth" class="my_data" type="button">권한 추가</button>
+	</div>
+	
 	<div class="btn_box">
-		<button id="btn_add_auth" type="button">권한 추가</button>
 		<button id="btn_edit" type="button" data-id="${USER_VO.username}">수정</button>
 	</div>
 	

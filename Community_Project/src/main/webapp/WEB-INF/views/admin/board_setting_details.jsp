@@ -4,30 +4,37 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
 	form {
-		width: 70%;
-		margin: 10px auto;
+		width: 100%;
+		margin: 0px auto;
 	}
 	
 	.my_form_item {
 		display: flex;
 		align-items: center;
-		padding: 5px 0;
+		padding: 5px 0px;
 	}
 	
 	.my_label {
 		display: inline-block;
 		text-align: right;
-		width: 30%;
+		width: 20%;
 		margin-right: 20px;
 	}
-	
 	.my_data {
 		padding: 0.5rem 1rem;
 		width: 60%;
 	}
 	
-	button.delete {
-		position: relative;
+	.new_category span, .new_category select {
+		color: var(--color-dodgerblue);
+	}
+	#btn_add_category, #cancel_category {
+		border: 1px solid black;
+		background-color: white;
+		color: black;
+	}
+	#cancel_category {
+		margin-left: 10px;
 	}
 	
 	.btn_box {
@@ -40,9 +47,6 @@
 		padding: 10px;
 		margin-top: 20px;
 	}
-	#btn_add_category {
-		background-color: var(--color-success);
-	}
 	#btn_edit_board {
 		margin-left: auto;
 	}
@@ -53,14 +57,18 @@
 		let enable_btn_edit_board = true
 		
 		$(document).off("click","#btn_add_category").on("click","#btn_add_category",function(){
-			let cate_input = "<div class='my_form_item category_box'>"
+			let cate_input = "<div class='my_form_item category_box new_category'>"
 							+ "	<span class='my_label'>새 카테고리</span>"
 							+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
 							+ "	<input class='my_data' name='cate_delete_list' type='hidden' value='false'/>"
 							+ "	<input class='my_data' name='cate_text_list'/>"
-							//+ "<button class='delete'>삭제</button>"
+							+ " <button id='cancel_category' type='button'>취소</button>"
 							+ "</div>"
-			$("div#cate_box").append(cate_input)
+			$("#cate_box").append(cate_input)
+		})
+		
+		$(document).off("click", "#cancel_category").on("click","#cancel_category",function() {
+			$(this).closest(".new_category").remove()
 		})
 		
 		$(document).off("click", "#btn_edit_board").on("click", "#btn_edit_board", function() {
@@ -139,7 +147,7 @@
 			</c:forEach>
 		</c:when>
 		<c:otherwise>
-			<div class="my_form_item category_box">
+			<div class="my_form_item category_box new_category">
 				<span class="my_label">새 카테고리</span>
 				<input class="my_data" name="cate_id_list" type="hidden" value="0"/>
 				<input class="my_data" name="cate_delete_list" type="hidden" value="false"/>
@@ -151,8 +159,12 @@
 	<div id="cate_box">
 	</div>
 	
+	<div id="add_category_box" class="my_form_item">
+		<span class="my_label"></span>
+		<button id="btn_add_category" class="my_data" type="button">카테고리 추가</button>
+	</div>
+	
 	<div class="btn_box">
-		<button id="btn_add_category" type="button">카테고리 추가</button>
 		<button id="btn_edit_board" type="button" data-id="${BOARD_INFO.bi_id}">수정</button>
 	</div>
 	

@@ -46,12 +46,6 @@
 		
 		let enable_btn_main = true
 		
-		function isEmail(email) {
-			let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
-			return regex.test(email)
-		}
-		// --------------------------------------------------------
-		
 		// 유저 목록
 		$(document).on("click", "#user_list", function() {
 			if(!enable_btn_main) return false
