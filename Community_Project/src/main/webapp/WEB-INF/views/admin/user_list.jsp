@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
 	table {
 		table-layout: fixed;
@@ -23,6 +24,16 @@
 		text-align: center;
 	}
 </style>
+<script>
+	$(function() {
+		$(document).off("click", "tr.tr_user").on("click", "tr.tr_user", function() {
+			let username = $(this).attr("data-id")
+			$.get("${rootPath}/admin/user_details/" + username, function(result) {
+				$("#admin_content").html(result)
+			})
+		})
+	})
+</script>
 <table>
 	<colgroup>
 		<col style="width: 20%">

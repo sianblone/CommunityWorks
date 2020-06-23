@@ -82,8 +82,7 @@
 	
 	<bean id="loginSuccessHandler" class="com.sif.community.service.secure.LoginSuccessHandlerImpl">
 		<constructor-arg value="/" />
-		
-	</bean>	
+	</bean>
 	<!--
 		사용자 인증을 할 때 우리가 만든 login form과 연동하기 위한 설정
 		
@@ -159,6 +158,6 @@
 			logout-url="/logout"
 			logout-success-url="/"
 			invalidate-session="true"
-			delete-cookies="true" />
+			delete-cookies="true"/>
 	</security:http>
 </beans>

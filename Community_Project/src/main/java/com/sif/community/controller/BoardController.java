@@ -49,7 +49,6 @@ public class BoardController {
 					Model model,
 					BoardVO boardVO,
 					Integer currPage) {
-		
 		log.debug("INFO:{} TYPE:{} TXT:{}",boardVO.getBoard_info(), boardVO.getSearch_type(), boardVO.getSearch_txt());
 		
 		// 없는 게시판(0)을 입력받으면 메인페이지로
@@ -140,14 +139,18 @@ public class BoardController {
 		if(currPage == null) currPage = 1;
 		
 		log.debug("boardVO : {}", boardVO.toString());
+		
 		// 1. 페이징 할 곳에서 totalCount(총 데이터 수) 가져오기
 		long totalCount = boardSvc.countAll(boardVO);
 		log.debug("카운트 : {}", totalCount);
+		
 		// 2. 페이지네이션 정보 만들기
 		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
 		log.debug("페이지 : {}", pageVO.toString());
+		
 		// 3. 페이지네이션 정보 view로 보내주기
 		model.addAttribute("PAGE_DTO", pageVO);
+		
 		// 4. 페이지네이션 기본 쿼리 view로 보내주기
 		String page_default_query = "&board_info=" + boardVO.getBoard_info();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);

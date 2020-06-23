@@ -20,14 +20,6 @@ public class LoginSuccessHandlerImpl extends SavedRequestAwareAuthenticationSucc
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws ServletException, IOException {
-		/*
-		RequestCache requestCache = new HttpSessionRequestCache();
-
-		SavedRequest savedRequest = requestCache.getRequest(request, response);
-		String targetUrl = savedRequest.getRedirectUrl();
-
-		getRedirectStrategy().sendRedirect(request, response, targetUrl);
-		*/
 		// 로그인 이전 페이지 가져오기
 		HttpSession session = request.getSession(false);
 		// 로그인 이전 페이지가 있는 경우
@@ -35,8 +27,9 @@ public class LoginSuccessHandlerImpl extends SavedRequestAwareAuthenticationSucc
 			String redirectURL = (String) session.getAttribute("url_prev_page");
 			// 로그인 이전 페이지의 URL이 있는 경우
 			if(redirectURL != null) {
-				// request에서 임시로 만들어놓은 url_prev_page 객체 삭제 후 페이지 이동
+				// request에서 임시로 만들어놓은 url_prev_page 객체 삭제, 인증(로그인)에 사용된 로그인 관련 세션 삭제 후 페이지 이동
 				session.removeAttribute("url_prev_page");
+				clearAuthenticationAttributes(request);
 				getRedirectStrategy().sendRedirect(request, response, redirectURL);
 			} else {
 				// 로그인 이전 페이지의 URL이 없는 경우 defaultTargetUrl 페이지로 이동

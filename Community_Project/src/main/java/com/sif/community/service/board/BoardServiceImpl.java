@@ -194,7 +194,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	protected BoardVO saveSetting(BoardVO boardVO) {
 		// 작성자 세팅
-		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅
+		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.isAuthenticated()) {
 			boardVO.setBoard_writer(auth.getName());

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
 	table {
 		table-layout: fixed;
@@ -34,7 +34,36 @@
 		margin-top: 15px;
 	}
 </style>
-
+<script>
+	$(function() {
+		$(document).off("click", ".board_info").on("click", ".board_info", function() {
+			$.ajax({
+				url: "${rootPath}/admin/board_setting_details",
+				type: "GET",
+				data: { board_info : $(this).data("id") },
+				success: function(result) {
+					$("#admin_content").html(result)
+				},
+				error: function(error) {
+					alert("서버 통신 오류")
+				}
+			})
+		})
+		
+		$(document).off("click", "#btn_add_board").on("click", "#btn_add_board", function() {
+			$.ajax({
+				url: "${rootPath}/admin/board_setting_create_board",
+				type: "GET",
+				success: function(result) {
+					$("#admin_content").html(result)
+				},
+				error: function(error) {
+					alert("서버 통신 오류")
+				}
+			})
+		})
+	})
+</script>
 <table>
 	<colgroup>
 		<col style="width: 25%">

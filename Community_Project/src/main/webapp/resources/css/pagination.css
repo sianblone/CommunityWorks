@@ -11,7 +11,7 @@ ul.page_body {
 	justify-content: center;
 	align-items: center;
 }
-a.page_link {
+.page_link {
 	position: relative;
 	display: block;
 	padding: 0.5rem 0.75rem;
@@ -22,18 +22,18 @@ a.page_link {
 	text-decoration: none;
 	cursor: pointer;
 }
-a.page_link:hover {
+.page_link:hover {
 	color:#0056B3;
 	background-color: #E9ECEF;
 	border-color: #DEE2E6;
 	text-decoration: none;
 }
-a.page_link:focus {
+.page_link:focus {
 	z-index:3;
 	outline: 0;
 	box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
 }
-li.page_item.active a.page_link{
+li.page_item.active .page_link{
 	z-index:3;
 	color:#fff;
 	background-color: #007BFF;

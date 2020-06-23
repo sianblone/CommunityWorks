@@ -12,5 +12,5 @@ public interface CommentService {
 	public CommentVO findByCmtNo(long comment_no);
 	
 	public int save(CommentVO commentVO);
-	public String delete(long comment_no, Integer currPage);
+	public String delete(long cmt_no, Integer currPage);
 }

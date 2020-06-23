@@ -7,7 +7,7 @@
 		SELECT COUNT(*)
 		FROM tbl_comment
 		WHERE
-			board_no = #{commentVO.cmt_board_no}
+			cmt_board_no = #{commentVO.cmt_board_no}
 			<if test="!isAdmin">
 				AND cmt_delete = 0
 			</if>
@@ -32,9 +32,9 @@
 	
 	<select id="findByCmtNo" resultType="commentVO">
 		SELECT c.*, u.nickname AS cmt_nickname
-		FROM tbl_board c, tbl_users u
+		FROM tbl_comment c, tbl_users u
 		WHERE
-			cmt_no = #{cmt_no}
+			c.cmt_no = #{cmt_no}
 			AND
 			c.cmt_writer = u.username
 	</select>
@@ -64,7 +64,7 @@
 			#{cmt_order},
 			#{cmt_depth},
 			#{cmt_writer},
-			#{cmt_datetime},
+			#{db_insert_datetime},
 			#{cmt_content},
 			#{cmt_delete},
 			#{cmt_recommend}

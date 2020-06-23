@@ -20,29 +20,40 @@
 	}
 </style>
 <script>
-$(function(){
-	
-	$(document).on("click","button",function() {
-		let id = $(this).attr("id")
-		if(id == "btn_delete_complete") {
-			if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
-			document.location.replace("${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=delete")
-		} else if(id == "btn_restore") {
-			if(confirm("이 글을 복구하시겠습니까?"))
-			document.location.href="${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=restore"
-		} else if(id == "btn_edit") {
-			document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
-		} else if(id == "btn_delete") {
-			if(confirm("정말 삭제하시겠습니까?"))
-			document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
-		} else if(id == "btn_reply") {
-			document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
-			return false
-		} else if(id == "btn_list"){
-			document.location.href="${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
-		}
+	$(function() {
+		
+		$.ajax({
+			url: "${rootPath}/comment/list?board_no=${BOARD_VO.board_no}",
+			type: "GET",
+			success: function(result) {
+				$(".cmt_list").html(result)
+			},
+			error: function(error) {
+				console.log("댓글 불러오기 실패")
+			}
+		})
+		
+		$(document).on("click","button",function() {
+			let id = $(this).attr("id")
+			if(id == "btn_delete_complete") {
+				if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
+				document.location.replace("${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=delete")
+			} else if(id == "btn_restore") {
+				if(confirm("이 글을 복구하시겠습니까?"))
+				document.location.href="${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=restore"
+			} else if(id == "btn_edit") {
+				document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
+			} else if(id == "btn_delete") {
+				if(confirm("정말 삭제하시겠습니까?"))
+				document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
+			} else if(id == "btn_reply") {
+				document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
+				return false
+			} else if(id == "btn_list") {
+				document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
+			}
+		})
 	})
-})
 </script>
 </head>
 <style>
@@ -89,13 +100,13 @@ $(function(){
 			<div class="p-2">
 				<b>댓글</b>
 			</div>
-			<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
+			<div class="p-4 cmt_write">
+				<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
+			</div>
 			<div class="p-2">
 				<b>댓글 리스트</b>
 			</div>
-			<div class="p-4 cmt-list">
-				<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
-			</div>
+			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
 		</section>
 	</main>
 </body>

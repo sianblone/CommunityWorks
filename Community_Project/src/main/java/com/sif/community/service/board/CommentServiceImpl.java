@@ -116,7 +116,7 @@ public class CommentServiceImpl implements CommentService {
 	
 	protected CommentVO saveSetting(CommentVO commentVO) {
 		// 작성자 세팅
-		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅
+		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if(auth.isAuthenticated()) {
 			commentVO.setCmt_writer(auth.getName());
@@ -131,9 +131,9 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public String delete(long comment_no, Integer currPage) {
+	public String delete(long cmt_no, Integer currPage) {
 		String render = "";
-		CommentVO commentVO = this.findByCmtNo(comment_no);
+		CommentVO commentVO = this.findByCmtNo(cmt_no);
 		// DB에 댓글번호로 검색한 데이터가 있으면(이미 있는 댓글이면) 삭제하기
 		if(commentVO != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -146,11 +146,11 @@ public class CommentServiceImpl implements CommentService {
 				render = "redirect:/comment/list?board_no=" + cmt_board_no;
 				if(currPage != null) render += "&currPage=" + currPage;
 			} else {
-				// 현재 로그인한 사용자와 게시글 작성자가 다르고 관리자가 아니면 삭제 불가, 에러페이지 보여주기
+				// 현재 로그인한 사용자와 게시글 작성자가 다르거나 관리자가 아니면 삭제 불가, 에러페이지 보여주기
 				render = "board/error";
 			}
 		} else {
-			// DB에 comment_no로 검색한 데이터가 없으면 에러페이지 보여주기
+			// DB에 cmt_no로 검색한 데이터가 없으면 에러페이지 보여주기
 			render = "board/error";
 		}
 		

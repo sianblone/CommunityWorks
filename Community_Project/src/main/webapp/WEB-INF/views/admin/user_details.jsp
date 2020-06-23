@@ -60,9 +60,73 @@
 	}
 </style>
 <script>
-	var check = $("input[type='checkbox']");
-	check.click(function(){
-		$("p").toggle();
+	$(function() {
+		
+		let enable_btn_edit = true
+		
+		$("input[type='checkbox']").click(function(){
+			$("p").toggle();
+		})
+		
+		$(document).off("click", "#btn_add_auth").on("click","#btn_add_auth",function(){
+			let auth_input = "<div class='my_form_item'>"
+							+ "	<span class='my_label'>새 권한</span>"
+							+ "	<select class='my_data' name='auth'/>"
+							+ "		<option value=''>없음</option>"
+							+ "		<option value='ROLE_USER'>유저</option>"
+							+ "		<option value='ROLE_ADMIN'>관리자</option>"
+							+ "	</select>"
+							+ "</div>"
+			//auth_input.append($("<p/>", {"text":"제거","class":"auth_delete"}))
+			$("div#auth_box").append(auth_input)
+		})
+		
+		$(document).off("click", "#btn_edit").on("click", "#btn_edit", function() {
+			if(!enable_btn_edit) return false
+			let email = $("#email")
+			
+			// 유효성 검사
+			if(email.val() == "") {
+				alert("이메일을 입력하세요.")
+				email.focus()
+				return false
+			} else if( !isEmail(email.val()) ) {
+				alert("올바른 형식의 이메일이 아닙니다.")
+				email.focus()
+				return false
+			}
+			
+			// 유효성 검사 통과 시
+			// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+			enable_btn_edit = false
+			$("body").css("cursor", "wait")
+			
+			let formData = $("#user_details_form").serialize()
+			formData += "&username=" + $("#btn_edit").data("id")
+			
+			$.ajax({
+				url : "${rootPath}/admin/user_details",
+				type : "POST",
+				data : formData,
+				success : function(result) {
+					if(result == -102) {
+						alert("이메일을 정확히 입력하세요.")
+					} else if(result == -103) {
+						alert("생년월일을 정확히 입력하세요.")
+					} else {
+						$("#admin_content").html(result)
+						alert("변경사항이 저장되었습니다.")
+					}
+				},
+				error : function() {
+					alert("서버 통신 오류")
+				}
+			}).always(function() {
+				enable_btn_edit = true
+				$("body").css("cursor", "default")
+			})
+		})
+		
 	})
 </script>
 <form:form id="user_details_form" action="${rootPath}/user/mypage" autocomplete="${FORM_AUTOCOMPLETE}">
