@@ -75,7 +75,7 @@ public class BoardController {
 			return "board/error";
 		}
 		
-		// view로 보내줄 값
+		// 유효성 검사 통과 시 view로 보내줄 값
 		boolean isWriter = false;
 		boolean isAdmin = false;
 		boolean isDeleted = false;
@@ -83,7 +83,12 @@ public class BoardController {
 		if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) isAdmin = true;
 		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
 		if( boardVO.getBoard_writer().equals(auth.getName()) ) isWriter = true;
-		if(boardVO.getBoard_delete() == 1) isDeleted = true;
+		if( boardVO.getBoard_delete() == 1 ) isDeleted = true;
+		
+		// DB 데이터에 조회수 1 증가시키기
+		boardSvc.updateBoardCount(boardOptionVO);
+		// 이미 DB에서 가져온 데이터의 조회수를 1 증가시켜 view에 보여주기
+		boardVO.setBoard_count(boardVO.getBoard_count() + 1);
 		
 		model.addAttribute("BOARD_VO",boardVO);
 		model.addAttribute("IS_WRITER", isWriter);

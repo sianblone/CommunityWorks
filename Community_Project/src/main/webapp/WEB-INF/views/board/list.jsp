@@ -121,7 +121,7 @@
 									<td class="b_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><a
 									href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}">${B.board_category} ${B.board_subject}</a></td>
 									<td class="b_nickname text-center"><span class="board_nickname use_context">${B.board_nickname}</span></td>
-									<td class="b_date text-center">${B.board_datetime}</td>
+									<td class="b_date text-center">${B.board_custom_datetime}</td>
 									<td class="b_count text-center">${B.board_count}</td>
 									<td class="b_recommend text-center">${B.board_recommend}</td>
 								</tr>

@@ -23,5 +23,5 @@ public interface BoardService {
 	public int save(BoardVO boardVO);
 	public String delete(long board_no, Integer currPage);
 	public String admin(long board_no, Integer currPage, String order);
-	
+	public int updateBoardCount(BoardVO boardOptionVO);
 }

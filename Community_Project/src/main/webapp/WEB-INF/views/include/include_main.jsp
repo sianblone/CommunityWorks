@@ -68,7 +68,7 @@
 															test="${boardVO.board_depth > 0}">└ </c:if>
 														<c:if test="${boardVO.board_delete == 1}">[삭제됨] </c:if>${boardVO.board_category}
 														${boardVO.board_subject}</a></td>
-												<td class="text-center d-none d-xl-table-cell">${boardVO.board_datetime}</td>
+												<td class="text-center d-none d-xl-table-cell">${boardVO.board_custom_datetime}</td>
 											</tr>
 										</c:forEach>
 									</tbody>

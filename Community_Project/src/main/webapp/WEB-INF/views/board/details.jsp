@@ -6,8 +6,13 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 <style>
-	.details_info {
+	header h2 {
+		cursor: pointer;
+	}
+	
+	.details_info_item {
 		display: flex;
+		justify-content: space-between;
 	}
 	small {
 		display: block;
@@ -53,31 +58,37 @@
 				document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
 			}
 		})
+		
+		$("header h2").click(function() {
+			document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
+		})
 	})
 </script>
 </head>
-<style>
-	.cmt-item-del {
-		cursor: pointer;
-	}
-</style>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2 class="p-1 <c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject}</h2>
+		<h2>${BOARD_VO.board_name}</h2>
 	</header>
 	<main>
 		<section class="container-fluid">
-			<div class="text-right">
-				<small class="m-3">작성일시 : ${BOARD_VO.board_datetime}</small>
-			</div>
 			<hr/>
-			<div class="details_info">
-				<small class="m-3">카테고리 : <c:if test="${BOARD_VO.board_category == null}">없음</c:if><c:if test="${BOARD_VO.board_category != null}">${BOARD_VO.board_category}</c:if></small>
-				<small class="m-3">작성자 : ${BOARD_VO.board_nickname}</small>
-				<small class="m-3">조회수 : ${BOARD_VO.board_count}</small>
-				<small class="m-3">추천수 : ${BOARD_VO.board_recommend}</small>
-			</div>
+			<article class="details_info">
+				<div class="details_info_item">
+					<span id="info_cate">[<c:if test="${BOARD_VO.board_category == null}">없음</c:if><c:if test="${BOARD_VO.board_category != null}">${BOARD_VO.board_category}</c:if>]</span>
+					<span id="info_count">${BOARD_VO.board_count}</span>
+				</div>
+				
+				<div class="details_info_item">
+					<span id="info_sub" class="<c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject} [${BOARD_VO.board_cmt_count}]</span>
+					<span id="info_recomment">${BOARD_VO.board_recommend}</span>
+				</div>
+				
+				<div class="details_info_item">
+					<span id="info_recomment">${BOARD_VO.board_nickname}</span>
+					<span id="info_recomment">${BOARD_VO.board_custom_full_datetime}</span>
+				</div>
+			</article>
 			<hr/>
 			<div class="p-3">
 				${BOARD_VO.board_content}

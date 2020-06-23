@@ -64,7 +64,7 @@
 			#{cmt_order},
 			#{cmt_depth},
 			#{cmt_writer},
-			#{db_insert_datetime},
+			#{cmt_datetime},
 			#{cmt_content},
 			#{cmt_delete},
 			#{cmt_recommend}

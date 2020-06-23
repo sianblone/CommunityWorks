@@ -125,7 +125,7 @@ public class CommentServiceImpl implements CommentService {
 		// 날짜+시간 세팅
 		LocalDateTime ldt = LocalDateTime.now();
 		Date date = Date.from( ldt.atZone( ZoneId.systemDefault()).toInstant() );
-		commentVO.setDb_insert_datetime(date);
+		commentVO.setCmt_datetime(date);
 		
 		return commentVO;
 	}

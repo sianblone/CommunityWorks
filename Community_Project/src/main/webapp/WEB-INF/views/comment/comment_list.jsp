@@ -2,6 +2,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
+	.cmt_item {
+		display: flex;
+	}
 	.cmt_reply, .cmt_delete {
 		cursor: pointer;
 	}
@@ -48,10 +51,19 @@
 <section class="cmt_list">
 	<c:forEach items="${CMT_LIST}" var="C">
 		<article class="cmt_item <c:if test="${C.cmt_delete== 1}">deleted</c:if> row p-2 bg-light" data-id="${C.cmt_no}">
-			<div class="cmt_nickname col-2">${C.cmt_nickname}</div>
-			<div class="cmt_content col-7"><c:if test="${C.cmt_depth > 0}">└<span class="cmt_p_no">[${C.cmt_p_no}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</div>
-			<div class="cmt_reply col-1 ml-auto text-center">[답글]</div>
-			<div class="cmt_delete col-1 text-center">&times;</div>
+			<div class="cmt_item_group">
+				<span class="cmt_nickname">${C.cmt_nickname}</span>
+				<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
+				<span class="cmt_reply">[답글]</span>
+			</div>
+			
+			<div class="cmt_item_group">
+				<span class="cmt_content"><c:if test="${C.cmt_depth > 0}">└<span class="cmt_p_no">[${C.cmt_p_no}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</span>
+			</div>
+			
+			<div class="cmt_item_group">
+				<span class="cmt_delete">&times;</span>
+			</div>
 		</article>
 	</c:forEach>
 	<%@ include file="/WEB-INF/views/comment/cmt_pagination.jsp"%>

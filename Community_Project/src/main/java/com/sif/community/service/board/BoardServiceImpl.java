@@ -203,7 +203,7 @@ public class BoardServiceImpl implements BoardService {
 		// 날짜+시간 세팅
 		LocalDateTime ldt = LocalDateTime.now();
 		Date date = Date.from( ldt.atZone( ZoneId.systemDefault()).toInstant() );
-		boardVO.setDb_insert_datetime(date);
+		boardVO.setBoard_datetime(date);
 		
 		return boardVO;
 	}
@@ -262,6 +262,11 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		return render;
+	}
+
+	@Override
+	public int updateBoardCount(BoardVO boardOptionVO) {
+		return boardDao.updateBoardCount(boardOptionVO);
 	}
 	
 }
