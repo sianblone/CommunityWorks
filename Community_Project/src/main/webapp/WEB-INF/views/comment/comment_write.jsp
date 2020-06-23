@@ -88,7 +88,7 @@
 		</div>
 		
 		<div class="col-2 d-flex justify-content-center">
-			<button id="btn_cmt_save" class="btn btn-success" type="button">저장</button>
+			<button id="btn_cmt_save" class="btn btn-primary" type="button">저장</button>
 		</div>
 	</div>
 </form>
