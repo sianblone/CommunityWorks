@@ -46,7 +46,7 @@
 		SELECT
 			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime,
 			b.board_subject, b.board_content, b.board_count, b.board_filename, b.board_delete, b.board_recommend, b.board_category,
-			u.nickname AS board_nickname, bi.bi_name AS board_name, COUNT(c.cmt_no) AS board_cmt_count
+			u.nickname AS board_nickname, bi.bi_name AS board_name, (SELECT COUNT(c.cmt_no) FROM tbl_comment c WHERE b.board_no = c.cmt_board_no) AS board_cmt_count
 		FROM tbl_board b
 		LEFT JOIN tbl_board_info bi
 		ON
@@ -54,9 +54,6 @@
 		LEFT JOIN tbl_users u
 		ON
 			b.board_writer = u.username
-		LEFT JOIN tbl_comment c
-		ON
-			b.board_no = c.cmt_board_no
 		WHERE
 			b.board_info = #{boardVO.board_info}
 			<if test="!isAdmin">
@@ -86,7 +83,7 @@
 	</select>
 	
 	<select id="findByBoardNo" resultType="boardVO">
-		SELECT b.*, u.nickname AS board_nickname, bi.bi_name AS board_name, COUNT(c.cmt_no) AS board_cmt_count
+		SELECT b.*, u.nickname AS board_nickname, bi.bi_name AS board_name, (SELECT COUNT(c.cmt_no) FROM tbl_comment c WHERE b.board_no = c.cmt_board_no) AS board_cmt_count
 		FROM tbl_board b
 		LEFT JOIN tbl_board_info bi
 		ON
@@ -94,9 +91,6 @@
 		LEFT JOIN tbl_users u
 		ON
 			b.board_writer = u.username
-		LEFT JOIN tbl_comment c
-		ON
-			b.board_no = c.cmt_board_no
 		WHERE
 			board_no = #{board_no}
 			AND

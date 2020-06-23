@@ -4,6 +4,30 @@
 <style>
 	.cmt_item {
 		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.cmt_item:first-child {
+		border-top: 1px solid rgba(0, 0, 0, 0.1);
+	}
+	.cmt_item_group {
+		display: flex;
+		flex-direction: column;
+		overflow-wrap: break-word;
+		padding: 5px 10px;
+	}
+	.cmt_item_group:first-child {
+		width: 15%;
+	}
+	.cmt_item_group:nth-child(2) {
+		width: 70%;
+	}
+	.cmt_item_group:last-child {
+		width: 8%;
+		text-align: center;
+	}
+	.cmt_datetime {
+		font-size: 11px;
 	}
 	.cmt_reply, .cmt_delete {
 		cursor: pointer;
@@ -50,11 +74,10 @@
 </script>
 <section class="cmt_list">
 	<c:forEach items="${CMT_LIST}" var="C">
-		<article class="cmt_item <c:if test="${C.cmt_delete== 1}">deleted</c:if> row p-2 bg-light" data-id="${C.cmt_no}">
+		<article class="cmt_item <c:if test="${C.cmt_delete== 1}">deleted</c:if>" data-id="${C.cmt_no}">
 			<div class="cmt_item_group">
 				<span class="cmt_nickname">${C.cmt_nickname}</span>
 				<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
-				<span class="cmt_reply">[답글]</span>
 			</div>
 			
 			<div class="cmt_item_group">
@@ -63,6 +86,7 @@
 			
 			<div class="cmt_item_group">
 				<span class="cmt_delete">&times;</span>
+				<span class="cmt_reply">[답글]</span>
 			</div>
 		</article>
 	</c:forEach>

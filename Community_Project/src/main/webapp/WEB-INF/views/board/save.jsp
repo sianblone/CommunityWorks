@@ -23,6 +23,32 @@
 			
 		]
 		
+		function upFile(file, editor) {
+			var formData = new FormData()
+
+			formData.append('upFile', file)
+			
+			$.ajax({
+
+				url: "${rootPath}/board/image_up",
+				type: "POST",
+				data: formData,
+				contentType: false,
+				processData: false,
+				enctype: "multipart/form-data",
+				beforeSend: function(ajx) {
+					ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+				},
+				success: function(result) {
+					result = "${rootPath}/files/" + result
+					$(editor).summernote('editor.insertImage', result)
+				},
+				error: function() {
+					alert("서버 통신 오류")
+				}
+			})
+		}
+		
 		$("#board_content").summernote({
 			lang: 'ko-KR',
 			placeholder: '본문을 입력하세요',
@@ -58,33 +84,9 @@
 			document.location.href="${rootPath}/board/list?board_info=1"
 		})
 		
-		function upFile(file, editor) {
-			
-			var formData = new FormData()
-
-			formData.append('upFile', file)
-			
-			$.ajax({
-
-				url: "${rootPath}/board/image_up",
-				type: "POST",
-				data: formData,
-				contentType: false,
-				processData: false,
-				enctype: "multipart/form-data",
-				beforeSend: function(ajx) {
-					ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
-				},
-				success: function(result) {
-					result = "${rootPath}/files/" + result
-					$(editor).summernote('editor.insertImage', result)
-				},
-				error: function() {
-					alert("서버 통신 오류")
-				}
-			})
-			
-		}
+		$("header h2").click(function() {
+			document.location.href = "${rootPath}/board/list?board_info=${param.board_info}"
+		})
 		
 	})
 	</script>

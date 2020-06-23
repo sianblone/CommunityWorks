@@ -1,10 +1,14 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form"  prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
+	.cmt_write_box {
+		display: flex;
+		background-color: #f5f5f5;
+		padding: 20px 0px;
+	}
 	#cmt_content_unauth {
 		background-color: white;
 	}
@@ -14,6 +18,15 @@
 		font-weight: bold;
 		overflow: hidden;
 		white-space: nowrap;
+	}
+	.cmt_btn_box {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		margin-right: 5%;
+	}
+	#btn_cmt_save {
+		padding: 16px 20px;
 	}
 </style>
 <script>
@@ -66,29 +79,31 @@
 		})
 	})
 </script>
-<form id="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
-	<div class="row p-4 bg-light">
-		<sec:authorize access="hasAnyRole('ADMIN','USER')">
-			<input id="isAuth" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-		</sec:authorize>
-		<input type="hidden" name="cmt_board_no" value="<c:out value='${param.board_no}' default='0'/>">
-		<input type="hidden" name="cmt_p_no" value="0">
-		<div class="col-2 cmt_nickname">
-			<sec:authorize access="isAuthenticated()">
-				<span><sec:authentication property="principal.nickname"/></span>
+<section class="cmt_write">
+	<form id="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
+		<article class="cmt_write_box">
+			<sec:authorize access="hasAnyRole('ADMIN','USER')">
+				<input id="isAuth" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 			</sec:authorize>
-		</div>
-		<div class="col-8">
-			<sec:authorize access="isAuthenticated()">
-				<input id="cmt_content" class="form-control" name="cmt_content" placeholder="댓글">
-			</sec:authorize>
-			<sec:authorize access="!isAuthenticated()">
-				<input id="cmt_content_unauth" class="form-control" placeholder="댓글을 달려면 로그인을 해야합니다." readonly>
-			</sec:authorize>
-		</div>
-		
-		<div class="col-2 d-flex justify-content-center">
-			<button id="btn_cmt_save" class="btn btn-primary" type="button">저장</button>
-		</div>
-	</div>
-</form>
+			<input type="hidden" name="cmt_board_no" value="<c:out value='${param.board_no}' default='0'/>">
+			<input type="hidden" name="cmt_p_no" value="0">
+			<div class="col-2 cmt_nickname">
+				<sec:authorize access="isAuthenticated()">
+					<span><sec:authentication property="principal.nickname"/></span>
+				</sec:authorize>
+			</div>
+			<div class="col-8">
+				<sec:authorize access="isAuthenticated()">
+					<textarea id="cmt_content" class="form-control" name="cmt_content" rows="2"></textarea>
+				</sec:authorize>
+				<sec:authorize access="!isAuthenticated()">
+					<input id="cmt_content_unauth" class="form-control" placeholder="댓글을 달려면 로그인을 해야합니다." readonly>
+				</sec:authorize>
+			</div>
+			
+			<div class="cmt_btn_box">
+				<button id="btn_cmt_save" type="button">저장</button>
+			</div>
+		</article>
+	</form>
+</section>
