@@ -15,7 +15,7 @@
 	
 	<select id="selectAllByPage" resultType="commentVO">
 		SELECT
-			c.cmt_no, c.cmt_board_no, c.cmt_p_no, c.cmt_group, c.cmt_order, c.cmt_depth, c.cmt_writer, c.cmt_datetime, c.cmt_content,
+			c.cmt_no, c.cmt_board_no, c.cmt_p_no, c.cmt_group, c.cmt_order, c.cmt_depth, c.cmt_writer, c.cmt_datetime, c.cmt_content, c.cmt_delete, c.cmt_recommend,
 			u.nickname AS cmt_nickname
 		FROM tbl_comment c
 		LEFT JOIN tbl_users u

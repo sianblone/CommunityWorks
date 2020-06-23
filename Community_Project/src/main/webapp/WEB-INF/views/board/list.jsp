@@ -32,12 +32,15 @@
 	td {
 		padding: 6px 4px;
 	}
-	.c_num, .c_date, .c_count, .c_recommend {
+	.b_num, .b_date, .b_count, .b_recommend {
 		font-size: 11px;
 		vertical-align: middle;
 	}
-	a {
+	tr:not(.deleted) a {
 		color: black;
+	}
+	tr.deleted a {
+		color: gray;
 	}
 	
 	span.board_p_no {
@@ -50,10 +53,6 @@
 	}
 	span.board_nickname:hover {
 		text-decoration: underline;
-	}
-	
-	tr[data-reply] .subject {
-		margin-left: 20px;
 	}
 	
 	.deleted {
@@ -118,13 +117,13 @@
 						<c:otherwise>
 							<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
 								<tr class="<c:if test="${B.board_delete == 1}">deleted</c:if>" data-id="${B.board_no}" <c:if test="${B.board_depth > 0}">data-reply="${B.board_depth}"</c:if>>
-									<td class="c_num text-center">${B.board_no}</td>
-									<td class="c_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><a
+									<td class="b_num text-center">${B.board_no}</td>
+									<td class="b_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><a
 									href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}">${B.board_category} ${B.board_subject}</a></td>
-									<td class="c_nickname text-center"><span class="board_nickname use_context">${B.board_nickname}</span></td>
-									<td class="c_date text-center">${B.board_datetime}</td>
-									<td class="c_count text-center">${B.board_count}</td>
-									<td class="c_recommend text-center">${B.board_recommend}</td>
+									<td class="b_nickname text-center"><span class="board_nickname use_context">${B.board_nickname}</span></td>
+									<td class="b_date text-center">${B.board_datetime}</td>
+									<td class="b_count text-center">${B.board_count}</td>
+									<td class="b_recommend text-center">${B.board_recommend}</td>
 								</tr>
 							</c:forEach>
 						</c:otherwise>

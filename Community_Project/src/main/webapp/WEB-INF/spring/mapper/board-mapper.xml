@@ -44,7 +44,8 @@
 	
 	<select id="selectAllByPage" resultType="boardVO">
 		SELECT
-			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime, b.board_subject, b.board_content,
+			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime,
+			b.board_subject, b.board_content, b.board_count, b.board_filename, b.board_delete, b.board_recommend, b.board_category,
 			u.nickname AS board_nickname, bi.bi_name AS board_name
 		FROM tbl_board b
 		LEFT JOIN tbl_board_info bi
