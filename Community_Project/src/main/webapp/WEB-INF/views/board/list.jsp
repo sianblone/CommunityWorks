@@ -8,58 +8,57 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf"%>
 <style>
-h2.header {
-	cursor: pointer;
-}
-table {
-	table-layout: fixed;
-	font-family: gulim, 굴림;
-	font-size: 13px;
-	width: 100%;
-	padding: 0px 4px;
-	border-collapse: collapse;
-}
-tr {
-	border-bottom: 1px solid skyblue;
-}
-th {
-	border-top: 2px solid var(--button-bg-color);
-	border-bottom: 1px solid var(--button-bg-color);
+	header h2 {
+		cursor: pointer;
+	}
+	table {
+		table-layout: fixed;
+		font-family: gulim, 굴림;
+		font-size: 13px;
+		width: 100%;
+		padding: 0px 4px;
+		border-collapse: collapse;
+	}
+	tr {
+		border-bottom: 1px solid skyblue;
+	}
+	th {
+		border-top: 2px solid var(--button-bg-color);
+		border-bottom: 1px solid var(--button-bg-color);
+		
+		height: 40px;
+		text-align: center;
+	}
+	td {
+		padding: 6px 4px;
+	}
+	.c_num, .c_date, .c_count, .c_recommend {
+		font-size: 11px;
+		vertical-align: middle;
+	}
+	a {
+		color: black;
+	}
 	
-	height: 40px;
-	text-align: center;
-}
-td {
-	padding: 6px 4px;
-}
-.c_num, .c_date, .c_count, .c_recommend {
-	font-size: 11px;
-	vertical-align: middle;
-}
-a {
-	color: black;
-}
-
-span.board_p_no {
-	color: gray;
-	font-size: 11px;
-}
-span.board_nickname {
-	padding: 6px 0px;
-	cursor: pointer;
-}
-span.board_nickname:hover {
-	text-decoration: underline;
-}
-
-tr[data-reply] .subject {
-	margin-left: 20px;
-}
-
-.deleted {
-	color: gray;
-}
-
+	span.board_p_no {
+		color: gray;
+		font-size: 11px;
+	}
+	span.board_nickname {
+		padding: 6px 0px;
+		cursor: pointer;
+	}
+	span.board_nickname:hover {
+		text-decoration: underline;
+	}
+	
+	tr[data-reply] .subject {
+		margin-left: 20px;
+	}
+	
+	.deleted {
+		color: gray;
+	}
 </style>
 <script>
 	let rootPath = "${rootPath}"
@@ -76,7 +75,7 @@ tr[data-reply] .subject {
 			document.location.href = url
 		})
 		
-		$("h2.header").click(function() {
+		$("header h2").click(function() {
 			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
 		})
 	})
@@ -85,8 +84,10 @@ tr[data-reply] .subject {
 
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf"%>
+	<header>
+		<h2>${BOARD_INFO.bi_name}</h2>
+	</header>
 	<main>
-	<h2 class="header">${BOARD_INFO.bi_name}</h2>
 		<article>
 			<table>
 				<colgroup>

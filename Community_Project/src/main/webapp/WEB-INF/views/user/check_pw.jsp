@@ -35,7 +35,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>비밀번호 확인</h2>
+	<header>
+		<h2>비밀번호 확인</h2>
+	</header>
 	<form:form id="check_pw_form" action="${rootPath}/user/check-pw" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="label">
 			<label for="password">현재 비밀번호를 입력하세요</label>

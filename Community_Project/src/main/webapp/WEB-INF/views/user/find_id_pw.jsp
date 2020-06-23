@@ -186,7 +186,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>ID/PW 찾기</h2>
+	<header>
+		<h2>ID/PW 찾기</h2>
+	</header>
 	<section class="forms">
 		<form:form id="find_id_form" action="${rootPath}/user/find-id" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 			<h3>ID 찾기</h3>

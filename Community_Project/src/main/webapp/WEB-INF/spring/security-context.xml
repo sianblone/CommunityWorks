@@ -80,6 +80,10 @@
 		<security:authentication-provider ref="authProvider"/>
 	</security:authentication-manager>
 	
+	<bean id="loginSuccessHandler" class="com.sif.community.service.secure.LoginSuccessHandlerImpl">
+		<constructor-arg value="/" />
+		
+	</bean>	
 	<!--
 		사용자 인증을 할 때 우리가 만든 login form과 연동하기 위한 설정
 		
@@ -123,9 +127,13 @@
 		<security:intercept-url
 			pattern="/user/**"
 			access="permitAll()" />
-			
+		
 		<security:intercept-url
 			pattern="/board/save"
+			access="hasAnyRole('ADMIN','USER')" />
+			
+		<security:intercept-url
+			pattern="/comment/save"
 			access="hasAnyRole('ADMIN','USER')" />
 			
 		<security:intercept-url
@@ -134,23 +142,23 @@
 		
 		<security:form-login
 			login-page="/user/login"
+			login-processing-url="/login"
 			authentication-failure-url="/user/login?error=1"
-			login-processing-url=""
-			default-target-url=""
+			always-use-default-target="false"
+			authentication-success-handler-ref="loginSuccessHandler"
 			username-parameter="username"
 			password-parameter="password" />
 			
 		<!--
-			logout 시 반드시
-			invalidate-session="true"
-			delete-cookies="true"로 설정한다
-			
-			delete-cookies="true"로 설정하지 않으면 웹브라우저에 저장된 쿠키를 탈취당하여 서버 공격에 사용될 수 있다
+			logout 시 반드시 설정할 것
+			invalidate-session="true" (세션 삭제)
+			delete-cookies="true" (쿠키 삭제)
+			이 설정을 하지 않으면 웹브라우저에 저장된 쿠키를 탈취당하여 서버 공격에 사용될 수 있다
 		-->
 		<security:logout
 			logout-url="/logout"
+			logout-success-url="/"
 			invalidate-session="true"
-			delete-cookies="true"
-			logout-success-url="/" />
+			delete-cookies="true" />
 	</security:http>
 </beans>

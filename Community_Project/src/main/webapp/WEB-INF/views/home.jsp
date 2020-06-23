@@ -35,7 +35,9 @@
 	<c:if test="${EMAIL_AUTH}">
 		<div id="email_auth">이메일 인증이 완료되었습니다!</div>
 	</c:if>
-	<h2>커뮤니티 메인 페이지</h2>
+	<header>
+		<h2>커뮤니티 메인 페이지</h2>
+	</header>
 
 	<%@ include file="/WEB-INF/views/include/include_main.jsp" %>
 </body>

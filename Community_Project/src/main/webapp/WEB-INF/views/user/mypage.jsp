@@ -224,7 +224,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>마이페이지</h2>
+	<header>
+		<h2>마이페이지</h2>
+	</header>
 	<form:form id="my_form" class="my_form" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="my_form_item">
 			<span class="my_label">ID</span>

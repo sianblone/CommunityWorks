@@ -90,7 +90,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>비밀번호 재설정</h2>
+	<header>
+		<h2>비밀번호 재설정</h2>
+	</header>
 	<form:form id="find_form" modelAttribute="userVO" autocomplete="${FORM_AUTOCOMPLETE}">
 		<p>새로운 비밀번호를 입력하세요</p><br/>
 		<input type="hidden" id="enc_username" name="enc_username" value="${ENC_USER}" />

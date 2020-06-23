@@ -95,7 +95,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>비밀번호 변경</h2>
+	<header>
+		<h2>비밀번호 변경</h2>
+	</header>
 	<form:form id="change_pw_form" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="label">
 			<label for="password">새 비밀번호</label>

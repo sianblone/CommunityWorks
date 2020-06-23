@@ -91,7 +91,10 @@
 </head>
 
 <body>
-<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
+	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
+	<header>
+		<h2>글쓰기</h2>
+	</header>
 	<main>
 		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save" autocomplete="${FORM_AUTOCOMPLETE}">
 			<fieldset>

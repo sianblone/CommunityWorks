@@ -267,7 +267,9 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<h2>회원가입</h2>
+	<header>
+		<h2>회원가입</h2>
+	</header>
 	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="${FORM_AUTOCOMPLETE}" onSubmit="return false">
 		<div class="form_item">
 			<label for="username">ID</label>

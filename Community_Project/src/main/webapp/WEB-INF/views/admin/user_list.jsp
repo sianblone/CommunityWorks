@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <style>
 	table {
+		table-layout: fixed;
 		width: 100%;
 		border-collapse: collapse;
 	}
@@ -23,9 +24,16 @@
 	}
 </style>
 <table>
+	<colgroup>
+		<col style="width: 20%">
+		<col style="width: 20%">
+		<col style="width: 16%">
+		<col style="width: 18%">
+		<col style="width: 18%">
+		<col style="width: 18%">
+	</colgroup>
 	<thead>
 		<tr>
-			<th>No</th>
 			<th>ID</th>
 			<th>닉네임</th>
 			<th>활성여부</th>
@@ -38,13 +46,12 @@
 		<c:choose>
 			<c:when test="${empty USER_LIST}">
 				<tr>
-					<td colSpan="7">등록된 유저가 없습니다</td>
+					<td colSpan="6">등록된 유저가 없습니다</td>
 				</tr>
 			</c:when>
 			<c:when test="${!empty USER_LIST}">
 				<c:forEach items="${USER_LIST}" var="user" varStatus="s">
 					<tr data-id="${user.username}" class="tr_user">
-						<td>${s.count}</td>
 						<td>${user.username}</td>
 						<td>${user.nickname}</td>
 						<td><c:choose><c:when test="${user.enabled}">활성</c:when><c:otherwise>비활성</c:otherwise></c:choose></td>

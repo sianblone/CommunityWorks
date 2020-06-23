@@ -3,6 +3,7 @@
 
 <style>
 	table {
+		table-layout: fixed;
 		width: 100%;
 		border-collapse: collapse;
 	}
@@ -22,6 +23,12 @@
 		padding: 8px 12px;
 		text-align: center;
 	}
+	td {
+		border-right: 1px solid var(--color-dodgerblue);
+	}
+	td:last-child {
+		border-right: none;
+	}
 	.btn_box {
 		text-align: right;
 		margin-top: 15px;
@@ -29,9 +36,13 @@
 </style>
 
 <table>
+	<colgroup>
+		<col style="width: 25%">
+		<col style="width: 75%">
+	</colgroup>
 	<thead>
 		<tr>
-			<th>번호</th>
+			<th>게시판번호</th>
 			<th>게시판이름</th>
 		</tr>
 	</thead>

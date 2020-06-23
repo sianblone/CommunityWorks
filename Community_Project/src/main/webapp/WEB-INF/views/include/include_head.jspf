@@ -49,15 +49,16 @@
 	body {
 		height: 2000px;
 	}
-	main {
+	main, header {
 		min-width: var(--main-min-width);
 		max-width: var(--main-max-width);
 		margin: 0 auto;
 	}
-	h2 {
+	header h2 {
 		text-align: center;
 		padding-bottom: 20px;
 		color: var(--color-dodgerblue);
+		cursor: default;
 	}
 	input {
 		padding: 0.5rem 1rem;

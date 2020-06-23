@@ -21,50 +21,6 @@
 </style>
 <script>
 $(function(){
-	$(document).on("click","cmt-item",function(){
-		let id = $(this).data("id")
-		let writer = $(this).find("div.writer").find("b").text()
-		let subject = $(this).find("div.subject").text()
-		
-		$("#c_id").val(id)
-		$("#c_writer").val(writer)
-		$("#c_subject").val(subject)
-	})
-	
-	$(document).on("click","div.cmt-item-del",function(event){
-		event.stopPropagation()
-		if(!confirm("삭제할까요?")) {
-			return false
-		}
-		let c_id = $(this).parent("div").data("id")
-		$.ajax({
-			url : "${rootPath}/comment/delete/",
-			data : {
-				c_id : c_id,
-				g_id : "${B.board_no}"
-			},
-			type : "POST",
-			success : function(result) {
-				$("div.cmt-list").html(result)
-			},
-			error : function() {
-				alert("서버통신오류")
-			}
-		})
-	})
-	
-	$(document).on("click",".cmt-item-repl",function(event){
-		let board_no = "${B.board_no}"
-		let cmt_no = $(this).parent("div").data("id")
-		let data = {cmt_board_no:board_no,cmt_p_no:cmt_no}
-		
-		ebent.stopPropagation()
-		
-		$.get("${rootPath}/comment/repl",data,function(result){
-			$(".modal-body").html(result)
-			$(".modal-main").css("display","block")
-		})
-	})
 	
 	$(document).on("click","button",function() {
 		let id = $(this).attr("id")
@@ -90,16 +46,18 @@ $(function(){
 </script>
 </head>
 <style>
-.cmt-item-del {
-	cursor: pointer;
-}
+	.cmt-item-del {
+		cursor: pointer;
+	}
 </style>
 <body>
-<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
+	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
+	<header>
+		<h2 class="p-1 <c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject}</h2>
+	</header>
 	<main>
 		<section class="container-fluid">
 			<div class="text-right">
-				<h2 class="p-1 <c:if test="${BOARD_VO.board_delete == 1}">deleted</c:if>"><c:if test="${BOARD_VO.board_delete == 1}">[삭제됨] </c:if>${BOARD_VO.board_subject}</h2>
 				<small class="m-3">작성일시 : ${BOARD_VO.board_datetime}</small>
 			</div>
 			<hr/>

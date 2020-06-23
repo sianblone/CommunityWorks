@@ -4,7 +4,11 @@
 <%@ taglib uri="http://www.springframework.org/tags/form"  prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
-
+<style>
+	#cmt_content_unauth {
+		background-color: white;
+	}
+</style>
 <script>
 	$(function() {
 		$(document).on("click", "#cmt_content_unauth", function() {
@@ -31,6 +35,7 @@
 				data: $("#comment_form").serialize(),
 				success: function(result) {
 					alert("성공")
+					console.log(result)
 				},
 				error: function(error) {
 					alert("서버 통신 오류")
@@ -59,7 +64,7 @@
 				<input id="cmt_content" class="form-control" placeholder="댓글">
 			</sec:authorize>
 			<sec:authorize access="!isAuthenticated()">
-				<input id="cmt_content_unauth" class="form-control" name="cmt_content" placeholder="댓글을 달려면 로그인을 해야합니다.">
+				<input id="cmt_content_unauth" class="form-control" name="cmt_content" placeholder="댓글을 달려면 로그인을 해야합니다." readonly>
 			</sec:authorize>
 		</div>
 		

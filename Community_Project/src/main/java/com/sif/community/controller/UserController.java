@@ -3,6 +3,7 @@ package com.sif.community.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,14 @@ public class UserController {
 	private final UserService userSvc;
 	
 	@RequestMapping(value = "/login", method=RequestMethod.GET)
-	public String login() {
+	public String login(HttpServletRequest request, Model model) {
+		
+		// 정규식을 이용해 이전 페이지가 로그인 페이지가 아닌 경우만 prevPage 설정
+		String referer = request.getHeader("Referer");
+		if(!referer.matches(".*/user/login.*")) {
+			request.getSession().setAttribute("url_prev_page", referer);
+		}
+		
 		return "auth/login";
 	}
 	

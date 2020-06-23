@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS tbl_users (
 	accountNonLocked BOOLEAN DEFAULT true,
 	credentialsNonExpired BOOLEAN DEFAULT true,
 	nickname VARCHAR(30) NOT NULL,
-	email VARCHAR(50),
+	email VARCHAR(125),
 	phone VARCHAR(20),
 	birth DATE
 	)
