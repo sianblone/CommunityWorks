@@ -70,11 +70,11 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/board_setting_details", method=RequestMethod.POST)
-	public String board_setting_details(BoardInfoVO boardInfoOptionVO, CategoryVO categoryVO, Model model) {
+	public String board_setting_details(BoardInfoVO boardInfoOptionVO, CategoryVO categoryOptionVO, Model model) {
 		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
-		// category 배열에는 카테고리 목록이 들어있다
-		log.debug("카테고리:{}", categoryVO.toString());
-		adminSvc.update_tbl_board_info(boardInfoOptionVO, categoryVO);
+		// categoryOptionVO에는 카테고리 목록이 들어있다
+		log.debug("카테고리:{}", categoryOptionVO.toString());
+		adminSvc.update_tbl_board_info(boardInfoOptionVO, categoryOptionVO);
 		
 		return "redirect:/admin/board_setting";
 	}

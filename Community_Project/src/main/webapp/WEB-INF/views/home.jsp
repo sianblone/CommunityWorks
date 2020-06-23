@@ -40,8 +40,6 @@
 	</header>
 
 	<%@ include file="/WEB-INF/views/include/include_main.jsp" %>
-</body>
-<footer>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>
-</footer>
+</body>
 </html>

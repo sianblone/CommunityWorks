@@ -4,9 +4,9 @@
 <mapper namespace="com.sif.community.dao.TopMenuDao">
 	
 	<select id="getTopMenuList" resultType="boardInfoVO">
-		select bi_id, bi_name
-		from tbl_board_info 
-		order by bi_id
+		SELECT bi_id, bi_name
+		FROM tbl_board_info 
+		ORDER BY bi_id
 	</select>
 	
 </mapper>

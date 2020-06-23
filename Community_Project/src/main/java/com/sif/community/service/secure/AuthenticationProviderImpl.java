@@ -49,7 +49,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 			throw new BadCredentialsException("비밀번호가 일치하지 않습니다.");
 		}
 
-		// UserDetailsService에서 보내준 사용자 정보를 Controller로 보내기
+		// UserDetailsService에서 가져온 사용자 정보 return
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 		return token;
 	}

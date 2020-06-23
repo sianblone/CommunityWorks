@@ -8,7 +8,7 @@
 			let jump_page = prompt("이동할 페이지 (1~" + ${PAGE_DTO.lastPageNo} + ")")
 			
 			if(jump_page != null) {
-				let requestURL = "${rootPath}/comment/list?board_no=${BOARD_VO.board_no}"
+				let requestURL = "${rootPath}/comment/list"
 				let query = "?currPage=" + jump_page + "${PAGE_DEFAULT_QUERY}"
 				requestURL += query
 				
@@ -26,7 +26,7 @@
 		})
 		
 		$(document).off("click", ".page_link").on("click", ".page_link", function() {
-			let requestURL = "${rootPath}/comment/list?board_no=${BOARD_VO.board_no}"
+			let requestURL = "${rootPath}/comment/list"
 			let query = $(this).data("href")
 			requestURL += query
 			

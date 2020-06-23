@@ -113,7 +113,7 @@ public class MailSendService {
 	public boolean send_auth_code(String to_email, String email_token) {
 		
 		StringBuilder email_content = new StringBuilder();
-		email_content.append("<p>회원가입을 완료하려면 인증코드를 입력하세요.</p>");
+		email_content.append("<p>이메일 변경을 완료하려면 인증코드를 입력하세요.</p>");
 		email_content.append("<p>인증코드 : " + email_token + "</p>");
 		
 		String subject = "이메일 변경 인증코드";

@@ -27,7 +27,8 @@
 				type: "POST",
 				data: $("#create_board_form").serialize(),
 				success: function(result) {
-					$("#admin_content").html(result)
+					alert("게시판 생성 완료")
+					document.location.replace(document.location.href)
 				},
 				error: function(error) {
 					alert("서버 통신 오류")

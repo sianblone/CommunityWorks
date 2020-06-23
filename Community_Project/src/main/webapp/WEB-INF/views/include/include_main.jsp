@@ -12,6 +12,16 @@
 		cursor: default;
 	}
 	
+	.card_box {
+		display: flex;
+	}
+	
+	#no_board {
+		text-align: center;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	
 	table {
 		font-family: gulim, 굴림;
 		font-size: 13px;
@@ -37,12 +47,12 @@
 </style>
 <!-- 게시판 미리보기 부분 -->
 <div class="main_boards">
-	<div class="row">
-		<c:choose>
-			<c:when test="${empty BOARD_INFO_LIST}">
-				<span>게시판이 없습니다</span>
-			</c:when>
-			<c:when test="${!empty BOARD_INFO_LIST}">
+	<c:choose>
+		<c:when test="${empty BOARD_INFO_LIST}">
+			<div id="no_board">현재 생성된 게시판이 없습니다</div>
+		</c:when>
+		<c:when test="${!empty BOARD_INFO_LIST}">
+			<div class="card_box">
 				<c:forEach items="${BOARD_INFO_LIST}" var="boardInfoVO">
 					<div class="col-lg-6 cardbox">
 						<div class="card shadow">
@@ -77,7 +87,7 @@
 						</div>
 					</div>
 				</c:forEach>
-			</c:when>
-		</c:choose>
-	</div>
+			</div>
+		</c:when>
+	</c:choose>
 </div>

@@ -26,7 +26,7 @@
 			<if test="!isAdmin">
 				AND c.cmt_delete = 0
 			</if>
-		ORDER BY c.cmt_group DESC, c.cmt_order ASC
+		ORDER BY c.cmt_group ASC, c.cmt_order ASC
 		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
 	</select>
 	

@@ -66,14 +66,18 @@
 						re_password : $("#re_password").val()
 					},
 					success : function(result) {
-						// 비밀번호 유효성 검사가 성공(0 이상)이면
+						// 비밀번호 유효성 검사 성공(0 이상)
 						if(result > 0) {
 							alert("비밀번호가 변경되었습니다.")
 							document.location.replace("${rootPath}/")
-						} else {
-							// 비밀번호 유효성 검사가 실패(0 이면)
+						} else if(result == 0) {
+							// 비밀번호 유효성 검사 실패(0)
 							alert("비밀번호를 정확히 입력하세요.")
 							re_password.focus()
+							return false
+						} else if(result == -1) {
+							// enc_username 복호화 실패
+							alert("잘못된 요청입니다.")
 							return false
 						}
 					},

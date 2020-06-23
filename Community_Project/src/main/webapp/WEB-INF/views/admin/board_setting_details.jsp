@@ -60,7 +60,6 @@
 			let cate_input = "<div class='my_form_item category_box new_category'>"
 							+ "	<span class='my_label'>새 카테고리</span>"
 							+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
-							+ "	<input class='my_data' name='cate_delete_list' type='hidden' value='false'/>"
 							+ "	<input class='my_data' name='cate_text_list'/>"
 							+ " <button id='cancel_category' type='button'>취소</button>"
 							+ "</div>"
@@ -78,19 +77,8 @@
 			enable_btn_edit_board = false
 			$("body").css("cursor", "wait")
 			
-			/*
-			let arrCategory = $(".category_box").map(function() {
-				let o = {}
-				$(this).find("input").each(function() {
-					o[$(this).attr("name")] = this.value
-				})
-				return o
-			}).get()
-			console.log(arrCategory)
-			*/
-			
 			let formData = $("#board_setting_details_form").serialize()
-			formData += "&bi_id=" + $("#btn_edit_board").data("id")
+			formData += "&bi_id=" + $("#btn_edit_board").attr("data-id")
 			
 			$.ajax({
 				url : "${rootPath}/admin/board_setting_details",
@@ -133,28 +121,15 @@
 	</div>
 	
 	<!-- 카테고리 영역 -->
-	<c:choose>
-		<c:when test="${not empty BOARD_INFO.bi_category}">
-			<c:forEach items="${BOARD_INFO.bi_category}" var="vo" varStatus="s">
-				<div class="ddd">
-					<div class="my_form_item category_box">
-						<span class="my_label">카테고리${s.count}</span>
-						<input class="my_data" name="cate_id_list" type="hidden" value="${vo.cate_id}"/>
-						<input class="my_data" name="cate_delete_list" type="hidden" value="false"/>
-						<input class="my_data" name="cate_text_list" value="${vo.cate_text}" maxlength="20"/>
-					</div>
-				</div>
-			</c:forEach>
-		</c:when>
-		<c:otherwise>
-			<div class="my_form_item category_box new_category">
-				<span class="my_label">새 카테고리</span>
-				<input class="my_data" name="cate_id_list" type="hidden" value="0"/>
-				<input class="my_data" name="cate_delete_list" type="hidden" value="false"/>
-				<input class="my_data" name="cate_text_list" maxlength="20"/>
+	<c:if test="${not empty BOARD_INFO.bi_category}">
+		<c:forEach items="${BOARD_INFO.bi_category}" var="vo" varStatus="s">
+			<div class="my_form_item category_box">
+				<span class="my_label">카테고리${s.count}</span>
+				<input class="my_data" name="cate_id_list" type="hidden" value="${vo.cate_id}"/>
+				<input class="my_data" name="cate_text_list" value="${vo.cate_text}" maxlength="20"/>
 			</div>
-		</c:otherwise>
-	</c:choose>
+		</c:forEach>
+	</c:if>
 	
 	<div id="cate_box">
 	</div>

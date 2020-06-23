@@ -189,45 +189,6 @@
 				})
 			})
 			
-			$(document).on("click", "#btn_test_join", function() {
-				if(!enable_btn_join) return false
-				
-				// 유효성 검사
-				if(regJoin() == false) return false
-				
-				// 유효성 검사 통과 시
-				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_join = false
-				$("body").css("cursor", "wait")
-				
-				$.ajax({
-					url : "${rootPath}/join/test-join",
-					method : "POST",
-					data : $("#join-form").serialize(),
-					success : function(result) {
-						if(result > 0) {
-							document.location.href = "${rootPath}/"
-						} else if(result == -100) {
-							alert("아이디를 정확히 입력하세요.")
-						} else if(result == -101) {
-							alert("비밀번호를 정확히 입력하세요.")
-						} else if(result == -102) {
-							alert("이메일을 정확히 입력하세요.")
-						} else if(result == -103) {
-							alert("생년월일을 정확히 입력하세요.")
-						} else if(result == -200) {
-							alert("이미 사용중인 아이디입니다.")
-						}
-					},
-					error : function() {
-						alert("서버 통신 오류")
-					}
-				}).always(function() {
-					enable_btn_join = true
-					$("body").css("cursor", "default")
-				})
-			})
-			
 			// 현재 입력박스에서 포커스가 벗어났을때 발생하는 이벤트
 			// 아이디 중복 확인
 			$(document).on("blur", "#username", function() {
@@ -326,7 +287,7 @@
 			<label for="year">생년월일</label><br/>
 		</div>
 		
-		<div class="birth">
+		<div class="form_item birth">
 			<input id="year" name="year" placeholder="년" maxlength="4"/>
 			<select id="month" name="month">
 				<option value="">월</option>

@@ -54,16 +54,13 @@
 		color: white;
 	}
 	
-	.cmt_list_label {
-		padding: 5px 10px;
-		background-color: #f5f5f5;
-	}
+	
 </style>
 <script>
 	$(function() {
 		
 		$.ajax({
-			url: "${rootPath}/comment/list?board_no=${BOARD_VO.board_no}",
+			url: "${rootPath}/comment/list?cmt_board_no=${BOARD_VO.board_no}",
 			type: "GET",
 			success: function(result) {
 				$(".cmt_list").html(result)
@@ -109,7 +106,7 @@
 		<hr class="first_hr"/>
 		<article class="details_info">
 			<div class="details_info_item">
-				<span class="info_cate"><c:if test="${BOARD_VO.board_category != null}">[${BOARD_VO.board_category}]</c:if></span>
+				<span class="info_cate"><c:if test="${BOARD_VO.board_category != null}">[${BOARD_VO.board_cate_text}]</c:if></span>
 				<span class="info_count">조회 ${BOARD_VO.board_count}</span>
 			</div>
 			
@@ -141,15 +138,15 @@
 			<button id="btn_list">목록</button>
 		</article>
 		
-		<article class="cmt_list_label">
-			<b>댓글 ${BOARD_VO.board_cmt_count}</b>
-		</article>
-		<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
+		<section class="cmt_list">
+			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
+		</section>
 		
 		<article>
 			<b>댓글쓰기</b>
 		</article>
 		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
 	</main>
+	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>
 </body>
 </html>

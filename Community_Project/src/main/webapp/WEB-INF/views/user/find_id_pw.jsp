@@ -21,13 +21,14 @@
 		.form_item p {
 			padding: 0.5rem 0;
 		}
-		.result-id {
+		.result-box {
 			display: none;
 			padding: 10px;
-			background-color: rgba(0,0,0,0.3)
+			border: 1px solid var(--color-dodgerblue);
 		}
 		.result-header {
 			text-align: center;
+			margin-bottom: 0px;
 		}
 		.forms form {
 			padding: 0 50px;
@@ -92,12 +93,12 @@
 				if(email.val() == "") {
 					alert("이메일을 입력하세요.")
 					email.focus()
-					$(".result-id").css("display", "none")
+					$(".result-box").css("display", "none")
 					return false
 				} else if( !isEmail(email.val()) ) {
 					alert("이메일을 정확히 입력하세요.")
 					email.focus()
-					$(".result-id").css("display", "none")
+					$(".result-box").css("display", "none")
 					return false
 				}
 				
@@ -117,7 +118,7 @@
 							alert("해당 이메일로 가입된 아이디가 없습니다.")
 						} else {
 							// result가 들어있으면
-							$(".result-id").css("display", "block")
+							$(".result-box").css("display", "block")
 							$(".result-id").text("")
 							result.forEach(function(username){
 								$(".result-id").append("<p>" + username + "</p>")
@@ -201,8 +202,11 @@
 				<input id="id_email" name="email" type="email" placeholder="Email 입력"/>
 			</div>
 			
-			<div class="form_item result-id">
+			<div class="form_item result-box">
 				<p class="result-header">가입된 ID</p>
+				<div class="result-id">
+					
+				</div>
 			</div>
 			
 			<div class="form_item btn_box">

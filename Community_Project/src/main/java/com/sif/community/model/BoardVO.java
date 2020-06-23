@@ -34,12 +34,13 @@ public class BoardVO {
 	private String board_filename;// VARCHAR(256)
 	private int board_delete;// TINYINT NOT NULL DEFAULT 0
 	private long board_recommend;// BIGINT NOT NULL DEFAULT 0
-	private Integer board_category;// INT // int가 아니라 Integer인 이유는 외래키에 null값을 세팅할 수 있도록
+	private Integer board_category;// INT // int가 아니라 Integer인 이유는 0 대신 null값을 세팅할 수 있도록
 
 	private String board_nickname;
 	private String board_name;
 	private String board_custom_datetime;
 	private String board_custom_full_datetime;
+	private String board_cate_text;
 	private Integer board_cmt_count;
 
 	private String search_type;

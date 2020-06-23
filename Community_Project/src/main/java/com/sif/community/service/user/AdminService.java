@@ -108,7 +108,7 @@ public class AdminService {
 	@Transactional
 	public int update_tbl_board_info(BoardInfoVO boardInfoOptionVO, CategoryVO categoryOptionVO) {
 		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
-		// category 배열에는 카테고리 목록이 들어있다
+		// categoryOptionVO에는 카테고리 목록이 들어있다
 		
 		// DB의 게시판 정보(tbl_board_info) 불러오기
 		BoardInfoVO dbBoardInfoVO = boardDao.findByBoardInfo(boardInfoOptionVO.getBi_id());
@@ -127,38 +127,43 @@ public class AdminService {
 		dbBoardInfoVO.setBi_name(boardInfoOptionVO.getBi_name());
 		int ret = adminDao.update_tbl_board_info(dbBoardInfoVO);
 		
-		// 업데이트 성공 시 권한 테이블 업데이트
+		// 업데이트 성공 시 카테고리 테이블 업데이트
 		if(ret > 0) {
+			
 			List<Long> cate_id_list = categoryOptionVO.getCate_id_list();
 			List<String> cate_text_list = categoryOptionVO.getCate_text_list();
 			
-			List<CategoryVO> categoryList = new ArrayList<CategoryVO>();
+			// 받은 카테고리 값이 있으면(리스트가 null이 아니면) 카테고리 테이블 업데이트 
+			if(cate_id_list != null) {
 			
-			for(int i = 0; i < cate_id_list.size(); i++) {
-				long cate_id = cate_id_list.get(i);
-				String cate_text = cate_text_list.get(i);
+				List<CategoryVO> categoryList = new ArrayList<CategoryVO>();
 				
-				// cate_id 여부에 따라서 INSERT UPDATE 선택
-				if(cate_id == 0) {
-					// cate_id를 입력받지 않았으면(0이면) 게시판에 카테고리 새로 추가
-					CategoryVO categoryVO = CategoryVO.builder()
-							.cate_bi_id(dbBoardInfoVO.getBi_id())
-							.cate_text(cate_text)
-							.build();
-					categoryList.add(categoryVO);
-				} else {
-					// cate_id를 입력받았으면 기존 DB 카테고리 내용 업데이트
-					CategoryVO categoryVO = CategoryVO.builder()
-							.cate_id(cate_id)
-							.cate_bi_id(dbBoardInfoVO.getBi_id())
-							.cate_text(cate_text)
-							.build();
-					cateDao.update(categoryVO);
+				for(int i = 0; i < cate_id_list.size(); i++) {
+					long cate_id = cate_id_list.get(i);
+					String cate_text = cate_text_list.get(i);
+					
+					// cate_id 여부에 따라서 INSERT UPDATE 선택
+					if(cate_id == 0) {
+						// cate_id를 입력받지 않았으면(0 이면) 게시판에 카테고리 새로 추가
+						CategoryVO categoryVO = CategoryVO.builder()
+								.cate_bi_id(dbBoardInfoVO.getBi_id())
+								.cate_text(cate_text)
+								.build();
+						categoryList.add(categoryVO);
+					} else {
+						// cate_id를 입력받았으면 기존 DB 카테고리 내용 업데이트
+						CategoryVO categoryVO = CategoryVO.builder()
+								.cate_id(cate_id)
+								.cate_bi_id(dbBoardInfoVO.getBi_id())
+								.cate_text(cate_text)
+								.build();
+						cateDao.update(categoryVO);
+					}
+					
 				}
-				
+				if(categoryList.size() > 0) cateDao.insert(categoryList);
 			}
 			
-			if(categoryList.size() > 0) cateDao.insert(categoryList);
 		}
 		
 		return ret;

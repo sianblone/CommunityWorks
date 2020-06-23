@@ -32,7 +32,7 @@ public class CommentController {
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String list(
 			Model model,
-			@RequestParam(value = "board_no", required = true) long cmt_board_no,
+			@RequestParam(value = "cmt_board_no", required = true) long cmt_board_no,
 			Integer currPage) {
 		
 		CommentVO commentVO = new CommentVO();
@@ -49,7 +49,7 @@ public class CommentController {
 	public String save(CommentVO commentVO, Integer currPage) {
 				
 		cmtSvc.save(commentVO);
-		String redirect = "redirect:/comment/list?board_no=" + commentVO.getCmt_board_no();
+		String redirect = "redirect:/comment/list?cmt_board_no=" + commentVO.getCmt_board_no();
 		if(currPage != null) redirect += "&currPage=" + currPage;
 		return redirect;
 	}
@@ -70,6 +70,7 @@ public class CommentController {
 		
 		// 1. 페이징 할 곳에서 totalCount(총 데이터 수) 가져오기
 		long totalCount = cmtSvc.countAll(commentVO);
+		model.addAttribute("CMT_TOTAL", totalCount);
 		log.debug("카운트 : {}", totalCount);
 		
 		// 2. 페이지네이션 정보 만들기

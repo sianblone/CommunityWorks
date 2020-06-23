@@ -47,7 +47,7 @@
 	}
 	
 	body {
-		height: 2000px;
+		overflow-y: scroll;
 	}
 	main, header {
 		min-width: var(--main-min-width);

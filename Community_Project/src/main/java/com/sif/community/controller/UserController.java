@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,12 +43,11 @@ public class UserController {
 	
 	@RequestMapping(value = "/mypage", method=RequestMethod.GET)
 	public String mypage(Model model) {
-		// 현재 SecurityContextHolder의 아이디,비밀번호 인증 토큰에서 Principal(유저정보), Authorities(권한) 가져오기
-		UsernamePasswordAuthenticationToken upaToken = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsVO loginVO = (UserDetailsVO) upaToken.getPrincipal();
-		loginVO.setAuthorities(upaToken.getAuthorities());
+		// 현재 로그인 된 SecurityContextHolder의 사용자 ID로 DB 조회하기
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		UserDetailsVO userVO = userSvc.findByUsername(username);
 		
-		model.addAttribute("loginVO", loginVO);
+		model.addAttribute("loginVO", userVO);
 		
 		return "user/mypage";
 	}

@@ -11,7 +11,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.sif.community.dao.TopMenuDao;
 import com.sif.community.model.BoardInfoVO;
 
-public class TopMenuInterceptor implements HandlerInterceptor{
+public class TopMenuInterceptor implements HandlerInterceptor {
 
 	@Autowired
 	private TopMenuDao topMenuDao;

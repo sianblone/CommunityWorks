@@ -2,6 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
+	.cmt_list_label {
+		padding: 5px 10px;
+		background-color: #f5f5f5;
+	}
+	
 	.cmt_item {
 		display: flex;
 		justify-content: space-between;
@@ -64,7 +69,7 @@
 					success: function(result) {
 						$(".cmt_list").html(result)
 					},
-					error: function() {
+					error: function(error) {
 						alert("서버 통신 오류")
 					}
 				})
@@ -72,23 +77,25 @@
 		})
 	})
 </script>
-<section class="cmt_list">
-	<c:forEach items="${CMT_LIST}" var="C">
-		<article class="cmt_item <c:if test="${C.cmt_delete== 1}">deleted</c:if>" data-id="${C.cmt_no}">
-			<div class="cmt_item_group">
-				<span class="cmt_nickname">${C.cmt_nickname}</span>
-				<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
-			</div>
-			
-			<div class="cmt_item_group">
-				<span class="cmt_content"><c:if test="${C.cmt_depth > 0}">└<span class="cmt_p_no">[${C.cmt_p_no}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</span>
-			</div>
-			
-			<div class="cmt_item_group">
-				<span class="cmt_delete">&times;</span>
-				<span class="cmt_reply">[답글]</span>
-			</div>
-		</article>
-	</c:forEach>
-	<%@ include file="/WEB-INF/views/comment/cmt_pagination.jsp"%>
-</section>
+
+<article class="cmt_list_label">
+	<b>댓글 ${CMT_TOTAL}</b>
+</article>
+<c:forEach items="${CMT_LIST}" var="C">
+	<article class="cmt_item <c:if test="${C.cmt_delete== 1}">deleted</c:if>" data-id="${C.cmt_no}">
+		<div class="cmt_item_group">
+			<span class="cmt_nickname">${C.cmt_nickname}</span>
+			<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
+		</div>
+		
+		<div class="cmt_item_group">
+			<span class="cmt_content"><c:if test="${C.cmt_depth > 0}">└<span class="cmt_p_no">[${C.cmt_p_no}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</span>
+		</div>
+		
+		<div class="cmt_item_group">
+			<span class="cmt_delete">&times;</span>
+			<span class="cmt_reply">[답글]</span>
+		</div>
+	</article>
+</c:forEach>
+<%@ include file="/WEB-INF/views/comment/cmt_pagination.jsp"%>

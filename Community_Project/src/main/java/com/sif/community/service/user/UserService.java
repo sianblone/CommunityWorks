@@ -210,9 +210,16 @@ public class UserService {
 		}
 		
 		// JASYPT로 username 복호화
+		String username = "";
+		try {
+			username = PbeEncryptor.decrypt(enc_username);
+		} catch (Exception e) {
+			return -1;
+		}
+		
 		// BCrypt로 password 암호화해서 VO에 저장
 		UserDetailsVO userVO = UserDetailsVO.builder()
-							.username(PbeEncryptor.decrypt(enc_username))
+							.username(username)
 							.password(bcryptEncoder.encode(password))
 							.build();
 		

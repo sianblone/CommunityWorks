@@ -68,6 +68,9 @@
 		#m_nickname, #m_email {
 			color: blue;
 		}
+		.authority {
+			text-align: center;
+		}
 	</style>
 	<script>
 		$(function() {
@@ -206,6 +209,7 @@
 					data : $("#join-form").serialize(),
 					success : function(result) {
 						if(result > 0) {
+							alert("회원가입을 환영합니다!")
 							document.location.href = "${rootPath}/"
 						} else if(result == -100) {
 							alert("아이디를 정확히 입력하세요.")
@@ -326,7 +330,7 @@
 			<label for="year">생년월일</label><br/>
 		</div>
 		
-		<div class="birth">
+		<div class="form_item birth">
 			<input id="year" name="year" placeholder="년" maxlength="4"/>
 			<select id="month" name="month">
 				<option value="">월</option>
@@ -341,8 +345,8 @@
 			<label for="authority">권한</label><br/>
 		</div>
 		
-		<div class="form_item">
-			<select id="authority" name="authority">
+		<div class="form_item authority">
+			<select name="authority">
 				<option value="">테스트 가입 시 아이디 권한 설정</option>
 				<option value="ROLE_USER">유저</option>
 				<option value="ROLE_ADMIN">관리자</option>

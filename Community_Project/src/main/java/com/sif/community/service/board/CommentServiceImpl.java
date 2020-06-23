@@ -143,7 +143,7 @@ public class CommentServiceImpl implements CommentService {
 				cmtDao.update_delete(commentVO);
 				
 				long cmt_board_no = commentVO.getCmt_board_no();
-				render = "redirect:/comment/list?board_no=" + cmt_board_no;
+				render = "redirect:/comment/list?cmt_board_no=" + cmt_board_no;
 				if(currPage != null) render += "&currPage=" + currPage;
 			} else {
 				// 현재 로그인한 사용자와 게시글 작성자가 다르거나 관리자가 아니면 삭제 불가, 에러페이지 보여주기
