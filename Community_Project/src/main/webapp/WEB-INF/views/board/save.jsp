@@ -133,7 +133,7 @@
 				
 				<div class="form-group text-right">
 					<button id="btn_cancel" class="btn btn-danger mr-2" type="button">취소</button>
-					<button id="btn_save" class="btn btn-primary mr-2">저장</button>
+					<button id="btn_save" class="btn btn-primary mr-2">등록</button>
 				</div>
 			</fieldset>
 		</form:form>

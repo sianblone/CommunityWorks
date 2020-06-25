@@ -35,6 +35,10 @@ public class CommentVO {
 	private String cmt_custom_datetime;
 	private String cmt_custom_full_datetime;
 	
+	// 댓글 보는 사람이 댓글 작성자 또는 관리자인지 판별
+	private boolean viewerWriter;
+	private boolean viewerAdmin;
+	
 	// custom_datetime 가공
 	public void setCmt_datetime(Date cmt_datetime) {
 		this.cmt_datetime = cmt_datetime;

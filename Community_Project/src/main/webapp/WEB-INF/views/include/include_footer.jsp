@@ -7,7 +7,7 @@
 		margin: 0 auto;
 		font-size: 14px;
 	}
-	hr {
+	footer hr {
 		margin-top: 50px;
 	}
 </style>

@@ -6,6 +6,7 @@
 <html>
 <head>
 	<%@ include file="/WEB-INF/views/include/include_head.jspf" %>
+	<link rel="stylesheet" href="${rootPath}/resources/css/modal.css"/>
 	<style>
 		.my_form {
 			display: block;

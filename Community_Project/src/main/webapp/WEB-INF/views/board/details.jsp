@@ -9,7 +9,7 @@
 	header {
 		cursor: pointer;
 	}
-	.first_hr {
+	.details_info_hr {
 		margin-top: 0;
 	}
 	.details_info {
@@ -103,7 +103,7 @@
 		<h2>${BOARD_VO.board_name}</h2>
 	</header>
 	<main>
-		<hr class="first_hr"/>
+		<hr class="details_info_hr"/>
 		<article class="details_info">
 			<div class="details_info_item">
 				<span class="info_cate"><c:if test="${BOARD_VO.board_category != null}">[${BOARD_VO.board_cate_text}]</c:if></span>
@@ -126,11 +126,11 @@
 		</article>
 		<hr/>
 		<article class="details_button_box">
-			<c:if test="${IS_ADMIN}">
+			<c:if test="${BOARD_VO.viewerAdmin}">
 				<button id="btn_delete_complete">완전삭제</button>
 				<button id="btn_restore">글 복구</button>
 			</c:if>
-			<c:if test="${IS_WRITER || IS_ADMIN}">
+			<c:if test="${BOARD_VO.viewerAdmin || BOARD_VO.viewerWriter}">
 				<button id="btn_edit">수정</button>
 				<button id="btn_delete">삭제</button>
 			</c:if>
@@ -142,9 +142,6 @@
 			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
 		</section>
 		
-		<article>
-			<b>댓글쓰기</b>
-		</article>
 		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
 	</main>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>

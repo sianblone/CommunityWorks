@@ -10,7 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" href="${rootPath}/resources/css/modal.css" />
+<!-- FontAwesome -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 <!-- include summernote css/js -->
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.16/dist/summernote.min.css" rel="stylesheet">
@@ -27,6 +27,7 @@
 		--button-color: white;
 		
 		--label-text-color: #18181b;
+		--color-primary: #007BFF;
 		--color-danger: #DC3545;
 		--color-success: #28A745;
 		--color-dodgerblue: #1E90FF;

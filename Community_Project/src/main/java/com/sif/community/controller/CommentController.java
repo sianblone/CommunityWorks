@@ -3,6 +3,9 @@ package com.sif.community.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,6 +89,15 @@ public class CommentController {
 		
 		// 게시판 내용
 		List<CommentVO> commentList = cmtSvc.selectAllByPage(commentVO, pageVO);
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		for(CommentVO cmtVO : commentList) {
+			// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
+			if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) cmtVO.setViewerAdmin(true);
+			if( cmtVO.getCmt_writer().equals(auth.getName()) ) cmtVO.setViewerWriter(true);
+			
+		}
 		model.addAttribute("CMT_LIST", commentList);
 	}
 	

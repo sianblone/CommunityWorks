@@ -46,6 +46,10 @@ public class BoardVO {
 	private String search_type;
 	private String search_txt;
 	
+	// 글 보는 사람이 글 작성자 또는 관리자인지 판별
+	private boolean viewerWriter;
+	private boolean viewerAdmin;
+	
 	// custom_datetime 가공
 	public void setBoard_datetime(Date board_datetime) {
 		this.board_datetime = board_datetime;
