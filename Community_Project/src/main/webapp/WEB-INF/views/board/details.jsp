@@ -60,8 +60,9 @@
 	$(function() {
 		
 		$.ajax({
-			url: "${rootPath}/comment/list?cmt_board_no=${BOARD_VO.board_no}",
+			url: "${rootPath}/comment/list",
 			type: "GET",
+			data: { cmt_board_no : "${BOARD_VO.board_no}" },
 			success: function(result) {
 				$(".cmt_list").html(result)
 			},
@@ -143,10 +144,6 @@
 		</section>
 		
 		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
-		
-		<section class="cmt_reply_empty">
-			<%@ include file="/WEB-INF/views/comment/comment_write_reply.jsp"%>
-		</section>
 	</main>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>
 </body>

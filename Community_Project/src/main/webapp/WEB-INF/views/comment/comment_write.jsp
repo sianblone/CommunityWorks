@@ -23,7 +23,7 @@
 	.cmt_write_group:nth-child(3n+2) {
 		width: 67%;
 	}
-	#cmt_content_unauth {
+	.cmt_content_unauth {
 		background-color: white;
 	}
 	.cmt_btn_box {
@@ -31,13 +31,13 @@
 		align-items: center;
 		margin: 0px auto;
 	}
-	#btn_cmt_save {
+	.btn_cmt_save {
 		border: 1px solid var(--color-dodgerblue);
 		background-color: white;
 		color: black;
 		padding: 20px 30px;
 	}
-	#btn_cmt_save:hover {
+	.btn_cmt_save:hover {
 		background-color: var(--color-dodgerblue);
 		color: white;
 	}
@@ -46,16 +46,16 @@
 	$(function() {
 		let enable_btn_cmt_save = true
 		
-		$(document).on("click", "#cmt_content_unauth", function() {
+		$(document).on("click", ".cmt_content_unauth", function() {
 			if(confirm("로그인 하시겠습니까?")) {
 				document.location.href = "${rootPath}/user/login"
 			}
 		})
 		
-		$(document).on("click", "#btn_cmt_save", function() {
+		$(document).on("click", ".btn_cmt_save", function() {
 			if(!enable_btn_cmt_save) return false
 			
-			if($("#cmt_csrf").length == 0) {
+			if($(".cmt_csrf").length == 0) {
 				if(confirm("로그인 하시겠습니까?")) {
 					document.location.href = "${rootPath}/user/login"
 					return false
@@ -64,7 +64,7 @@
 				}
 			}
 			
-			if($("#cmt_content").val() == "") {
+			if($(".cmt_content").val() == "") {
 				alert("내용을 입력하세요.")
 				return false
 			}
@@ -77,9 +77,9 @@
 			$.ajax({
 				url: "${rootPath}/comment/save",
 				type: "POST",
-				data: $("#comment_form").serialize(),
+				data: $(".comment_form").serialize(),
 				success: function(result) {
-					$("#cmt_content").val("")
+					$(".cmt_content").val("")
 					$(".cmt_list").html(result)
 				},
 				error: function(error) {
@@ -93,12 +93,11 @@
 	})
 </script>
 <section class="cmt_write">
-	<form id="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
+	<form class="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 		<sec:authorize access="hasAnyRole('ADMIN','USER')">
-			<input id="cmt_csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input class="cmt_csrf" name="${_csrf.parameterName}" value="${_csrf.token}" type="hidden">
 		</sec:authorize>
-		<input type="hidden" name="cmt_board_no" value="<c:out value='${param.board_no}' default='0'/>">
-		<input type="hidden" name="cmt_p_no" value="0">
+		<input name="cmt_board_no" value="<c:out value='${BOARD_VO.board_no}' default='0'/>" type="hidden">
 		<article class="cmt_write_box">
 			<div class="cmt_write_group cmt_nickname">
 				<sec:authorize access="isAuthenticated()">
@@ -108,15 +107,15 @@
 			
 			<div class="cmt_write_group">
 				<sec:authorize access="isAuthenticated()">
-					<textarea id="cmt_content" class="form-control" name="cmt_content" rows="2"></textarea>
+					<textarea class="form-control cmt_content" name="cmt_content" rows="2"></textarea>
 				</sec:authorize>
 				<sec:authorize access="!isAuthenticated()">
-					<textarea id="cmt_content_unauth" class="form-control" rows="2" placeholder="댓글을 달려면 로그인을 해야합니다." readonly></textarea>
+					<textarea class="form-control cmt_content_unauth" rows="2" placeholder="댓글을 달려면 로그인을 해야합니다." readonly></textarea>
 				</sec:authorize>
 			</div>
 			
 			<div class="cmt_btn_box">
-				<button id="btn_cmt_save" type="button">등록</button>
+				<button class="btn_cmt_save" type="button">등록</button>
 			</div>
 		</article>
 	</form>
