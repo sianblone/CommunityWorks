@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
@@ -89,6 +90,13 @@ public class AdminController {
 		adminSvc.create_board(boardInfoVO);
 		
 		return "redirect:/admin/board_setting";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/delete_category", method=RequestMethod.POST)
+	public int delete_category(long cate_id) {
+		
+		return adminSvc.delete_category(cate_id);
 	}
 
 }

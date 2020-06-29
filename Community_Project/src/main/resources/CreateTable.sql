@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS tbl_category (
 	)
 ;
 
-REATE TABLE IF NOT EXISTS tbl_board ( 
+CREATE TABLE IF NOT EXISTS tbl_board ( 
 	board_no	BIGINT		PRIMARY KEY	AUTO_INCREMENT,
 	board_p_no	BIGINT	NOT NULL		DEFAULT 0,
 	board_group	BIGINT	NOT NULL,
@@ -59,17 +59,10 @@ REATE TABLE IF NOT EXISTS tbl_board (
 	board_recommend	BIGINT	NOT NULL		DEFAULT 0,
 	board_category	INT,
 
-	CONSTRAINT FK_BI_BOARD_board_info
-	FOREIGN KEY (board_info)
-	REFERENCES tbl_board_info(bi_id),
-	
-	CONSTRAINT FK_USERS_BOARD_board_writer
-	FOREIGN KEY (board_writer)
-	REFERENCES tbl_users(username),
-	
-	CONSTRAINT FK_CATEGORY_BOARD_board_category
+	CONSTRAINT FK_CATE_BOARD_board_category
 	FOREIGN KEY (board_category)
 	REFERENCES tbl_category(cate_id)
+	ON DELETE SET NULL
 	)
 ;
 

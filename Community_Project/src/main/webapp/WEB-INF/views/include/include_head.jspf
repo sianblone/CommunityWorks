@@ -31,6 +31,7 @@
 		--color-danger: #DC3545;
 		--color-success: #28A745;
 		--color-dodgerblue: #1E90FF;
+		--color-crimson: #DC143C;
 		
 		--nav-bg-color: #303A50;
 		

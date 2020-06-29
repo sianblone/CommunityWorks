@@ -105,6 +105,7 @@
 					<span><sec:authentication property="principal.nickname"/></span>
 				</sec:authorize>
 			</div>
+			
 			<div class="cmt_write_group">
 				<sec:authorize access="isAuthenticated()">
 					<textarea id="cmt_content" class="form-control" name="cmt_content" rows="2"></textarea>

@@ -169,4 +169,8 @@ public class AdminService {
 		return ret;
 	}
 
+	public int delete_category(long cate_id) {
+		return cateDao.delete(cate_id);
+	}
+
 }

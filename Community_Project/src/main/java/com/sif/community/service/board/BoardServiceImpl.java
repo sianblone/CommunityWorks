@@ -113,8 +113,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardInfoVO> selectMainPage(int limit) {
-		return boardDao.selectMainPage(limit);
+	public List<BoardInfoVO> selectMainPage(int limit_value) {
+		return boardDao.selectMainPage(limit_value);
 	}
 	
 	@Override

@@ -107,12 +107,12 @@
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">
-		SELECT *
+		SELECT *, ${limit_value} as limit_value
 		FROM tbl_board_info
 	</select>
 	<resultMap id="selectMainPageRM" type="boardInfoVO">
 		<id property="bi_id" column="bi_id"/>
-		<collection property="bi_board_list" column="bi_id" ofType="boardVO" select="selectMainPageBoard"/>
+		<collection property="bi_board_list" column="{ bi_id = bi_id, limit_value = limit_value }" ofType="boardVO" select="selectMainPageBoard"/>
 	</resultMap>
 	<select id="selectMainPageBoard" resultType="boardVO">
 		SELECT
@@ -135,7 +135,7 @@
 			AND
 			b.board_delete = 0
 		ORDER BY b.board_group DESC, b.board_order ASC
-		LIMIT 5
+		LIMIT #{limit_value}
 	</select>
 	
 	<select id="selectCategoryByBoard" resultType="categoryVO">

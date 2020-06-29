@@ -28,12 +28,28 @@
 	.new_category span, .new_category select {
 		color: var(--color-dodgerblue);
 	}
-	#btn_add_category, #cancel_category {
-		border: 1px solid black;
+	
+	#btn_add_category, .cancel_category {
+		border: 1px solid var(--color-dodgerblue);
 		background-color: white;
 		color: black;
 	}
-	#cancel_category {
+	.delete_category {
+		border: 1px solid var(--color-crimson);
+		background-color: white;
+		color: black;
+	}
+	
+	#btn_add_category:hover, .cancel_category:hover {
+		background-color: var(--color-dodgerblue);
+		color: white;
+	}
+	.delete_category:hover {
+		background-color: var(--color-crimson);
+		color: white;
+	}
+	
+	.cancel_category, .delete_category {
 		margin-left: 10px;
 	}
 	
@@ -59,15 +75,42 @@
 		$(document).off("click","#btn_add_category").on("click","#btn_add_category",function(){
 			let cate_input = "<div class='my_form_item category_box new_category'>"
 							+ "	<span class='my_label'>새 카테고리</span>"
-							+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
-							+ "	<input class='my_data' name='cate_text_list'/>"
-							+ " <button id='cancel_category' type='button'>취소</button>"
+							+ "	<input class='my_data cate_id_list' name='cate_id_list' type='hidden' value='0'/>"
+							+ "	<input class='my_data cate_text_list' name='cate_text_list'/>"
+							+ " <button class='cancel_category' type='button'>취소</button>"
 							+ "</div>"
 			$("#cate_box").append(cate_input)
 		})
 		
-		$(document).off("click", "#cancel_category").on("click","#cancel_category",function() {
+		$(document).off("click", ".cancel_category").on("click",".cancel_category",function() {
 			$(this).closest(".new_category").remove()
+		})
+		
+		$(document).off("click", ".delete_category").on("click",".delete_category",function() {
+			let cate_box = $(this).closest(".category_box")
+			let cate_id = cate_box.attr("data-id")
+			
+			if(confirm("카테고리를 정말 삭제하시겠습니까?\n관련 게시글의 카테고리는 기본값으로 변경됩니다.")) {
+				$.ajax({
+					url: "${rootPath}/admin/delete_category",
+					type: "POST",
+					data: {cate_id : cate_id},
+					beforeSend: function(ajx) {
+						ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+					},
+					success: function(result) {
+						if(result > 0) {
+							alert("카테고리를 삭제했습니다.")
+							cate_box.closest(".category_box").remove()
+						} else {
+							alert("카테고리 삭제에 실패했습니다.")
+						}
+					},
+					error: function(error) {
+						alert("서버 통신 오류")
+					}
+				})
+			}
 		})
 		
 		$(document).off("click", "#btn_edit_board").on("click", "#btn_edit_board", function() {
@@ -122,11 +165,12 @@
 	
 	<!-- 카테고리 영역 -->
 	<c:if test="${not empty BOARD_INFO.bi_category}">
-		<c:forEach items="${BOARD_INFO.bi_category}" var="vo" varStatus="s">
-			<div class="my_form_item category_box">
+		<c:forEach items="${BOARD_INFO.bi_category}" var="cate" varStatus="s">
+			<div class="my_form_item category_box" data-id="${cate.cate_id}">
 				<span class="my_label">카테고리${s.count}</span>
-				<input class="my_data" name="cate_id_list" type="hidden" value="${vo.cate_id}"/>
-				<input class="my_data" name="cate_text_list" value="${vo.cate_text}" maxlength="20"/>
+				<input class="my_data cate_id_list" name="cate_id_list" type="hidden" value="${cate.cate_id}"/>
+				<input class="my_data cate_text_list" name="cate_text_list" value="${cate.cate_text}" maxlength="20"/>
+				<button class="delete_category" type="button">삭제</button>
 			</div>
 		</c:forEach>
 	</c:if>

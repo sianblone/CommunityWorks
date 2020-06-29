@@ -66,7 +66,12 @@ public class CreateTableSQL {
 		+ " board_filename	VARCHAR(256), "
 		+ " board_delete	TINYINT	NOT NULL		DEFAULT 0, "
 		+ " board_recommend	BIGINT	NOT NULL		DEFAULT 0, "
-		+ " board_category	INT "
+		+ " board_category	INT, "
+		
+		+ " CONSTRAINT FK_CATE_BOARD_board_category "
+		+ " FOREIGN KEY (board_category) "
+		+ " REFERENCES tbl_category(cate_id) "
+		+ " ON DELETE SET NULL "
 		+ " ) "
 	;
 	

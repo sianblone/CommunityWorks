@@ -76,8 +76,8 @@
 												<td class="c_subject"><a
 													href="${rootPath}/board/details?board_info=${boardInfoVO.bi_id}&board_no=${boardVO.board_no}"><c:if
 															test="${boardVO.board_depth > 0}">└ </c:if>
-														<c:if test="${boardVO.board_delete == 1}">[삭제됨] </c:if>${boardVO.board_category}
-														${boardVO.board_subject}</a></td>
+														<c:if test="${boardVO.board_delete == 1}">[삭제됨] </c:if><c:if
+														test="${boardVO.board_cate_text != null}">[${boardVO.board_cate_text}] </c:if>${boardVO.board_subject}</a></td>
 												<td class="text-center d-none d-xl-table-cell">${boardVO.board_custom_datetime}</td>
 											</tr>
 										</c:forEach>

@@ -112,16 +112,16 @@
 	.new_auth span, .new_auth select {
 		color: var(--color-dodgerblue);
 	}
-	#btn_add_auth, #cancel_auth {
+	#btn_add_auth, .cancel_auth {
 		border: 1px solid var(--color-dodgerblue);
 		background-color: white;
 		color: black;
 	}
-	#btn_add_auth:hover, #cancel_auth:hover {
+	#btn_add_auth:hover, .cancel_auth:hover {
 		background-color: var(--color-dodgerblue);
 		color: white;
 	}
-	#cancel_auth {
+	.cancel_auth {
 		margin-left: 10px;
 	}
 	
@@ -157,12 +157,12 @@
 							+ "		<option value='ROLE_USER'>유저</option>"
 							+ "		<option value='ROLE_ADMIN'>관리자</option>"
 							+ "	</select>"
-							+ " <button id='cancel_auth' type='button'>취소</button>"
+							+ " <button class='cancel_auth' type='button'>취소</button>"
 							+ "</div>"
 			$("#auth_box").append(auth_input)
 		})
 		
-		$(document).off("click", "#cancel_auth").on("click","#cancel_auth",function() {
+		$(document).off("click", ".cancel_auth").on("click",".cancel_auth",function() {
 			$(this).closest(".new_auth").remove()
 		})
 		
