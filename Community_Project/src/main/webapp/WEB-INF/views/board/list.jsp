@@ -45,11 +45,11 @@
 		color: gray;
 		font-size: 11px;
 	}
-	span.board_nickname {
+	span.context_nickname {
 		padding: 6px 0px;
 		cursor: pointer;
 	}
-	span.board_nickname:hover {
+	span.context_nickname:hover {
 		text-decoration: underline;
 	}
 	
@@ -114,13 +114,14 @@
 						</c:when>
 						<c:otherwise>
 							<c:forEach items="${BOARD_LIST}" var="B" varStatus="i">
-								<tr class="<c:if test="${B.board_delete == 1}">deleted</c:if>" data-id="${B.board_no}" <c:if test="${B.board_depth > 0}">data-reply="${B.board_depth}"</c:if>>
+								<tr class="context_parent<c:if test="${B.board_delete == 1}"> deleted</c:if>" data-id="${B.board_no}"
+								data-nickname="${B.board_nickname}" <c:if test="${B.board_depth > 0}">data-reply="${B.board_depth}"</c:if>>
 									<td class="b_num text-center">${B.board_no}</td>
 									<td class="b_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><a
 									href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}"><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><c:if
 									test="${B.board_cate_text != null}">[${B.board_cate_text}] </c:if>${B.board_subject}<c:if
 									test="${B.board_cmt_count > 0}"> [${B.board_cmt_count}]</c:if></a></td>
-									<td class="b_nickname text-center"><span class="board_nickname use_context">${B.board_nickname}</span></td>
+									<td class="b_nickname text-center"><span class="context_nickname use_context">${B.board_nickname}</span></td>
 									<td class="b_date text-center">${B.board_custom_datetime}</td>
 									<td class="b_count text-center">${B.board_count}</td>
 									<td class="b_recommend text-center">${B.board_recommend}</td>

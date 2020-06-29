@@ -76,6 +76,14 @@
 		background-color: var(--color-dodgerblue);
 		color: white;
 	}
+	
+	/* 컨텍스트 메뉴 */
+	span.context_nickname {
+		cursor: pointer;
+	}
+	span.context_nickname:hover {
+		text-decoration: underline;
+	}
 </style>
 <script>
 	$(function() {
@@ -162,16 +170,16 @@
 </article>
 <c:forEach items="${CMT_LIST}" var="C">
 	<article class="cmt_list_item">
-		<section class="cmt_item_box <c:if test="${C.cmt_delete == 1}">deleted</c:if>" data-id="${C.cmt_no}">
+		<section class="cmt_item_box context_parent<c:if test="${C.cmt_delete == 1}"> deleted</c:if>" data-id="${C.cmt_no}" data-nickname="${C.cmt_nickname}">
 			<div class="cmt_item_group">
 				<div class="cmt_writer_box<c:if test="${C.cmt_depth > 0}"> depth-1</c:if>">
-					<span class="cmt_nickname">${C.cmt_nickname}</span>
+					<span class="context_nickname use_context">${C.cmt_nickname}</span>
 					<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
 				</div>
 			</div>
 			
 			<div class="cmt_item_group">
-				<span class="cmt_content"><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 0}"><span
+				<span><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 0}"><span
 				class="cmt_parent_writer">[${C.cmt_parent_writer}] </span></c:if>${C.cmt_content}</span>
 			</div>
 			

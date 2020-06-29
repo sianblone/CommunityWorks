@@ -57,6 +57,9 @@
 	
 </style>
 <script>
+	let rootPath = "${rootPath}"
+	let bi_id = "${BOARD_VO.board_info}"
+	
 	$(function() {
 		
 		$.ajax({
@@ -145,6 +148,7 @@
 		
 		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
 	</main>
+	<%@ include file="/WEB-INF/views/include/context_menu.jsp" %>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>
 </body>
 </html>
