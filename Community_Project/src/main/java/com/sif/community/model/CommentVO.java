@@ -34,6 +34,7 @@ public class CommentVO {
 	private String cmt_nickname;
 	private String cmt_custom_datetime;
 	private String cmt_custom_full_datetime;
+	private String cmt_parent_writer;
 	
 	// 댓글 보는 사람이 댓글 작성자 또는 관리자인지 판별
 	private boolean viewerWriter;

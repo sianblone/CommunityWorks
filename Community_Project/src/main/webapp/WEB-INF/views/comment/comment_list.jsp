@@ -57,9 +57,12 @@
 <script>
 	$(function() {
 		$(document).off("click", ".btn_cmt_reply").on("click", ".btn_cmt_reply", function() {
-			let cmt_no = $(this).closest(".cmt_item_box").attr("data-id")
+			let cmt_p_no = $(this).closest(".cmt_item_box").attr("data-id")
+			let cmt_reply = $(this).closest(".cmt_list_item").find(".cmt_reply")
 			
-			
+			$(".cmt_write_reply").appendTo(cmt_reply)
+			$(".cmt_write_reply").css("display", "block")
+			$("#cmt_reply_p_no").val(cmt_p_no)
 		})
 		
 		$(document).off("click", ".btn_cmt_delete").on("click", ".btn_cmt_delete", function() {
@@ -99,7 +102,7 @@
 			</div>
 			
 			<div class="cmt_item_group">
-				<span class="cmt_content"><c:if test="${C.cmt_depth > 0}">└<span class="cmt_p_no">[${C.cmt_p_no}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</span>
+				<span class="cmt_content"><c:if test="${C.cmt_depth > 0}"><span class="cmt_parent_writer">[${C.cmt_parent_writer}]</span> </c:if><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if>${C.cmt_content}</span>
 			</div>
 			
 			<div class="cmt_item_group">

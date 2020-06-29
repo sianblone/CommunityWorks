@@ -143,6 +143,10 @@
 		</section>
 		
 		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
+		
+		<section class="cmt_reply_empty">
+			<%@ include file="/WEB-INF/views/comment/comment_write_reply.jsp"%>
+		</section>
 	</main>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>
 </body>

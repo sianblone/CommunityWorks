@@ -4,58 +4,28 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
-	.cmt_write_box {
-		display: flex;
-		background-color: #f2f2f2;
-		padding: 20px 0px;
+	.cmt_write_reply {
+		display: none;
 	}
-	.cmt_write_group {
-		display: flex;
-		align-items: center;
-	}
-	.cmt_write_group:nth-child(3n+1) {
-		width: 17%;
-		justify-content: center;
-		font-weight: bold;
-		overflow: hidden;
-		white-space: nowrap;
-	}
-	.cmt_write_group:nth-child(3n+2) {
-		width: 67%;
-	}
-	#cmt_content_unauth {
-		background-color: white;
-	}
-	.cmt_btn_box {
-		display: flex;
-		align-items: center;
-		margin: 0px auto;
-	}
-	#btn_cmt_save {
+	#btn_cmt_reply_save {
 		border: 1px solid var(--color-dodgerblue);
 		background-color: white;
 		color: black;
 		padding: 20px 30px;
 	}
-	#btn_cmt_save:hover {
+	#btn_cmt_reply_save:hover {
 		background-color: var(--color-dodgerblue);
 		color: white;
 	}
 </style>
 <script>
 	$(function() {
-		let enable_btn_cmt_save = true
+		let enable_btn_cmt_reply_save = true
 		
-		$(document).on("click", "#cmt_content_unauth", function() {
-			if(confirm("로그인 하시겠습니까?")) {
-				document.location.href = "${rootPath}/user/login"
-			}
-		})
-		
-		$(document).on("click", "#btn_cmt_save", function() {
-			if(!enable_btn_cmt_save) return false
+		$(document).on("click", "#btn_cmt_reply_save", function() {
+			if(!enable_btn_cmt_reply_save) return false
 			
-			if($("#cmt_csrf").length == 0) {
+			if($("#cmt_reply_csrf").length == 0) {
 				if(confirm("로그인 하시겠습니까?")) {
 					document.location.href = "${rootPath}/user/login"
 					return false
@@ -64,7 +34,7 @@
 				}
 			}
 			
-			if($("#cmt_content").val() == "") {
+			if($("#cmt_reply_content").val() == "") {
 				alert("내용을 입력하세요.")
 				return false
 			}
@@ -77,28 +47,30 @@
 			$.ajax({
 				url: "${rootPath}/comment/save",
 				type: "POST",
-				data: $("#comment_form").serialize(),
+				data: $("#comment_reply_form").serialize(),
 				success: function(result) {
-					$("#cmt_content").val("")
+					$("#cmt_reply_content").val("")
+					$(".cmt_write_reply").css("display", "none")
+					$(".cmt_write_reply").appendTo(".cmt_reply_empty")
 					$(".cmt_list").html(result)
 				},
 				error: function(error) {
 					alert("서버 통신 오류")
 				}
 			}).always(function() {
-				enable_btn_cmt_save = true
+				enable_btn_cmt_reply_save = true
 				$("body").css("cursor", "default")
 			})
 		})
 	})
 </script>
-<section class="cmt_write">
-	<form id="comment_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
+<section class="cmt_write_reply">
+	<form id="comment_reply_form" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
 		<sec:authorize access="hasAnyRole('ADMIN','USER')">
-			<input id="cmt_csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+			<input id="cmt_reply_csrf" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 		</sec:authorize>
-		<input type="hidden" name="cmt_board_no" value="<c:out value='${param.board_no}' default='0'/>">
-		<input type="hidden" name="cmt_p_no" value="0">
+		<input name="cmt_board_no" value="<c:out value='${param.board_no}' default='0'/>" type="hidden">
+		<input id="cmt_reply_p_no" name="cmt_p_no" value="0" type="hidden">
 		<article class="cmt_write_box">
 			<div class="cmt_write_group cmt_nickname">
 				<sec:authorize access="isAuthenticated()">
@@ -108,7 +80,7 @@
 			
 			<div class="cmt_write_group">
 				<sec:authorize access="isAuthenticated()">
-					<textarea id="cmt_content" class="form-control" name="cmt_content" rows="2"></textarea>
+					<textarea id="cmt_reply_content" class="form-control" name="cmt_content" rows="2"></textarea>
 				</sec:authorize>
 				<sec:authorize access="!isAuthenticated()">
 					<textarea id="cmt_content_unauth" class="form-control" rows="2" placeholder="댓글을 달려면 로그인을 해야합니다." readonly></textarea>
@@ -116,7 +88,7 @@
 			</div>
 			
 			<div class="cmt_btn_box">
-				<button id="btn_cmt_save" type="button">등록</button>
+				<button id="btn_cmt_reply_save" type="button">등록</button>
 			</div>
 		</article>
 	</form>

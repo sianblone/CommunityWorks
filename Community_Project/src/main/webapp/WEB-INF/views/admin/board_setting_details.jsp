@@ -75,8 +75,8 @@
 		$(document).off("click","#btn_add_category").on("click","#btn_add_category",function(){
 			let cate_input = "<div class='my_form_item category_box new_category'>"
 							+ "	<span class='my_label'>새 카테고리</span>"
-							+ "	<input class='my_data cate_id_list' name='cate_id_list' type='hidden' value='0'/>"
-							+ "	<input class='my_data cate_text_list' name='cate_text_list'/>"
+							+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
+							+ "	<input class='my_data' name='cate_text_list'/>"
 							+ " <button class='cancel_category' type='button'>취소</button>"
 							+ "</div>"
 			$("#cate_box").append(cate_input)
@@ -168,8 +168,8 @@
 		<c:forEach items="${BOARD_INFO.bi_category}" var="cate" varStatus="s">
 			<div class="my_form_item category_box" data-id="${cate.cate_id}">
 				<span class="my_label">카테고리${s.count}</span>
-				<input class="my_data cate_id_list" name="cate_id_list" type="hidden" value="${cate.cate_id}"/>
-				<input class="my_data cate_text_list" name="cate_text_list" value="${cate.cate_text}" maxlength="20"/>
+				<input class="my_data" name="cate_id_list" type="hidden" value="${cate.cate_id}"/>
+				<input class="my_data" name="cate_text_list" value="${cate.cate_text}" maxlength="20"/>
 				<button class="delete_category" type="button">삭제</button>
 			</div>
 		</c:forEach>
