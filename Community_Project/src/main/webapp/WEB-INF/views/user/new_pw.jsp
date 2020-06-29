@@ -13,19 +13,14 @@
 			margin: 0 auto;
 			text-align: center;
 		}
+		#find_form input, #find_form button {
+			width: 70%;
+		}
 		.label {
 			padding: 0.5rem 0px;
 		}
 		#btn_confirm {
-			margin: 0.8rem;
-			padding: 0.5rem 1rem;
-			border: none;
-			background-color: var(--button-bg-color);
-			cursor: pointer;
-			color: white;
-		}
-		#btn_confirm:hover {
-			background-color: var(--button-hover-bg-color);
+			margin-top: 30px;
 		}
 	</style>
 	<script>
@@ -99,7 +94,7 @@
 	</header>
 	<form:form id="find_form" modelAttribute="userVO" autocomplete="${FORM_AUTOCOMPLETE}">
 		<p>새로운 비밀번호를 입력하세요</p><br/>
-		<input type="hidden" id="enc_username" name="enc_username" value="${ENC_USER}" />
+		<input id="enc_username" name="enc_username" value="${ENC_USER}" type="hidden"/>
 		<div class="label">
 			<label for="password">새 비밀번호</label>
 		</div>

@@ -85,6 +85,9 @@ public class AdminService {
 		} else if( !this.dateCheck(birth) ) {
 			// 생년월일 유효성 검사
 			result = -103;
+		} else if(userDao.findByUsername(userVO.getUsername()) == null) {
+			// DB에 존재하는 아이디인지 검사
+			result = -200;
 		}
 		
 		return result;

@@ -32,14 +32,7 @@
 		margin: 0px auto;
 	}
 	.btn_cmt_save {
-		border: 1px solid var(--color-dodgerblue);
-		background-color: white;
-		color: black;
 		padding: 20px 30px;
-	}
-	.btn_cmt_save:hover {
-		background-color: var(--color-dodgerblue);
-		color: white;
 	}
 </style>
 <script>
@@ -115,7 +108,7 @@
 			</div>
 			
 			<div class="cmt_btn_box">
-				<button class="btn_cmt_save" type="button">등록</button>
+				<button class="btn_cmt_save btn_blue" type="button">등록</button>
 			</div>
 		</article>
 	</form>

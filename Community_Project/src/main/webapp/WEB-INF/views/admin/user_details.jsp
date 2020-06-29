@@ -112,15 +112,7 @@
 	.new_auth span, .new_auth select {
 		color: var(--color-dodgerblue);
 	}
-	#btn_add_auth, .cancel_auth {
-		border: 1px solid var(--color-dodgerblue);
-		background-color: white;
-		color: black;
-	}
-	#btn_add_auth:hover, .cancel_auth:hover {
-		background-color: var(--color-dodgerblue);
-		color: white;
-	}
+	
 	.cancel_auth {
 		margin-left: 10px;
 	}
@@ -157,7 +149,7 @@
 							+ "		<option value='ROLE_USER'>유저</option>"
 							+ "		<option value='ROLE_ADMIN'>관리자</option>"
 							+ "	</select>"
-							+ " <button class='cancel_auth' type='button'>취소</button>"
+							+ " <button class='cancel_auth btn_blue' type='button'>취소</button>"
 							+ "</div>"
 			$("#auth_box").append(auth_input)
 		})
@@ -198,7 +190,9 @@
 						alert("이메일을 정확히 입력하세요.")
 					} else if(result == -103) {
 						alert("생년월일을 정확히 입력하세요.")
-					} else {
+					} else if(result == -200) {
+						alert("등록되지 않은 아이디입니다.")
+					} else if(result > 0) {
 						$("#admin_content").html(result)
 						alert("변경사항이 저장되었습니다.")
 					}
@@ -288,7 +282,7 @@
 	
 	<div id="add_auth_box" class="my_form_item">
 		<span class="my_label"></span>
-		<button id="btn_add_auth" class="my_data" type="button">권한 추가</button>
+		<button id="btn_add_auth" class="my_data btn_blue" type="button">권한 추가</button>
 	</div>
 	
 	<div class="btn_box">

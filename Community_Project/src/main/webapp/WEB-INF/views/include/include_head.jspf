@@ -82,7 +82,28 @@
 	}
 	button:focus {
 		outline: none;
-		box-shadow :0 0 0 0.2rem rgba(38,143,255,.5);
+		box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+	}
+	
+	.btn_blue {
+		border: 1px solid var(--color-dodgerblue);
+		background-color: white;
+		color: black;
+	}
+	.btn_blue:hover {
+		background-color: var(--color-dodgerblue);
+		color: white;
+		opacity: 1;
+	}
+	.btn_red {
+		border: 1px solid var(--color-crimson);
+		background-color: white;
+		color: black;
+	}
+	.btn_red:hover {
+		background-color: var(--color-crimson);
+		color: white;
+		opacity: 1;
 	}
 	
 	/* input number 화살표 지우기 */

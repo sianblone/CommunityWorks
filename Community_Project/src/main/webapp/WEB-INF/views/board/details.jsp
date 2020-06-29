@@ -41,20 +41,12 @@
 	.details_button_box {
 		display: flex;
 		justify-content: flex-end;
-		margin: 0px 10px 1rem 0px;
+		margin-bottom: 1rem;
 	}
+	
 	.details_button_box button {
-		margin-left: 10px;
-		border: 1px solid var(--color-dodgerblue);
-	    background-color: white;
-	    color: black;
+		margin-right: 10px;
 	}
-	.details_button_box button:hover {
-		background-color: var(--color-dodgerblue);
-		color: white;
-	}
-	
-	
 </style>
 <script>
 	let rootPath = "${rootPath}"
@@ -119,8 +111,8 @@
 				<span class="info_recommend">추천 ${BOARD_VO.board_recommend}</span>
 			</div>
 			
-			<div class="details_info_item">
-				<span class="info_nickname">${BOARD_VO.board_nickname}</span>
+			<div class="details_info_item context_parent" data-id="${BOARD_VO.board_no}" data-nickname="${BOARD_VO.board_nickname}">
+				<span class="use_context context_nickname">${BOARD_VO.board_nickname}</span>
 				<span class="info_datetime">${BOARD_VO.board_custom_full_datetime}</span>
 			</div>
 		</article>
@@ -131,15 +123,15 @@
 		<hr/>
 		<article class="details_button_box">
 			<c:if test="${BOARD_VO.viewerAdmin}">
-				<button id="btn_delete_complete">완전삭제</button>
-				<button id="btn_restore">글 복구</button>
+				<button id="btn_delete_complete" class="btn_red">완전삭제</button>
+				<button id="btn_restore" class="btn_blue">글 복구</button>
 			</c:if>
 			<c:if test="${BOARD_VO.viewerAdmin || BOARD_VO.viewerWriter}">
-				<button id="btn_edit">수정</button>
-				<button id="btn_delete">삭제</button>
+				<button id="btn_edit" class="btn_blue">수정</button>
+				<button id="btn_delete" class="btn_red">삭제</button>
 			</c:if>
-			<button id="btn_reply">답글</button>
-			<button id="btn_list">목록</button>
+			<button id="btn_reply" class="btn_blue">답글</button>
+			<button id="btn_list" class="btn_blue">목록</button>
 		</article>
 		
 		<section class="cmt_list">

@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+	<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
@@ -36,15 +36,6 @@
 			width: 70%;
 		}
 		
-		#btn_change_pw, #btn_email_change {
-			border: 1px solid var(--color-dodgerblue);
-		    background-color: white;
-		    color: black;
-		}
-		#btn_change_pw:hover, #btn_email_change:hover {
-			background-color: var(--color-dodgerblue);
-			color: white;
-		}
 		#btn_email_change {
 			margin-left: 10px;
 		}
@@ -219,6 +210,8 @@
 							document.location.href = "${rootPath}/user/mypage"
 						} else if(result == -103) {
 							alert("생년월일을 정확히 입력하세요.")
+						} else if(result == -200) {
+							alert("등록되지 않은 아이디입니다.")
 						}
 					},
 					error : function() {
@@ -256,7 +249,7 @@
 		<div class="my_form_item">
 			<span class="my_label">비밀번호</span>
 			<div class="my_content">
-				<button id="btn_change_pw" type="button">비밀번호 변경</button>
+				<button id="btn_change_pw" class="btn_blue" type="button">비밀번호 변경</button>
 			</div>
 		</div>
 		
@@ -264,7 +257,7 @@
 			<span class="my_label">이메일</span>
 			<div class="my_content">
 				<span>${loginVO.email}</span>
-				<button id="btn_email_change" data-toggle="modal" data-target="#email_change_modal" type="button">이메일 변경</button>
+				<button id="btn_email_change" class="btn_blue" data-toggle="modal" data-target="#email_change_modal" type="button">이메일 변경</button>
 			</div>
 		</div>
 		

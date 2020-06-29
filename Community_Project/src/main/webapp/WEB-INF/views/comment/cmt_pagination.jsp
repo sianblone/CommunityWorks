@@ -66,7 +66,7 @@
 			}
 		})
 		
-		$(document).on("click", "page_link", function() {
+		$(document).on("click", ".page_link", function() {
 			let requestURL = "${rootPath}/comment/list"
 			let query = $(this).data("href")
 			requestURL += query

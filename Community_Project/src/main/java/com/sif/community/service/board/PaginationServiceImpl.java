@@ -24,7 +24,6 @@ public class PaginationServiceImpl implements PaginationService {
 	}
 
 	public PaginationVO makePageInfoMiddle(long totalCount, int currPage) {
-		log.debug("PGN 현재 페이지 : {}", currPage);
 		if(totalCount < 1) {
 			PaginationVO pageVO = PaginationVO.builder()
 					.startPageNo(1)

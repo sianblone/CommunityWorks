@@ -45,16 +45,13 @@
 		color: gray;
 		font-size: 11px;
 	}
-	span.context_nickname {
-		padding: 6px 0px;
-		cursor: pointer;
-	}
-	span.context_nickname:hover {
-		text-decoration: underline;
-	}
 	
 	.deleted {
 		color: gray;
+	}
+	
+	.btn_write {
+		margin: 10px;
 	}
 </style>
 <script>
@@ -62,7 +59,7 @@
 	let bi_id = "${BOARD_INFO.bi_id}"
 	
 	$(function() {
-		$("button.btn-writer").click(function() {
+		$(document).off("click", ".btn_write").on("click", ".btn_write", function() {
 			let url = "${rootPath}/board/save?board_info=${BOARD_INFO.bi_id}";
 
 			let currPage = "${param.currPage}"
@@ -72,7 +69,7 @@
 			document.location.href = url
 		})
 		
-		$("header").click(function() {
+		$(document).off("click", "header").on("click", "header", function() {
 			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
 		})
 	})
@@ -117,11 +114,11 @@
 								<tr class="context_parent<c:if test="${B.board_delete == 1}"> deleted</c:if>" data-id="${B.board_no}"
 								data-nickname="${B.board_nickname}" <c:if test="${B.board_depth > 0}">data-reply="${B.board_depth}"</c:if>>
 									<td class="b_num text-center">${B.board_no}</td>
-									<td class="b_subject"><c:if test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}]</span> </c:if><a
-									href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}"><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><c:if
+									<td class="b_subject"><a href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&currPage=${param.currPage}"><c:if
+									test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}] </span></c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><c:if
 									test="${B.board_cate_text != null}">[${B.board_cate_text}] </c:if>${B.board_subject}<c:if
 									test="${B.board_cmt_count > 0}"> [${B.board_cmt_count}]</c:if></a></td>
-									<td class="b_nickname text-center"><span class="context_nickname use_context">${B.board_nickname}</span></td>
+									<td class="b_nickname text-center"><span class="use_context context_nickname">${B.board_nickname}</span></td>
 									<td class="b_date text-center">${B.board_custom_datetime}</td>
 									<td class="b_count text-center">${B.board_count}</td>
 									<td class="b_recommend text-center">${B.board_recommend}</td>
@@ -133,7 +130,7 @@
 			</table>
 		</article>
 		<article class="d-flex justify-content-end">
-			<button class="btn btn-primary text-white btn-writer m-2">글쓰기</button>
+			<button class="btn_write">글쓰기</button>
 		</article>
 		<%@ include file="/WEB-INF/views/include/search.jsp" %>
 	</main>

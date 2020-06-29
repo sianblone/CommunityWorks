@@ -29,26 +29,6 @@
 		color: var(--color-dodgerblue);
 	}
 	
-	#btn_add_category, .cancel_category {
-		border: 1px solid var(--color-dodgerblue);
-		background-color: white;
-		color: black;
-	}
-	.delete_category {
-		border: 1px solid var(--color-crimson);
-		background-color: white;
-		color: black;
-	}
-	
-	#btn_add_category:hover, .cancel_category:hover {
-		background-color: var(--color-dodgerblue);
-		color: white;
-	}
-	.delete_category:hover {
-		background-color: var(--color-crimson);
-		color: white;
-	}
-	
 	.cancel_category, .delete_category {
 		margin-left: 10px;
 	}
@@ -77,7 +57,7 @@
 							+ "	<span class='my_label'>새 카테고리</span>"
 							+ "	<input class='my_data' name='cate_id_list' type='hidden' value='0'/>"
 							+ "	<input class='my_data' name='cate_text_list'/>"
-							+ " <button class='cancel_category' type='button'>취소</button>"
+							+ " <button class='cancel_category btn_blue' type='button'>취소</button>"
 							+ "</div>"
 			$("#cate_box").append(cate_input)
 		})
@@ -170,7 +150,7 @@
 				<span class="my_label">카테고리${s.count}</span>
 				<input class="my_data" name="cate_id_list" type="hidden" value="${cate.cate_id}"/>
 				<input class="my_data" name="cate_text_list" value="${cate.cate_text}" maxlength="20"/>
-				<button class="delete_category" type="button">삭제</button>
+				<button class="delete_category btn_red" type="button">삭제</button>
 			</div>
 		</c:forEach>
 	</c:if>
@@ -180,7 +160,7 @@
 	
 	<div id="add_category_box" class="my_form_item">
 		<span class="my_label"></span>
-		<button id="btn_add_category" class="my_data" type="button">카테고리 추가</button>
+		<button id="btn_add_category" class="my_data btn_blue" type="button">카테고리 추가</button>
 	</div>
 	
 	<div class="btn_box">

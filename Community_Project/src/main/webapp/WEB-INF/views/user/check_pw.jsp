@@ -16,16 +16,6 @@
 		.label {
 			padding: 0.5rem 0px;
 		}
-		.btn_confirm {
-			padding: 0.5rem 1rem;
-			border: none;
-			background-color: var(--button-bg-color);
-			cursor: pointer;
-			color: white;
-		}
-		.btn_confirm:hover {
-			background-color: var(--button-hover-bg-color);
-		}
 	</style>
 	<script>
 		$(function() {

@@ -14,6 +14,12 @@
 	#board_category {
 		width: auto;
 	}
+	.save_btn_box {
+		text-align: right;
+	}
+	.save_btn_box button {
+		margin-right: 10px;
+	}
 </style>
 <script>
 	$(function(){
@@ -131,9 +137,9 @@
 					<textarea id="board_content" name="board_content" id="board_content" rows="5" cols="30">${BOARD_VO.board_content}</textarea>
 				</div>
 				
-				<div class="form-group text-right">
-					<button id="btn_cancel" class="btn btn-danger mr-2" type="button">취소</button>
-					<button id="btn_save" class="btn btn-primary mr-2">등록</button>
+				<div class="form-group save_btn_box">
+					<button id="btn_cancel" class="btn_red" type="button">취소</button>
+					<button id="btn_save" class="btn_blue">등록</button>
 				</div>
 			</fieldset>
 		</form:form>

@@ -96,8 +96,8 @@ public class UserService {
 		if( !this.dateCheck(birth) ) {
 			// 생년월일 유효성 검사
 			result = -103;
-		} else if(this.findByUsername(userVO.getUsername()) != null) {
-			// 이미 DB에 있는 아이디인지 검사
+		} else if(this.findByUsername(userVO.getUsername()) == null) {
+			// DB에 존재하는 아이디인지 검사
 			result = -200;
 		}
 		

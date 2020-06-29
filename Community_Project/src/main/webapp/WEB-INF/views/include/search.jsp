@@ -11,6 +11,7 @@
 	}
 	
 	#search_type, #search_txt {
+		font-size: 0.9rem;
 		margin-right: 10px;
 	}
 </style>
@@ -21,7 +22,7 @@
 		<option value="subject" <c:if test="${param.search_type == 'subject'}">selected="selected"</c:if>>제목</option>
 		<option value="content" <c:if test="${param.search_type == 'content'}">selected="selected"</c:if>>내용</option>
 		<option value="nickname" <c:if test="${param.search_type == 'nickname'}">selected="selected"</c:if>>닉네임</option>
-		<option value="writer" <c:if test="${param.search_type == 'writer'}">selected="selected"</c:if>>작성자</option>
+		<option value="writer" <c:if test="${param.search_type == 'writer'}">selected="selected"</c:if>>아이디</option>
 	</select>
 	<input name="search_txt" id="search_txt" placeholder="검색어를 입력하세요" value="${param.search_txt}"/>
 	<button id="search_btn">검색</button>

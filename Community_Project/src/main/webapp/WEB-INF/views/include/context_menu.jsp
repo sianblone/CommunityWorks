@@ -30,6 +30,14 @@
 	.context_active {
 		display: block;
 	}
+	
+	/* 닉네임 부분 CSS(커서 포인터 + 마우스오버 시 밑줄) */
+	.context_nickname {
+		cursor: pointer;
+	}
+	.context_nickname:hover {
+		text-decoration: underline;
+	}
 </style>
 <div class="context context_inactive">
 	<ul>

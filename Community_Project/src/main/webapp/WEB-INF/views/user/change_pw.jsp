@@ -13,19 +13,14 @@
 			margin: 0 auto;
 			text-align: center;
 		}
+		#change_pw_form input, #change_pw_form button {
+			width: 70%;
+		}
 		.label {
 			padding: 0.5rem 0px;
 		}
 		#btn_confirm {
-			margin: 0.8rem;
-			padding: 0.5rem 1rem;
-			border: none;
-			background-color: var(--button-bg-color);
-			cursor: pointer;
-			color: white;
-		}
-		#btn_confirm:hover {
-			background-color: var(--button-hover-bg-color);
+			margin-top: 30px;
 		}
 	</style>
 	<script>

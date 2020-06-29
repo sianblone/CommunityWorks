@@ -27,7 +27,7 @@
 			</div>
 			
 			<div class="cmt_btn_box">
-				<button class="btn_cmt_reply_save" type="button">등록</button>
+				<button class="btn_cmt_reply_save btn_blue" type="button">등록</button>
 			</div>
 		</article>
 	</form>

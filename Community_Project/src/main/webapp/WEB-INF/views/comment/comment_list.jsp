@@ -67,22 +67,7 @@
 		display: none;
 	}
 	.btn_cmt_reply_save {
-		border: 1px solid var(--color-dodgerblue);
-		background-color: white;
-		color: black;
 		padding: 20px 30px;
-	}
-	.btn_cmt_reply_save:hover {
-		background-color: var(--color-dodgerblue);
-		color: white;
-	}
-	
-	/* 컨텍스트 메뉴 */
-	span.context_nickname {
-		cursor: pointer;
-	}
-	span.context_nickname:hover {
-		text-decoration: underline;
 	}
 </style>
 <script>
@@ -173,13 +158,13 @@
 		<section class="cmt_item_box context_parent<c:if test="${C.cmt_delete == 1}"> deleted</c:if>" data-id="${C.cmt_no}" data-nickname="${C.cmt_nickname}">
 			<div class="cmt_item_group">
 				<div class="cmt_writer_box<c:if test="${C.cmt_depth > 0}"> depth-1</c:if>">
-					<span class="context_nickname use_context">${C.cmt_nickname}</span>
+					<span class="use_context context_nickname">${C.cmt_nickname}</span>
 					<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
 				</div>
 			</div>
 			
 			<div class="cmt_item_group">
-				<span><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 0}"><span
+				<span><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 1}"><span
 				class="cmt_parent_writer">[${C.cmt_parent_writer}] </span></c:if>${C.cmt_content}</span>
 			</div>
 			
