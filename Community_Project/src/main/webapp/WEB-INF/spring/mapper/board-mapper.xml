@@ -102,8 +102,6 @@
 			b.board_category = cate.cate_id
 		WHERE
 			board_no = #{board_no}
-			AND
-			b.board_writer = u.username
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">

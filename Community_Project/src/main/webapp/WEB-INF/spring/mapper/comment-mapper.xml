@@ -35,11 +35,12 @@
 	
 	<select id="findByCmtNo" resultType="commentVO">
 		SELECT c.*, u.nickname AS cmt_nickname
-		FROM tbl_comment c, tbl_users u
-		WHERE
-			c.cmt_no = #{cmt_no}
-			AND
+		FROM tbl_comment c
+		LEFT JOIN tbl_users u
+		ON
 			c.cmt_writer = u.username
+		WHERE
+			c.cmt_no = #{cmt_no}			
 	</select>
 	
 	<select id="maxOrderByCmtGroup" resultType="int">

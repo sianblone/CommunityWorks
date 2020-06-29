@@ -67,7 +67,9 @@ public class BoardController {
 	// id값으로 게시글 보여주기
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	public String details(BoardVO boardOptionVO, Model model) {
+		log.debug("BOARD_Option VO : {}", boardOptionVO.toString());
 		BoardVO boardVO = boardSvc.findByBoardNo(boardOptionVO.getBoard_no());
+		log.debug("BOARD VO : {}", boardVO);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		// 현재 로그인한 사용자가 관리자가 아닐 때 delete 값이 1인 게시물 열람 불가
