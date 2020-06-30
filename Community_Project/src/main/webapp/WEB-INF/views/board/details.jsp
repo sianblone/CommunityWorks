@@ -24,24 +24,23 @@
 		flex: 1;
 	}
 	.details_content_box {
-		position: relative;
 		min-height: 300px;
 		padding: 10px 20px;
 		margin-bottom: 10px;
 	}
 	.recommend_box {
-		position: absolute;
-		bottom: 0px;
-		left: 0px;
-		right: 0px;
 		text-align: center;
 	}
 	.btn_recommend {
-		padding: 1rem 1.5rem;
+		padding: 1rem 1.8rem;
+		margin-bottom: 10px;
 	}
 	.board_recommend {
 		color: var(--color-primary);
 		font-weight: bold;
+	}
+	.btn_recommend:hover .board_recommend {
+		color: white;
 	}
 	
 	.info_cate, .info_count, .info_recommend, .info_datetime {
@@ -153,8 +152,10 @@
 		<hr/>
 		<article class="details_content_box">
 			${BOARD_VO.board_content}
-			<div class="recommend_box"><button class="btn_recommend btn_blue" type="button">추천<c:if test="${BOARD_VO.board_recommend > 0}"><span
-			class="board_recommend"> ${BOARD_VO.board_recommend}</span></c:if></button></div>
+		</article>
+		<article class="recommend_box">
+			<button class="btn_recommend btn_blue" type="button">추천<c:if test="${BOARD_VO.board_recommend > 0}"><span
+			class="board_recommend"> ${BOARD_VO.board_recommend}</span></c:if></button>
 		</article>
 		<hr/>
 		<article class="details_button_box">
