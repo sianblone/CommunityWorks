@@ -114,13 +114,23 @@ public class BoardController {
 	// form에서 저장버튼 클릭 시 사용할 메소드
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer currPage) {
+		
+		String render = "";
 		// 없는 게시판(0)을 입력받으면 메인페이지로
-		if(boardVO.getBoard_info() == 0) return "redirect:/";
+		if(boardVO.getBoard_info() == 0) {
+			render = "redirect:/";
+		} else {
+			int result = boardSvc.save(boardVO);
+			// 글 수정인 경우 DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
+			if(result == -100) {
+				render = "board/error";
+			} else {
+				render = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
+				if(currPage != null) render += "&currPage=" + currPage;
+			}
+		}
 				
-		boardSvc.save(boardVO);
-		String redirect = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
-		if(currPage != null) redirect += "&currPage=" + currPage;
-		return redirect;
+		return render;
 	}
 	
 	// 게시물 삭제버튼 클릭 시 사용할 메소드

@@ -5,7 +5,6 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,7 +23,6 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.user.UserService;
-import com.sif.util.ClientIP;
 import com.sif.util.CookieUtil;
 import com.sif.util.SpringSecurityUtil;
 
@@ -138,8 +136,7 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int save(BoardVO boardVO) {
 		
-		String render = "";
-		int ret = 0;// MyBatis selectKey로 받아올 auto_increment 값
+		int result = 0;
 		
 		// 카테고리 선택하지 않았을 경우 null로 만들어주기
 		if(boardVO.getBoard_category() == 0) {
@@ -157,12 +154,12 @@ public class BoardServiceImpl implements BoardService {
 					dbBoardVO.setBoard_category(boardVO.getBoard_category());
 					dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
 					dbBoardVO.setBoard_content(boardVO.getBoard_content());
+					result = boardDao.update(dbBoardVO);
 				}
 			} else {
 				// DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
-				render = "board/error";
+				result = -100;
 			}
-			ret = boardDao.update(dbBoardVO);
 		} else if(boardVO.getBoard_p_no() != 0) {
 			// 답글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 없고 board_p_no가 있는 경우)
 			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 boardVO에 세팅되어 있다
@@ -178,13 +175,13 @@ public class BoardServiceImpl implements BoardService {
 			boardVO.setBoard_depth(parentBoardVO.getBoard_depth() + 1);
 			// 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(boardVO);
-			ret = boardDao.insert(boardVO);
+			result = boardDao.insert(boardVO);
 		} else {
 			// 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no와 board_p_no가 없는 경우)
 			// 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(boardVO);
 			log.debug("save boardVO : {}", boardVO);
-			ret = boardDao.insert(boardVO);
+			result = boardDao.insert(boardVO);
 			log.debug("selectKey : {}", boardVO.getBoard_no());
 			// 방금 작성한 글을 다시 DB에서 가져와서 글 그룹, 글 순서, 글 깊이 업데이트
 			BoardVO insertedBoardVO = boardDao.findByBoardNo(boardVO.getBoard_no());
@@ -192,10 +189,10 @@ public class BoardServiceImpl implements BoardService {
 			insertedBoardVO.setBoard_group(insertedBoardVO.getBoard_no());
 			// 2. 글 순서 = 0(업데이트 할 필요 없음)
 			// 3. 글 깊이 = 0(업데이트 할 필요 없음)
-			ret = boardDao.update(insertedBoardVO);
+			result = boardDao.update(insertedBoardVO);
 		}
 		
-		return ret;
+		return result;
 		
 	}
 	
