@@ -2,6 +2,9 @@ package com.sif.community.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
@@ -50,7 +53,6 @@ public class BoardController {
 					BoardVO boardVO,
 					Integer currPage) {
 		log.debug("INFO:{} TYPE:{} TXT:{}",boardVO.getBoard_info(), boardVO.getSearch_type(), boardVO.getSearch_txt());
-		
 		// 없는 게시판(0)을 입력받으면 메인페이지로
 		if(boardVO.getBoard_info() == 0) return "redirect:/";
 		
@@ -65,8 +67,9 @@ public class BoardController {
 	
 	// 상세보기 메소드
 	// id값으로 게시글 보여주기
+	// boardOptionVO에는 board_info, board_no가 들어있다
 	@RequestMapping(value="/details", method=RequestMethod.GET)
-	public String details(BoardVO boardOptionVO, Model model) {
+	public String details(BoardVO boardOptionVO, Model model, HttpServletRequest request, HttpServletResponse response) {
 		BoardVO boardVO = boardSvc.findByBoardNo(boardOptionVO.getBoard_no());
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
@@ -79,12 +82,14 @@ public class BoardController {
 		if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) boardVO.setViewerAdmin(true);
 		if( boardVO.getBoard_writer().equals(auth.getName()) ) boardVO.setViewerWriter(true);
 		
-		model.addAttribute("BOARD_VO",boardVO);
+		// 조회수 증가 (쿠키를 이용한 중복체크)
+		int result = boardSvc.updateBoardCount(boardOptionVO, request, response);
+		if(result > 0) {
+			// 조회수가 증가되었다면 이미 DB에서 가져온 데이터의 조회수를 1 증가시켜 view에 보여주기
+			boardVO.setBoard_count(boardVO.getBoard_count() + 1);
+		}
 		
-		// DB 데이터에 조회수 1 증가시키기
-		boardSvc.updateBoardCount(boardOptionVO);
-		// 이미 DB에서 가져온 데이터의 조회수를 1 증가시켜 view에 보여주기
-		boardVO.setBoard_count(boardVO.getBoard_count() + 1);
+		model.addAttribute("BOARD_VO",boardVO);
 		
 		return "board/details";
 	}
@@ -124,6 +129,16 @@ public class BoardController {
 	public String delete(long board_no, Integer currPage) {
 		String render = boardSvc.delete(board_no, currPage);
 		return render;
+	}
+	
+	// 추천버튼 클릭 시 사용할 메소드
+	// 게시글 recommend 칼럼 값 +1
+	// boardOptionVO에는 board_no가 들어있다
+	@ResponseBody
+	@RequestMapping(value="/recommend", method=RequestMethod.GET)
+	public int recommend(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response) {
+		int result = boardSvc.updateBoardRecommend(boardOptionVO, request, response);
+		return result;
 	}
 	
 	@RequestMapping(value = "/admin", method=RequestMethod.GET)

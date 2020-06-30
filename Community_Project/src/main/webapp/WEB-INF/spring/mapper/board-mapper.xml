@@ -231,6 +231,13 @@
 		WHERE board_no = #{board_no}
 	</update>
 	
+	<update id="updateBoardRecommend">
+		UPDATE tbl_board
+		SET
+			board_recommend = board_recommend + 1
+		WHERE board_no = #{board_no}
+	</update>
+	
 	<delete id="delete">
 		DELETE FROM tbl_board
 		WHERE board_no = #{board_no}

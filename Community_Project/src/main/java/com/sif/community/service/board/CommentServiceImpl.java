@@ -15,6 +15,7 @@ import com.sif.community.dao.CommentDao;
 import com.sif.community.model.CommentVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.CommentService;
+import com.sif.util.SpringSecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -118,7 +119,8 @@ public class CommentServiceImpl implements CommentService {
 		// 작성자 세팅
 		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth.isAuthenticated()) {
+		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
+		if(isLoggedIn) {
 			commentVO.setCmt_writer(auth.getName());
 		}
 		

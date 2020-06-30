@@ -1,9 +1,13 @@
 package com.sif.community.service.board;
 
-import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +24,9 @@ import com.sif.community.model.PaginationVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.user.UserService;
+import com.sif.util.ClientIP;
+import com.sif.util.CookieUtil;
+import com.sif.util.SpringSecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -196,7 +203,8 @@ public class BoardServiceImpl implements BoardService {
 		// 작성자 세팅
 		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth.isAuthenticated()) {
+		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
+		if(isLoggedIn) {
 			boardVO.setBoard_writer(auth.getName());
 		}
 		
@@ -265,8 +273,19 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public int updateBoardCount(BoardVO boardOptionVO) {
-		return boardDao.updateBoardCount(boardOptionVO);
+	public int updateBoardCount(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response) {
+		int result = 0;
+		result = CookieUtil.boardCookie(request, response, boardOptionVO, boardDao);
+		
+		return result;
+	}
+
+	@Override
+	public int updateBoardRecommend(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response) {
+		int result = 0;
+		result = CookieUtil.boardCookie(request, response, boardOptionVO, boardDao, "recommend");
+				
+		return result;
 	}
 	
 }

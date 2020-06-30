@@ -24,10 +24,26 @@
 		flex: 1;
 	}
 	.details_content_box {
+		position: relative;
 		min-height: 300px;
 		padding: 10px 20px;
 		margin-bottom: 10px;
 	}
+	.recommend_box {
+		position: absolute;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		text-align: center;
+	}
+	.btn_recommend {
+		padding: 1rem 1.5rem;
+	}
+	.board_recommend {
+		color: var(--color-primary);
+		font-weight: bold;
+	}
+	
 	.info_cate, .info_count, .info_recommend, .info_datetime {
 		font-size: 12px;
 	}
@@ -66,7 +82,7 @@
 			}
 		})
 		
-		$(document).on("click","button",function() {
+		$(document).on("click", "button", function() {
 			let id = $(this).attr("id")
 			if(id == "btn_delete_complete") {
 				if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
@@ -85,6 +101,24 @@
 			} else if(id == "btn_list") {
 				document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
 			}
+		})
+		
+		$(document).on("click", ".btn_recommend", function() {
+			$.ajax({
+				url: "${rootPath}/board/recommend",
+				data: { board_no : "${BOARD_VO.board_no}" },
+				type: "GET",
+				success: function(result) {
+					if(result > 0) {
+						document.location.replace(document.location.href)
+					} else {
+						alert("동일한 게시물에 중복으로 추천할 수 없습니다.")
+					}
+				},
+				error: function() {
+					alert("서버 통신 오류")
+				}
+			})
 		})
 		
 		$("header").click(function() {
@@ -118,7 +152,9 @@
 		</article>
 		<hr/>
 		<article class="details_content_box">
-			<p>${BOARD_VO.board_content}</p>
+			${BOARD_VO.board_content}
+			<div class="recommend_box"><button class="btn_recommend btn_blue" type="button">추천<c:if test="${BOARD_VO.board_recommend > 0}"><span
+			class="board_recommend"> ${BOARD_VO.board_recommend}</span></c:if></button></div>
 		</article>
 		<hr/>
 		<article class="details_button_box">

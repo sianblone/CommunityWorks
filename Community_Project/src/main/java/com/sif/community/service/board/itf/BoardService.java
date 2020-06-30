@@ -2,6 +2,9 @@ package com.sif.community.service.board.itf;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.ui.Model;
 
 import com.sif.community.model.BoardInfoVO;
@@ -23,5 +26,6 @@ public interface BoardService {
 	public int save(BoardVO boardVO);
 	public String delete(long board_no, Integer currPage);
 	public String admin(long board_no, Integer currPage, String order);
-	public int updateBoardCount(BoardVO boardOptionVO);
+	public int updateBoardCount(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response);
+	public int updateBoardRecommend(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response);
 }

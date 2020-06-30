@@ -25,6 +25,7 @@ public interface BoardDao {
 	public int update(BoardVO boardVO);
 	public int update_delete(BoardVO boardVO);
 	public int updateBoardCount(BoardVO boardOptionVO);
+	public int updateBoardRecommend(BoardVO boardOptionVO);
 	public int delete(long board_no);
 	
 }

@@ -34,7 +34,7 @@ public class UserController {
 		
 		// 정규식을 이용해 이전 페이지가 로그인 페이지가 아닌 경우만 prevPage 설정
 		String referer = request.getHeader("Referer");
-		if(!referer.matches(".*/user/login.*")) {
+		if(referer != null && !referer.matches(".*/user/login.*")) {
 			request.getSession().setAttribute("url_prev_page", referer);
 		}
 		
