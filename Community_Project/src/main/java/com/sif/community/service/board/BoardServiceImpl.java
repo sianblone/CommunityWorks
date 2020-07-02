@@ -87,32 +87,32 @@ public class BoardServiceImpl implements BoardService {
 		String render = "";
 		long board_no = boardOptionVO.getBoard_no();
 		
-		if(board_no != 0) {
-			// save 메소드의 쿼리에서 board_no를 받은 경우(=글 수정)
-			
-			BoardVO boardVO = this.findByBoardNo(board_no);
-			// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기
-			if(boardVO != null) {
-				
-				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				// 로그인한 사용자가 게시글 작성자와 같거나 관리자면 글 수정 view 보여주기
-				if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-					model.addAttribute("BOARD_VO",boardVO);
-					render = "board/save";
-				} else {
-					// 현재 수정 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자와 다르고 관리자도 아니면 에러 페이지 보여주기
-					render = "board/error";
-				}
-			} else {
-				// DB에 baord_no로 검색한 데이터가 없으면 에러 페이지 보여주기
-				render = "board/error";
-			}
-		} else {
+		if(board_no == 0) {
 			// 쿼리에서 board_no를 받지 않은 경우(=신규작성 글 또는 답글) 새 글 작성 페이지 보여주기
 			// 답글인 경우 save.jsp에서 SpEL 태그를 이용해 URL 쿼리의 board_p_no를 받아와 POST action에 지정해주고 save POST 메소드로 submit
 			// 컨트롤러 save POST 메소드의 VO에 board_p_no 값이 매핑되어 자동 세팅
 			render = "board/save";
 		}
+		
+		// save 메소드의 쿼리에서 board_no를 받은 경우(=글 수정)
+		BoardVO boardVO = this.findByBoardNo(board_no);
+		
+		// DB에 baord_no로 검색한 데이터가 없으면 에러 페이지 보여주기
+		if(boardVO == null) {
+			render = "board/error";
+		}
+		
+		// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기	
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		// 현재 수정 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자와 다르고 관리자도 아니면 에러 페이지 보여주기
+		if(!auth.getName().equals(boardVO.getBoard_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			render = "board/error";
+		}
+		
+		// 로그인한 사용자가 게시글 작성자와 같거나 관리자면 글 수정 view 보여주기
+		model.addAttribute("BOARD_VO",boardVO);
+		render = "board/save";
 		
 		return render;
 	}

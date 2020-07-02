@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import com.sif.community.dao.AuthoritiesDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.user.itf.SendService;
 import com.sif.util.PbeEncryptor;
 
 import lombok.RequiredArgsConstructor;
@@ -24,9 +27,10 @@ public class JoinService {
 	
 	private final UserDao userDao;
 	private final AuthoritiesDao authDao;
-	private final MailSendService mailSvc;
 	private final UserService userSvc;
 	private final PasswordEncoder bcryptEncoder;
+	@Qualifier("mailSvc")
+	private final SendService mailSvc;
 	
 	/**
 	 * @since 2020-05-11

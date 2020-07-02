@@ -64,7 +64,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int save(CommentVO commentVO) {
 		
-		String render = "";
 		int ret = 0;// MyBatis selectKey로 받아올 auto_increment 값
 		
 		if(commentVO.getCmt_no() != 0) {

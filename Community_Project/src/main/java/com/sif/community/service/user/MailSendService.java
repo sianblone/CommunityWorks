@@ -14,13 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.user.itf.SendService;
 import com.sif.util.PbeEncryptor;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
-public class MailSendService {
+@Service("mailSvc")
+public class MailSendService implements SendService {
 	
 	private final JavaMailSender javaMailSender;
 	private final UserDao userDao;
@@ -31,6 +32,7 @@ public class MailSendService {
 		this.userDao = userDao;
 	}
 	
+	@Override
 	public boolean sendMail(String to_email, String subject, String content) {
 		boolean ret = false;
 		
@@ -58,6 +60,7 @@ public class MailSendService {
 	 * @return
 	 * @throws UnsupportedEncodingException 
 	 */
+	@Override
 	@Transactional
 	public boolean send_join_auth_link(UserDetailsVO userVO) throws UnsupportedEncodingException {
 		
@@ -92,6 +95,7 @@ public class MailSendService {
 		return ret;
 	}
 
+	@Override
 	public boolean send_new_pw_link(String username) throws UnsupportedEncodingException {
 		UserDetailsVO userVO = userDao.findByUsername(username);
 		String enc_username = PbeEncryptor.encrypt(userVO.getUsername());
@@ -110,6 +114,7 @@ public class MailSendService {
 		return this.sendMail(userVO.getEmail(), subject, email_content);
 	}
 
+	@Override
 	public boolean send_auth_code(String to_email, String email_token) {
 		
 		StringBuilder email_content = new StringBuilder();

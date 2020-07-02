@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import com.sif.community.dao.AuthoritiesDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.user.itf.SendService;
 import com.sif.util.PbeEncryptor;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +32,8 @@ public class UserService {
 	private final PasswordEncoder bcryptEncoder;
 	private final UserDao userDao;
 	private final AuthoritiesDao authDao;
-	private final MailSendService mailSvc;
+	@Qualifier("mailSvc")
+	private final SendService mailSvc;
 	
 	// selectAll() 메소드는 2개의 테이블을 select하고 있다
 	// 이런 경우 1번 테이블의 데이터는 가져왔는데 2번 테이블을 가져오기 전
