@@ -27,7 +27,7 @@ public class CommentVO {
 	private int cmt_depth;//	INT	NOT NULL
 	private String cmt_writer;//	VARCHAR(50)	NOT NULL		
 	@Setter(AccessLevel.NONE) private Date cmt_datetime;// TIMESTAMP, lombok에서 setter 생성 안함, 날짜 데이터 주입 시 cmt_custom_datetime, cmt_custom_full_datetime 에도 가공된 날짜 데이터 주입	
-	private String cmt_content;//	VARCHAR(1000)	NOT NULL		
+	private String cmt_content;//	TEXT	NOT NULL		
 	private int cmt_delete;//	TINYINT	NOT NULL		DEFAULT 0
 	private long cmt_recommend;//	BIGINT	NOT NULL		DEFAULT 0
 	

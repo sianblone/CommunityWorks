@@ -3,7 +3,7 @@
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <c:set var="FORM_AUTOCOMPLETE" value="off"/>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initian-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Community</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 <script src="${rootPath}/resources/js/lib/jquery-3.5.1.min.js"></script>

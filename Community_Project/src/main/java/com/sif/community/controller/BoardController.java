@@ -78,7 +78,7 @@ public class BoardController {
 			return "board/error";
 		}
 		
-		// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
+		// 현재 로그인한 사용자가 작성자거나 로그인한 사용자 권한이 ADMIN일 때 글 수정, 삭제 가능
 		if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) boardVO.setViewerAdmin(true);
 		if( boardVO.getBoard_writer().equals(auth.getName()) ) boardVO.setViewerWriter(true);
 		
@@ -101,43 +101,82 @@ public class BoardController {
 	// 현재 사용자와 DB의 게시글 작성자가 다르면 오류 페이지로 Redirect
 	@RequestMapping(value="/save", method=RequestMethod.GET)
 	public String save(BoardVO boardOptionVO, Model model) {
+		
 		// 없는 게시판(0)을 입력받으면 메인페이지로
-		if(boardOptionVO.getBoard_info() == 0) return "redirect:/";
-				
-		String render = boardSvc.saveView(boardOptionVO, model);
+		if(boardOptionVO.getBoard_info() == 0) {
+			return "redirect:/";
+		}
+		
+		long board_no = boardOptionVO.getBoard_no();
+		
+		if(board_no == 0) {
+			// 쿼리에서 board_no를 받지 않은 경우(=신규작성 글 또는 답글) 새 글 작성 페이지 보여주기
+			// 답글인 경우 save.jsp에서 SpEL 태그를 이용해 URL 쿼리의 board_p_no를 받아와 POST action에 지정해주고 save POST 메소드로 submit
+			// 컨트롤러 save POST 메소드의 VO에 board_p_no 값이 매핑되어 자동 세팅
+			model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
+			model.addAttribute("BOARD_INFO", boardSvc.findByBoardInfo(boardOptionVO.getBoard_info()));
+			return "board/save";
+		}
+		
+		// URL 쿼리에서 board_no를 받은 경우(=> 글 수정)
+		BoardVO boardVO = boardSvc.findByBoardNo(board_no);
+		// DB에 baord_no로 검색한 데이터가 없으면 에러 페이지 보여주기
+		if(boardVO == null) {
+			return "board/error";
+		}
+		
+		// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기	
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 현재 수정 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자가 아니고 관리자도 아니면 에러 페이지 보여주기
+		if(!auth.getName().equals(boardVO.getBoard_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			return "board/error";
+		}
+		
+		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 수정 view 보여주기
+		model.addAttribute("BOARD_VO",boardVO);
 		model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
 		model.addAttribute("BOARD_INFO", boardSvc.findByBoardInfo(boardOptionVO.getBoard_info()));
 		
-		return render;
+		return "board/save";
 	}
 	
 	// form에서 저장버튼 클릭 시 사용할 메소드
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer currPage) {
 		
-		String render = "";
 		// 없는 게시판(0)을 입력받으면 메인페이지로
 		if(boardVO.getBoard_info() == 0) {
-			render = "redirect:/";
+			return "redirect:/";
+		}
+		
+		String render = "";
+		int result = boardSvc.save(boardVO);
+		// 글 수정인 경우 DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
+		if(result == -100) {
+			render = "board/error";
 		} else {
-			int result = boardSvc.save(boardVO);
-			// 글 수정인 경우 DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
-			if(result == -100) {
-				render = "board/error";
-			} else {
-				render = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
-				if(currPage != null) render += "&currPage=" + currPage;
-			}
+			render = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
+			if(currPage != null) render += "&currPage=" + currPage;
 		}
 				
 		return render;
 	}
 	
-	// 게시물 삭제버튼 클릭 시 사용할 메소드
-	// 게시글 deleted 칼럼 값 1로 바꿔주기
+	// 게시물 삭제버튼 클릭 시 사용할 메소드(게시글 deleted 칼럼 값 1로 바꿔주기)
+	// boardVO에는 board_no, board_info가 들어있다
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String delete(long board_no, Integer currPage) {
-		String render = boardSvc.delete(board_no, currPage);
+	public String delete(BoardVO boardVO, Integer currPage) {
+		String render = "";
+		int result = boardSvc.delete(boardVO.getBoard_no());
+		
+		if(result == -100 || result == -200) {
+			render = "board/error";
+		} else {
+			long board_info = boardVO.getBoard_info();
+			render = "redirect:/board/list?board_info=" + board_info;
+			if(currPage != null) render += "&currPage=" + currPage;
+		}
+		
 		return render;
 	}
 	
@@ -152,8 +191,18 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/admin", method=RequestMethod.GET)
-	public String admin(long board_no, Integer currPage, String order) {
-		String render = boardSvc.admin(board_no, currPage, order);
+	public String admin(BoardVO boardOptionVO, Integer currPage, String command) {
+		String render = "";
+		int result = boardSvc.admin(boardOptionVO.getBoard_no(), command);
+		
+		if(result == -100 || result == -200) {
+			render = "board/error";
+		} else {
+			long board_info = boardOptionVO.getBoard_info();
+			render = "redirect:/board/list?board_info=" + board_info;
+			if(currPage != null) render += "&currPage=" + currPage;
+		}
+		
 		return render;
 	}
 	

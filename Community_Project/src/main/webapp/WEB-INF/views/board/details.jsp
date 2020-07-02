@@ -85,15 +85,15 @@
 			let id = $(this).attr("id")
 			if(id == "btn_delete_complete") {
 				if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
-				document.location.replace("${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=delete")
+				document.location.replace("${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&command=delete")
 			} else if(id == "btn_restore") {
 				if(confirm("이 글을 복구하시겠습니까?"))
-				document.location.href="${rootPath}/board/admin?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&order=restore"
+				document.location.href="${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}&command=restore"
 			} else if(id == "btn_edit") {
 				document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}"
 			} else if(id == "btn_delete") {
 				if(confirm("정말 삭제하시겠습니까?"))
-				document.location.replace("${rootPath}/board/delete?board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
+				document.location.replace("${rootPath}/board/delete?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&currPage=${param.currPage}")
 			} else if(id == "btn_reply") {
 				document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
 				return false

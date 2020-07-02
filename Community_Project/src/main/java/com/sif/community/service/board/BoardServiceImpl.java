@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService {
 		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
 		
 		boolean isAdmin = false;
-		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 count하기
+		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
@@ -63,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
 		
 		boolean isAdmin = false;
-		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
+		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
@@ -80,41 +80,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO) {
 		return boardDao.selectCategoryByBoard(boardOptionVO);
-	}
-	
-	@Override
-	public String saveView(BoardVO boardOptionVO, Model model) {
-		String render = "";
-		long board_no = boardOptionVO.getBoard_no();
-		
-		if(board_no == 0) {
-			// 쿼리에서 board_no를 받지 않은 경우(=신규작성 글 또는 답글) 새 글 작성 페이지 보여주기
-			// 답글인 경우 save.jsp에서 SpEL 태그를 이용해 URL 쿼리의 board_p_no를 받아와 POST action에 지정해주고 save POST 메소드로 submit
-			// 컨트롤러 save POST 메소드의 VO에 board_p_no 값이 매핑되어 자동 세팅
-			render = "board/save";
-		}
-		
-		// save 메소드의 쿼리에서 board_no를 받은 경우(=글 수정)
-		BoardVO boardVO = this.findByBoardNo(board_no);
-		
-		// DB에 baord_no로 검색한 데이터가 없으면 에러 페이지 보여주기
-		if(boardVO == null) {
-			render = "board/error";
-		}
-		
-		// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기	
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		// 현재 수정 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자와 다르고 관리자도 아니면 에러 페이지 보여주기
-		if(!auth.getName().equals(boardVO.getBoard_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			render = "board/error";
-		}
-		
-		// 로그인한 사용자가 게시글 작성자와 같거나 관리자면 글 수정 view 보여주기
-		model.addAttribute("BOARD_VO",boardVO);
-		render = "board/save";
-		
-		return render;
 	}
 	
 	@Override
@@ -136,59 +101,61 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int save(BoardVO boardVO) {
 		
+		// DB 입력 성공 여부에 따라 컨트롤러로 리턴할 값
 		int result = 0;
 		
-		// 카테고리 선택하지 않았을 경우 null로 만들어주기
+		// 글 작성 시 카테고리를 선택하지 않은 경우 받은 값 0을 null로 바꿔서 DB에 넣기
 		if(boardVO.getBoard_category() == 0) {
 			boardVO.setBoard_category(null);
 		}
 		
-		if(boardVO.getBoard_no() != 0) {
-			// 글 수정인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 있는 경우)
-			// 1. DB에 게시글번호로 검색한 데이터가 있는지 확인
-			BoardVO dbBoardVO = this.findByBoardNo(boardVO.getBoard_no());
-			if(dbBoardVO != null) {
-				// 2. 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 수정
-				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-					dbBoardVO.setBoard_category(boardVO.getBoard_category());
-					dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
-					dbBoardVO.setBoard_content(boardVO.getBoard_content());
-					result = boardDao.update(dbBoardVO);
-				}
-			} else {
-				// DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
-				result = -100;
+		long board_no = boardVO.getBoard_no();
+		
+		// 1. boardVO에 board_no가 있는 경우(=> 글 수정)
+		if(board_no != 0) {
+			BoardVO dbBoardVO = this.findByBoardNo(board_no);
+			if(dbBoardVO == null) {
+				// 1-1. 게시글번호로 검색한 데이터가 DB에 없는 경우 에러페이지 보여주기
+				return -100;
+			}
+			
+			// 1-2. 게시글번호로 검색한 데이터가 DB에 있는 경우
+			// 로그인한 사용자가 게시글 작성자거나 관리자면 글 수정
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+				dbBoardVO.setBoard_category(boardVO.getBoard_category());
+				dbBoardVO.setBoard_subject(boardVO.getBoard_subject());
+				dbBoardVO.setBoard_content(boardVO.getBoard_content());
+				result = boardDao.update(dbBoardVO);
 			}
 		} else if(boardVO.getBoard_p_no() != 0) {
-			// 답글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 없고 board_p_no가 있는 경우)
-			// 답글인 경우는 GET 쿼리에 board_p_no가 있기 때문에 boardVO에 세팅되어 있다
+			// 2. 답글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no가 있고 board_p_no가 없는 경우
+			// 답글인 경우는 GET URL 쿼리에 board_p_no가 있기 때문에 boardVO에 값이 세팅되어 있다
 			
-			// 1. 부모글의 board_group 가져와서 group 세팅하기
+			// 2-1. 부모글의 board_group 가져와서 group 세팅하기
 			BoardVO parentBoardVO = this.findByBoardNo(boardVO.getBoard_p_no());
 			long board_group = parentBoardVO.getBoard_group();
 			boardVO.setBoard_group(board_group);
-			// 2. 부모글의 board_group 가져와서 order를 maxOrder + 1로 세팅하기
+			// 2-2. 부모글의 board_group 가져와서 order를 maxOrder + 1로 세팅하기
 			int maxOrder = boardDao.maxOrderByBoardGroup(board_group);
 			boardVO.setBoard_order(maxOrder + 1);
-			// 3. 부모글의 board_depth 가져와서 depth를 +1로 세팅하기
+			// 2-3. 부모글의 board_depth 가져와서 depth를 +1로 세팅하기
 			boardVO.setBoard_depth(parentBoardVO.getBoard_depth() + 1);
-			// 작성자, 날짜+시간 세팅 후 INSERT
+			// 2-4. boardVO에 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(boardVO);
 			result = boardDao.insert(boardVO);
 		} else {
-			// 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no와 board_p_no가 없는 경우)
-			// 작성자, 날짜+시간 세팅 후 INSERT
+			// 3. 신규작성 글인 경우(컨트롤러에서 넘겨준 boardVO에 board_no와 board_p_no가 없는 경우)
+			// 3-1. boardVO에 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(boardVO);
-			log.debug("save boardVO : {}", boardVO);
 			result = boardDao.insert(boardVO);
-			log.debug("selectKey : {}", boardVO.getBoard_no());
-			// 방금 작성한 글을 다시 DB에서 가져와서 글 그룹, 글 순서, 글 깊이 업데이트
+			// 3-2. 방금 작성한 글을 다시 DB에서 가져와서 글 그룹, 글 순서, 글 깊이 업데이트
+			// boardVO에는 insert 후 새로운 board_no 값이 저장되어 있다(MyBatis의 selectKey 이용)
 			BoardVO insertedBoardVO = boardDao.findByBoardNo(boardVO.getBoard_no());
-			// 1. 글 그룹 = 작성한 글 번호
+			// (1) 글 그룹 = 작성한 글 번호
 			insertedBoardVO.setBoard_group(insertedBoardVO.getBoard_no());
-			// 2. 글 순서 = 0(업데이트 할 필요 없음)
-			// 3. 글 깊이 = 0(업데이트 할 필요 없음)
+			// (2) 글 순서 = 0(업데이트 할 필요 없음)
+			// (3) 글 깊이 = 0(업데이트 할 필요 없음)
 			result = boardDao.update(insertedBoardVO);
 		}
 		
@@ -197,12 +164,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	protected BoardVO saveSetting(BoardVO boardVO) {
-		// 작성자 세팅
-		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 로그인한 경우 작성자 이름을 로그인한 사용자 이름으로 세팅
 		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
 		if(isLoggedIn) {
-			boardVO.setBoard_writer(auth.getName());
+			boardVO.setBoard_writer(SecurityContextHolder.getContext().getAuthentication().getName());
 		}
 		
 		// 날짜+시간 세팅
@@ -214,59 +179,55 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public String delete(long board_no, Integer currPage) {
-		String render = "";
-		BoardVO boardVO = this.findByBoardNo(board_no);
+	public int delete(long board_no) {
+		int result = 0;
+		
 		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
-		if(boardVO != null) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			// 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 삭제하기
-			if(auth.getName().equals(boardVO.getBoard_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-				boardVO.setBoard_delete(1);
-				boardDao.update_delete(boardVO);
-				
-				long board_info = boardVO.getBoard_info();
-				render = "redirect:/board/list?board_info=" + board_info;
-				if(currPage != null) render += "&currPage=" + currPage;
-			} else {
-				// 현재 로그인한 사용자와 게시글 작성자가 다르고 관리자가 아니면 삭제 불가, 에러페이지 보여주기
-				render = "board/error";
-			}
-		} else {
-			// DB에 board_no로 검색한 데이터가 없으면 에러페이지 보여주기
-			render = "board/error";
+		BoardVO boardVO = this.findByBoardNo(board_no);
+		// DB에 board_no로 검색한 데이터가 없으면 -100 return
+		if(boardVO == null) {
+			return -100;
 		}
 		
-		return render;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 현재 삭제 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자가 아니고 관리자도 아니면 에러 페이지 보여주기
+		if(!auth.getName().equals(boardVO.getBoard_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			return -200;
+		}
+		
+		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
+		boardVO.setBoard_delete(1);
+		result = boardDao.update_delete(boardVO);
+		
+		return result;
 	}
 	
 	@Override
-	public String admin(long board_no, Integer currPage, String order) {
-		String render = "";
-		// 현재 글 데이터
-		BoardVO boardVO = this.findByBoardNo(board_no);
+	public int admin(long board_no, String command) {
+		int result = 0;
 		
-		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-			// 유저권한이 관리자가 아닌 경우
-			render = "board/error";
-		} else if(order.equals("restore")) {
-			// 글 복구 클릭
-			boardVO.setBoard_delete(0);
-			boardDao.update_delete(boardVO);
-			
-			long board_info = boardVO.getBoard_info();
-			render = "redirect:/board/list?board_info=" + board_info;
-			if(currPage != null) render += "&currPage=" + currPage;
-		} else if(order.equals("delete")) {
-			// 글 완전삭제 클릭
-			boardDao.delete(board_no);
-			
-			long board_info = boardVO.getBoard_info();
-			render = "redirect:/board/list?board_info=" + board_info;
-			if(currPage != null) render += "&currPage=" + currPage;
+		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
+		BoardVO boardVO = this.findByBoardNo(board_no);
+		// DB에 board_no로 검색한 데이터가 없으면 -100 return
+		if(boardVO == null) {
+			return -100;
 		}
 		
-		return render;
+		// 관리자가 아니면 -200 return
+		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			return -200;
+		}
+		
+		if(command.equals("restore")) {
+			// 글 복구 클릭
+			boardVO.setBoard_delete(0);
+			result = boardDao.update_delete(boardVO);
+		} else if(command.equals("delete")) {
+			// 글 완전삭제 클릭
+			result = boardDao.delete(board_no);
+		}
+		
+		return result;
 	}
 
 	@Override

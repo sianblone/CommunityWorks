@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.CommentDao;
+import com.sif.community.model.BoardVO;
 import com.sif.community.model.CommentVO;
 import com.sif.community.model.PaginationVO;
 import com.sif.community.service.board.itf.CommentService;
@@ -32,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
 		long totalCount = 0;
 		
 		boolean isAdmin = false;
-		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 count하기
+		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
@@ -46,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
 		List<CommentVO> cmtList = null;
 		
 		boolean isAdmin = false;
-		// 현재 사용자가 관리자 권한일 때 delete = 1인 게시물도 리스트에 보여주기
+		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
@@ -64,63 +65,65 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int save(CommentVO commentVO) {
 		
-		int ret = 0;// MyBatis selectKey로 받아올 auto_increment 값
+		// DB 입력 성공 여부에 따라 컨트롤러로 리턴할 값
+		int result = 0;
 		
-		if(commentVO.getCmt_no() != 0) {
-			// 댓글 수정인 경우(컨트롤러에서 넘겨준 cmtVO에 cmt_no가 있는 경우)
-			// 1. DB에 게시글번호로 검색한 데이터가 있는지 확인
-			CommentVO dbCommentVO = this.findByCmtNo(commentVO.getCmt_no());
-			if(dbCommentVO != null) {
-				// 2. 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 수정
-				Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-				if(auth.getName().equals(commentVO.getCmt_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-					dbCommentVO.setCmt_content(commentVO.getCmt_content());
-					ret = cmtDao.update(dbCommentVO);
-				}
+		long cmt_no = commentVO.getCmt_no();
+		
+		// 1. commentVO에 No가 있는 경우(=> 댓글 수정)
+		if(cmt_no != 0) {
+			CommentVO dbCommentVO = this.findByCmtNo(cmt_no);
+			if(dbCommentVO == null) {
+				// 1-1. 댓글번호로 검색한 데이터가 DB에 없는 경우 -100 리턴
+				return -100;
 			}
 			
+			// 1-2. 게시글번호로 검색한 데이터가 DB에 있는 경우
+			// 로그인한 사용자가 댓글 작성자거나 관리자면 댓글 수정
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth.getName().equals(commentVO.getCmt_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+				dbCommentVO.setCmt_content(commentVO.getCmt_content());
+				result = cmtDao.update(dbCommentVO);
+			}
 		} else if(commentVO.getCmt_p_no() != 0) {
-			// 대댓글인 경우(컨트롤러에서 넘겨준 commentVO에 cmt_no가 없고 cmt_p_no가 있는 경우)
-			// 대댓글인 경우는 GET 쿼리에 cmt_p_no가 있기 때문에 commentVO에 세팅되어 있다
+			// 2. 대댓글인 경우(컨트롤러에서 넘겨준 commentVO에 cmt_no가 없고 cmt_p_no가 있는 경우)
+			// 대댓글인 경우는 GET URL 쿼리에 cmt_p_no가 있기 때문에 commentVO에 값이 세팅되어 있다
 			
-			// 1. 부모댓글의 cmt_group 가져와서 group 세팅하기
+			// 2-1. 부모댓글의 cmt_group 가져와서 group 세팅하기
 			CommentVO parentCommentVO = this.findByCmtNo(commentVO.getCmt_p_no());
 			long cmt_group = parentCommentVO.getCmt_group();
 			commentVO.setCmt_group(cmt_group);
-			// 2. 부모댓글의 cmt_group 가져와서 order를 maxOrder + 1로 세팅하기
+			// 2-2. 부모댓글의 cmt_group 가져와서 order를 maxOrder + 1로 세팅하기
 			int maxOrder = cmtDao.maxOrderByCmtGroup(cmt_group);
 			commentVO.setCmt_order(maxOrder + 1);
-			// 3. 부모댓글의 cmt_depth 가져와서 depth를 +1로 세팅하기
+			// 2-3. 부모댓글의 cmt_depth 가져와서 depth를 +1로 세팅하기
 			commentVO.setCmt_depth(parentCommentVO.getCmt_depth() + 1);
-			// 작성자, 날짜+시간 세팅 후 INSERT
+			// 2-4. commentVO에 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(commentVO);
-			ret = cmtDao.insert(commentVO);
+			result = cmtDao.insert(commentVO);
 		} else {
-			// 신규작성 댓글인 경우(컨트롤러에서 넘겨준 commentVO에 cmt_no와 cmt_p_no가 없는 경우)
-			// 작성자, 날짜+시간 세팅 후 INSERT
+			// 3. 신규작성 댓글인 경우(컨트롤러에서 넘겨준 commentVO에 cmt_no와 cmt_p_no가 없는 경우)
+			// 3-1. commentVO에 작성자, 날짜+시간 세팅 후 INSERT
 			saveSetting(commentVO);
-			log.debug("save commentVO : {}", commentVO);
-			ret = cmtDao.insert(commentVO);
-			log.debug("selectKey : {}", commentVO.getCmt_no());
-			// 방금 작성한 댓글을 다시 DB에서 가져와서 댓글 그룹, 댓글 순서, 댓글 깊이 업데이트
+			result = cmtDao.insert(commentVO);
+			// 3-2. 방금 작성한 댓글을 다시 DB에서 가져와서 댓글 그룹, 댓글 순서, 댓글 깊이 업데이트
+			// commentVO에는 insert 후 새로운 cmt_no 값이 저장되어 있다(MyBatis의 selectKey 이용)
 			CommentVO insertedCommentVO = cmtDao.findByCmtNo(commentVO.getCmt_no());
-			// 1. 댓글 그룹 = 작성한 댓글 번호
+			// (1) 댓글 그룹 = 작성한 댓글 번호
 			insertedCommentVO.setCmt_group(insertedCommentVO.getCmt_no());
-			// 2. 댓글 순서 = 0(업데이트 할 필요 없음)
-			// 3. 댓글 깊이 = 0(업데이트 할 필요 없음)
-			ret = cmtDao.update(insertedCommentVO);
+			// (2) 댓글 순서 = 0(업데이트 할 필요 없음)
+			// (3) 댓글 깊이 = 0(업데이트 할 필요 없음)
+			result = cmtDao.update(insertedCommentVO);
 		}
 		
-		return ret;
+		return result;
 	}
 	
 	protected CommentVO saveSetting(CommentVO commentVO) {
-		// 작성자 세팅
-		// 로그인한 경우 작성자 = 로그인한 사용자 이름으로 세팅(모든 권한)
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 로그인한 경우 작성자 이름을 로그인한 사용자 이름으로 세팅
 		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
 		if(isLoggedIn) {
-			commentVO.setCmt_writer(auth.getName());
+			commentVO.setCmt_writer(SecurityContextHolder.getContext().getAuthentication().getName());
 		}
 		
 		// 날짜+시간 세팅
@@ -132,30 +135,26 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public String delete(long cmt_no, Integer currPage) {
-		String render = "";
-		CommentVO commentVO = this.findByCmtNo(cmt_no);
+	public int delete(long cmt_no) {
+		int result = 0;
+		
 		// DB에 댓글번호로 검색한 데이터가 있으면(이미 있는 댓글이면) 삭제하기
-		if(commentVO != null) {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			// 로그인한 사용자와 게시글 작성자가 같거나 로그인한 사용자가 관리자면 글 삭제하기
-			if(auth.getName().equals(commentVO.getCmt_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
-				commentVO.setCmt_delete(1);
-				cmtDao.update_delete(commentVO);
-				
-				long cmt_board_no = commentVO.getCmt_board_no();
-				render = "redirect:/comment/list?cmt_board_no=" + cmt_board_no;
-				if(currPage != null) render += "&currPage=" + currPage;
-			} else {
-				// 현재 로그인한 사용자와 게시글 작성자가 다르거나 관리자가 아니면 삭제 불가, 에러페이지 보여주기
-				render = "board/error";
-			}
-		} else {
-			// DB에 cmt_no로 검색한 데이터가 없으면 에러페이지 보여주기
-			render = "board/error";
+		CommentVO commentVO = this.findByCmtNo(cmt_no);
+		// DB에 cmt_no로 검색한 데이터가 없으면 에러페이지 보여주기
+		if(commentVO == null) {
+			return -100;
 		}
 		
-		return render;
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		// 현재 삭제 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자가 아니고 관리자도 아니면 에러 페이지 보여주기
+		if(!auth.getName().equals(commentVO.getCmt_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			return -200;
+		}
+		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
+		commentVO.setCmt_delete(1);
+		cmtDao.update_delete(commentVO);
+		
+		return result;
 	}
 	
 	

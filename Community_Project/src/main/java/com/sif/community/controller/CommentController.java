@@ -50,19 +50,33 @@ public class CommentController {
 	// 댓글 저장 시 사용할 메소드
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(CommentVO commentVO, Integer currPage) {
-				
-		cmtSvc.save(commentVO);
-		String redirect = "redirect:/comment/list?cmt_board_no=" + commentVO.getCmt_board_no();
-		if(currPage != null) redirect += "&currPage=" + currPage;
-		return redirect;
+		String render = "";
+		int result = cmtSvc.save(commentVO);
+		
+		// 댓글 수정인 경우 DB에 cmt_no로 검색한 데이터가 없으면 에러페이지 보여주기
+		if(result == -100) {
+			render = "comment/cmt_error";
+		} else {
+			render = "redirect:/comment/list?cmt_board_no=" + commentVO.getCmt_board_no();
+			if(currPage != null) render += "&currPage=" + currPage;
+		}
+		
+		return render;
 	}
 	
 	// 댓글 삭제 시 사용할 메소드
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public String delete(long cmt_no, Integer currPage, Model model) {
-		log.debug("CMT_NO : {}, CURR_PAGE : {}" ,cmt_no, currPage);
-		String result = cmtSvc.delete(cmt_no, currPage);
-		return result;
+		String render = "";
+		int result = cmtSvc.delete(cmt_no);
+		
+		if(result == -100 || result == -200) {
+			render = "comment/cmt_error";
+		} else {
+			render = "redirect:/comment/list?cmt_board_no=" + cmt_no;
+			if(currPage != null) render += "&currPage=" + currPage;
+		}
+		return render;
 	}
 	
 	// 페이지네이션

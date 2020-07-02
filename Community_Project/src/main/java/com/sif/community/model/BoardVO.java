@@ -29,7 +29,7 @@ public class BoardVO {
 	private String board_writer;// VARCHAR(50) NOT NULL
 	@Setter(AccessLevel.NONE) private Date board_datetime;// TIMESTAMP, lombok에서 setter 생성 안함, 날짜 데이터 주입 시 board_custom_datetime, board_custom_full_datetime 에도 가공된 날짜 데이터 주입
 	private String board_subject;// VARCHAR(125) NOT NULL
-	private String board_content;// VARCHAR(1000) NOT NULL
+	private String board_content;// TEXT NOT NULL
 	private long board_count;// BIGINT DEFAULT 0
 	private String board_filename;// VARCHAR(256)
 	private int board_delete;// TINYINT NOT NULL DEFAULT 0

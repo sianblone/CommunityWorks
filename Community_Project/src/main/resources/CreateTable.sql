@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS tbl_board (
 	board_writer	VARCHAR(50)	NOT NULL,
 	board_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP,
 	board_subject	VARCHAR(125)	NOT NULL,
-	board_content	VARCHAR(1000)	NOT NULL,
+	board_content	TEXT	NOT NULL,
 	board_count	BIGINT			DEFAULT 0,
 	board_filename	VARCHAR(256),
 	board_delete	TINYINT	NOT NULL		DEFAULT 0,
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS tbl_comment (
 	cmt_depth	INT	NOT NULL,
 	cmt_writer	VARCHAR(50)	NOT NULL,
 	cmt_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP,
-	cmt_content	VARCHAR(1000) NOT NULL,
+	cmt_content	TEXT NOT NULL,
 	cmt_delete TINYINT NOT NULL DEFAULT 0,
 	cmt_recommend BIGINT NOT NULL DEFAULT 0,
 	
