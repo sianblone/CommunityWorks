@@ -83,22 +83,37 @@
 		
 		$(document).on("click", "button", function() {
 			let id = $(this).attr("id")
+			
 			if(id == "btn_delete_complete") {
-				if(confirm("정말 이 글을 완전히 삭제하시겠습니까?"))
-				document.location.replace("${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&pageNo=${param.pageNo}&command=delete")
+				if(confirm("정말 이 글을 완전히 삭제하시겠습니까?")) {
+					let strHref = "${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&command=delete"
+					if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+					document.location.replace(strHref)
+				}
 			} else if(id == "btn_restore") {
-				if(confirm("이 글을 복구하시겠습니까?"))
-				document.location.href="${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&pageNo=${param.pageNo}&command=restore"
+				if(confirm("이 글을 복구하시겠습니까?")) {
+					let strHref = "${rootPath}/board/admin?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&command=restore"
+					if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+					document.location.href = strHref
+				}
 			} else if(id == "btn_edit") {
-				document.location.href="${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&pageNo=${param.pageNo}"
+				let strHref = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}"
+				if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+				document.location.href = strHref
 			} else if(id == "btn_delete") {
-				if(confirm("정말 삭제하시겠습니까?"))
-				document.location.replace("${rootPath}/board/delete?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}&pageNo=${param.pageNo}")
+				if(confirm("정말 삭제하시겠습니까?")) {
+					let strHref = "${rootPath}/board/delete?board_info=${BOARD_VO.board_info}&board_no=${BOARD_VO.board_no}"
+					if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+					document.location.replace(strHref)
+				}
 			} else if(id == "btn_reply") {
-				document.location.href = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
-				return false
+				let strHref = "${rootPath}/board/save?board_info=${BOARD_VO.board_info}&board_p_no=${BOARD_VO.board_no}"
+				if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+				document.location.href = strHref
 			} else if(id == "btn_list") {
-				document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
+				let strHref = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
+				if("${param.pageNo}") strHref += "&pageNo=${param.pageNo}"
+				document.location.href = strHref
 			}
 		})
 		

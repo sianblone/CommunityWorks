@@ -23,18 +23,18 @@ public class PaginationServiceImpl implements PaginationService {
 		this.pageRange = pageRange;
 	}
 	
-	// 가운데 정렬하기
+	// 가운데 정렬 방식 페이지네이션
 	// 처음 < ··· 3 4 [5] 6 7 ··· > 끝
 	// 처음 < ··· 5 6 [7] 8 9 ··· > 끝 
-	public PaginationVO makePageInfoMiddle(long dataCount, int pageNo) {
-		PaginationVO paginationVO = this.makePageInfo(dataCount, pageNo, true);
+	public PaginationVO makePageInfoMiddle(long dataCount, int pageNo, boolean isReversePagination) {
+		PaginationVO paginationVO = this.makePageInfo(dataCount, pageNo, isReversePagination, true);
 		return paginationVO;
 	}
 	
-	// 가운데 정렬하지 않기
+	// 일반 방식 페이지네이션
 	// 처음 < ··· 1 [2] 3 4 5 ··· > 끝
 	// 처음 < ··· 6 7 8 9 [10] ··· > 끝
-	public PaginationVO makePageInfo(long dataCount, int pageNo, boolean isMiddlePagination) {
+	public PaginationVO makePageInfo(long dataCount, int pageNo, boolean isReversePagination, boolean isMiddlePagination) {
 		// 데이터가 없으면 전체 페이지 수, 범위의 시작 페이지, 범위의 끝 페이지, 현재 페이지만 1로 세팅 후 return
 		if(dataCount < 1) {
 			PaginationVO pageVO = PaginationVO.builder()
@@ -120,7 +120,12 @@ public class PaginationServiceImpl implements PaginationService {
 		
 //		MySQL DB에서 데이터 가져올 값 설정
 //		1페이지 선택시 offset=0,limit=10, 2페이지 선택시 offset=10,limit=10, 3페이지 선택시 offset=20,limit=10
-		int offset = (pageNo - 1) * dataPerPage;
+		int offset = 0;
+		if(isReversePagination) {
+			offset = (pageCount - pageNo) * dataPerPage;
+		} else {
+			offset = (pageNo - 1) * dataPerPage;
+		}
 		int limit = dataPerPage;
 		
 		PaginationVO paginationVO = PaginationVO.builder()

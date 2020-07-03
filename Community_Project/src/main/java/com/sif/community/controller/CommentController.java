@@ -91,7 +91,7 @@ public class CommentController {
 		log.debug("카운트 : {}", totalCount);
 		
 		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo, true);
 		log.debug("페이지 : {}", pageVO.toString());
 		
 		// 3. 페이지네이션 정보 view로 보내주기

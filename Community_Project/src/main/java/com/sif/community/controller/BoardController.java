@@ -52,7 +52,6 @@ public class BoardController {
 					Model model,
 					BoardVO boardVO,
 					Integer pageNo) {
-		log.debug("INFO:{} TYPE:{} TXT:{}",boardVO.getBoard_info(), boardVO.getSearch_type(), boardVO.getSearch_txt());
 		// 없는 게시판(0)을 입력받으면 메인페이지로
 		if(boardVO.getBoard_info() == 0) return "redirect:/";
 		
@@ -210,14 +209,12 @@ public class BoardController {
 	private void selectAllByPage(Model model, BoardVO boardVO, Integer pageNo) {
 		if(pageNo == null) pageNo = 1;
 		
-		log.debug("boardVO : {}", boardVO.toString());
-		
-		// 1. 페이징 할 곳에서 totalCount(총 데이터 수) 가져오기
-		long totalCount = boardSvc.countAll(boardVO);
-		log.debug("카운트 : {}", totalCount);
+		// 1. 페이징 할 곳에서 dataCount(총 데이터 수) 가져오기
+		long dataCount = boardSvc.countAll(boardVO);
+		log.debug("카운트 : {}", dataCount);
 		
 		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(dataCount, pageNo, false);
 		log.debug("페이지 : {}", pageVO.toString());
 		
 		// 3. 페이지네이션 정보 view로 보내주기

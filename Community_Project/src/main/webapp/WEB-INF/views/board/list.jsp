@@ -114,7 +114,8 @@
 								<tr class="context_parent<c:if test="${B.board_delete == 1}"> deleted</c:if>" data-id="${B.board_no}"
 								data-nickname="${B.board_nickname}" <c:if test="${B.board_depth > 0}">data-reply="${B.board_depth}"</c:if>>
 									<td class="b_num text-center">${B.board_no}</td>
-									<td class="b_subject"><a href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}&pageNo=${param.pageNo}"><c:if
+									<td class="b_subject"><a href="${rootPath}/board/details?board_info=${B.board_info}&board_no=${B.board_no}<c:if
+									test='${not empty param.pageNo}'>&pageNo=${param.pageNo}</c:if>"><c:if
 									test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}] </span></c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><c:if
 									test="${B.board_cate_text != null}">[${B.board_cate_text}] </c:if>${B.board_subject}<c:if
 									test="${B.board_cmt_count > 0}"> [${B.board_cmt_count}]</c:if></a></td>

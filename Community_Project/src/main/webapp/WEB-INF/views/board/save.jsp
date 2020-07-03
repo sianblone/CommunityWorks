@@ -79,6 +79,8 @@
 			}
 		})
 		
+		$("#board_subject").focus()
+		
 		$("#save_form").submit(function() {
 			let subject = $("#board_subject")
 			let content= $("#board_content")
@@ -89,6 +91,7 @@
 				return false
 			} else if (content.val() == "") {
 				alert("내용을 입력하세요.")
+				$(".note-editable").focus()
 				return false
 			}
 			

@@ -12,8 +12,8 @@ public interface PaginationService {
 	
 	// DB, API에서 받아온 dataCount(총 게시물 수)
 	// 페이지에서 받아온 pageNo(현재 페이지 번호)를 가지고 PaginationVO 세팅하기
-	public PaginationVO makePageInfoMiddle(long dataCount, int pageNo);
+	public PaginationVO makePageInfoMiddle(long dataCount, int pageNo, boolean isReversePagination);
 	
-	public PaginationVO makePageInfo(long dataCount, int pageNo, boolean isMiddlePagination);
+	public PaginationVO makePageInfo(long dataCount, int pageNo, boolean isReversePagination, boolean isMiddlePagination);
 	
 }
