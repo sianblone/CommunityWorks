@@ -19,14 +19,14 @@
 		display: block;
 		padding: 0.5rem 0.75rem;
 		line-height: 1.25;
-		color:#007bff;
+		color:#007bff !important;
 		background-color: #fff;
 		border:1px solid #DEE2E6;
 		text-decoration: none;
 		cursor: pointer;
 	}
 	.page_link:hover {
-		color:#0056B3;
+		color:#0056B3 !important;
 		background-color: #E9ECEF;
 		border-color: #DEE2E6;
 		text-decoration: none;
@@ -38,7 +38,7 @@
 	}
 	li.page_item.active .page_link{
 		z-index:3;
-		color:#fff;
+		color:#fff !important;
 		background-color: #007BFF;
 		border-color:  #007BFF;
 	}
@@ -46,24 +46,30 @@
 <script>
 	$(function() {
 		$(document).on("click", ".page_middot", function() {
-			let jump_page = prompt("이동할 페이지 \(1~" + ${PAGE_DTO.lastPageNo} + "\)")
+			let jump_page = prompt("이동할 페이지 (1~" + ${PAGE_DTO.pageCount} + ")")
 			
 			if(jump_page != null) {
-				document.location.href = "?currPage=" + jump_page + "${PAGE_DEFAULT_QUERY}"
+				document.location.href = "?pageNo=" + jump_page + "${PAGE_DEFAULT_QUERY}"
 			}
 		})
 	})
 </script>
 <article class="page_box">
 	<ul class="page_body">
-		<li class="page_item"><a class="page_link" href="?currPage=1${PAGE_DEFAULT_QUERY}">처음</a></li>
-		<li class="page_item"><a class="page_link page_middot">&middot;&middot;&middot;</a></li>
+		<li class="page_item"><a class="page_link" href="?pageNo=1${PAGE_DEFAULT_QUERY}">처음</a></li>
+		<li class="page_item"><a class="page_link" href="?pageNo=${PAGE_DTO.prevPageNo}${PAGE_DEFAULT_QUERY}">&lt;</a></li>
+		<c:if test="${PAGE_DTO.startPageNo > 1}">
+			<li class="page_item"><a class="page_link page_middot">&middot;&middot;&middot;</a></li>
+		</c:if>
 		
 		<c:forEach begin="${PAGE_DTO.startPageNo}" end="${PAGE_DTO.endPageNo}" var="pageNo">
-			<li class="page_item <c:if test='${pageNo == PAGE_DTO.currentPageNo}'>active</c:if>"><a class="page_link" href="?currPage=${pageNo}${PAGE_DEFAULT_QUERY}">${pageNo}</a></li>
+			<li class="page_item <c:if test='${pageNo == PAGE_DTO.pageNo}'>active</c:if>"><a class="page_link" href="?pageNo=${pageNo}${PAGE_DEFAULT_QUERY}">${pageNo}</a></li>
 		</c:forEach>
 		
-		<li class="page_item"><a class="page_link page_middot">&middot;&middot;&middot;</a></li>
-		<li class="page_item"><a class="page_link" href="?currPage=${PAGE_DTO.lastPageNo}${PAGE_DEFAULT_QUERY}">끝</a></li>
+		<c:if test="${PAGE_DTO.endPageNo < PAGE_DTO.pageCount}">
+			<li class="page_item"><a class="page_link page_middot">&middot;&middot;&middot;</a></li>
+		</c:if>
+		<li class="page_item"><a class="page_link" href="?pageNo=${PAGE_DTO.nextPageNo}${PAGE_DEFAULT_QUERY}">&gt;</a></li>
+		<li class="page_item"><a class="page_link" href="?pageNo=${PAGE_DTO.pageCount}${PAGE_DEFAULT_QUERY}">끝</a></li>
 	</ul>
 </article>

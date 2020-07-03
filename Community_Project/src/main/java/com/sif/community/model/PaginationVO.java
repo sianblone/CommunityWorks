@@ -15,23 +15,21 @@ import lombok.ToString;
 @Builder
 public class PaginationVO {
 	
-	private long totalCount;// 전체 데이터 개수
+	private long dataCount;// 전체 데이터 개수
+	private int pageCount;// 전체 페이지 수
 	
 	private int offset;// 시작 레코드
 	private int limit;// 끝 레코드
 	
-	private int dataPerPage;// 한 페이지에 보일 데이터 개수
-	private int pageLength;// 현재 페이지 하단에 보일 페이지 개수
+	private int dataPerPage;// 한 페이지에 보여줄 데이터(로우) 개수
+	private int pageRange;// 페이지 하단에 보여줄 페이지 범위
 	
-	private int firstPageNo;// 전체 데이터의 첫 페이지 번호(일반적으로 1)
-	private int lastPageNo;// 전체 데이터의 끝 페이지 번호
+	private int startPageNo;// 범위의 시작 페이지. 현재 페이지 하단에 5~10페이지를 보여준다고 할 때 5
+	private int endPageNo;// 범위의 끝 페이지. 현재 페이지 하단에 5~10페이지를 보여준다고 할 때 10
 	
-	private int prePageNo;// 이전 페이지 번호
+	private int prevPageNo;// 이전 페이지 번호
 	private int nextPageNo;// 다음 페이지 번호
 	
-	private int startPageNo;// 아래에서 5~10페이지를 보여준다고 할 때 5
-	private int endPageNo;// 아래에서 5~10페이지를 보여준다고 할 때 10
-	
-	private int currentPageNo;// 현재 페이지 번호
+	private int pageNo;// 현재 페이지 번호
 
 }

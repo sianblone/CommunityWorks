@@ -119,7 +119,7 @@
 				<input type="hidden" name="board_info" value="<c:out value='${BOARD_INFO.bi_id}' default='0'/>"/>
 				<input type="hidden" name="board_no" value="<c:out value='${param.board_no}' default='0'/>"/>
 				<input type="hidden" name="board_p_no" value="<c:out value='${param.board_p_no}' default='0'/>"/>
-				<input type="hidden" name="currPage" value="${param.currPage}"/>
+				<input type="hidden" name="pageNo" value="${param.pageNo}"/>
 				<div class="form-group">
 					<select id="board_category" class="form-control" name="board_category">
 						<option value="0">카테고리</option>

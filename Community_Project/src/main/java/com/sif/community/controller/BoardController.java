@@ -51,7 +51,7 @@ public class BoardController {
 	public String list(
 					Model model,
 					BoardVO boardVO,
-					Integer currPage) {
+					Integer pageNo) {
 		log.debug("INFO:{} TYPE:{} TXT:{}",boardVO.getBoard_info(), boardVO.getSearch_type(), boardVO.getSearch_txt());
 		// 없는 게시판(0)을 입력받으면 메인페이지로
 		if(boardVO.getBoard_info() == 0) return "redirect:/";
@@ -60,7 +60,7 @@ public class BoardController {
 		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
 		
 		// boardVO에는 게시판번호(board_info), 검색옵션(search_type), 검색어(search_txt)가 들어있다
-		this.selectAllByPage(model, boardVO, currPage);
+		this.selectAllByPage(model, boardVO, pageNo);
 		
 		return "board/list";
 	}
@@ -142,7 +142,7 @@ public class BoardController {
 	
 	// form에서 저장버튼 클릭 시 사용할 메소드
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(BoardVO boardVO, Integer currPage) {
+	public String save(BoardVO boardVO, Integer pageNo) {
 		
 		// 없는 게시판(0)을 입력받으면 메인페이지로
 		if(boardVO.getBoard_info() == 0) {
@@ -156,7 +156,7 @@ public class BoardController {
 			render = "board/error";
 		} else {
 			render = "redirect:/board/list?board_info=" + boardVO.getBoard_info();
-			if(currPage != null) render += "&currPage=" + currPage;
+			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 				
 		return render;
@@ -165,7 +165,7 @@ public class BoardController {
 	// 게시물 삭제버튼 클릭 시 사용할 메소드(게시글 deleted 칼럼 값 1로 바꿔주기)
 	// boardVO에는 board_no, board_info가 들어있다
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String delete(BoardVO boardVO, Integer currPage) {
+	public String delete(BoardVO boardVO, Integer pageNo) {
 		String render = "";
 		int result = boardSvc.delete(boardVO.getBoard_no());
 		
@@ -174,7 +174,7 @@ public class BoardController {
 		} else {
 			long board_info = boardVO.getBoard_info();
 			render = "redirect:/board/list?board_info=" + board_info;
-			if(currPage != null) render += "&currPage=" + currPage;
+			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 		
 		return render;
@@ -191,7 +191,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/admin", method=RequestMethod.GET)
-	public String admin(BoardVO boardOptionVO, Integer currPage, String command) {
+	public String admin(BoardVO boardOptionVO, Integer pageNo, String command) {
 		String render = "";
 		int result = boardSvc.admin(boardOptionVO.getBoard_no(), command);
 		
@@ -200,15 +200,15 @@ public class BoardController {
 		} else {
 			long board_info = boardOptionVO.getBoard_info();
 			render = "redirect:/board/list?board_info=" + board_info;
-			if(currPage != null) render += "&currPage=" + currPage;
+			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 		
 		return render;
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, BoardVO boardVO, Integer currPage) {
-		if(currPage == null) currPage = 1;
+	private void selectAllByPage(Model model, BoardVO boardVO, Integer pageNo) {
+		if(pageNo == null) pageNo = 1;
 		
 		log.debug("boardVO : {}", boardVO.toString());
 		
@@ -217,7 +217,7 @@ public class BoardController {
 		log.debug("카운트 : {}", totalCount);
 		
 		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo);
 		log.debug("페이지 : {}", pageVO.toString());
 		
 		// 3. 페이지네이션 정보 view로 보내주기

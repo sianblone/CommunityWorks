@@ -136,7 +136,7 @@
 					},
 					data: {
 						cmt_no: cmt_no,
-						currPage: "${PAGE_DTO.currentPageNo}"
+						pageNo: "${PAGE_DTO.pageNo}"
 					},
 					success: function(result) {
 						$(".cmt_list").html(result)

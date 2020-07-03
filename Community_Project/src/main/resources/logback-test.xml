@@ -8,7 +8,7 @@
 	</appender>
 
 	<!-- logback level ERROR WARN INFO DEBUG TRACE
-		ex) level을 INFO로 설정한 경우 : INFO레벨 이하의 메시지는 모두 무시
+		Ex. level을 INFO로 설정한 경우 : INFO레벨 이하의 메시지는 모두 무시
 		log.debug("메시지") 는 DEBUG 레벨이므로 콘솔에 보이지 않는다. -->
 	<logger name="org.springframework" level="INFO" />
 	<logger name="org.mybatis" level="INFO" />

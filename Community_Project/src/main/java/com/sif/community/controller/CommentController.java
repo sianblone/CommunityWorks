@@ -36,20 +36,20 @@ public class CommentController {
 	public String list(
 			Model model,
 			@RequestParam(value = "cmt_board_no", required = true) long cmt_board_no,
-			Integer currPage) {
+			Integer pageNo) {
 		
 		CommentVO commentVO = new CommentVO();
 		commentVO.setCmt_board_no(cmt_board_no);
 		
 		// commentVO에는 게시글번호(cmt_board_no)만 들어있다
-		this.selectAllByPage(model, commentVO, currPage);
+		this.selectAllByPage(model, commentVO, pageNo);
 		
 		return "comment/comment_list";
 	}
 	
 	// 댓글 저장 시 사용할 메소드
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String save(CommentVO commentVO, Integer currPage) {
+	public String save(CommentVO commentVO, Integer pageNo) {
 		String render = "";
 		int result = cmtSvc.save(commentVO);
 		
@@ -58,7 +58,7 @@ public class CommentController {
 			render = "comment/cmt_error";
 		} else {
 			render = "redirect:/comment/list?cmt_board_no=" + commentVO.getCmt_board_no();
-			if(currPage != null) render += "&currPage=" + currPage;
+			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 		
 		return render;
@@ -66,7 +66,7 @@ public class CommentController {
 	
 	// 댓글 삭제 시 사용할 메소드
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(long cmt_no, Integer currPage, Model model) {
+	public String delete(long cmt_no, Integer pageNo, Model model) {
 		String render = "";
 		int result = cmtSvc.delete(cmt_no);
 		
@@ -74,14 +74,14 @@ public class CommentController {
 			render = "comment/cmt_error";
 		} else {
 			render = "redirect:/comment/list?cmt_board_no=" + cmt_no;
-			if(currPage != null) render += "&currPage=" + currPage;
+			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 		return render;
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, CommentVO commentVO, Integer currPage) {
-		if(currPage == null) currPage = 1;
+	private void selectAllByPage(Model model, CommentVO commentVO, Integer pageNo) {
+		if(pageNo == null) pageNo = 1;
 		
 		log.debug("commentVO : {}", commentVO.toString());
 		
@@ -91,7 +91,7 @@ public class CommentController {
 		log.debug("카운트 : {}", totalCount);
 		
 		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, currPage);
+		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo);
 		log.debug("페이지 : {}", pageVO.toString());
 		
 		// 3. 페이지네이션 정보 view로 보내주기
