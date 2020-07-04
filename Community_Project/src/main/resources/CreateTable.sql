@@ -1,21 +1,21 @@
 CREATE TABLE IF NOT EXISTS tbl_users (
-	username VARCHAR(50) PRIMARY KEY,
-	password VARCHAR(125),
-	enabled BOOLEAN DEFAULT true,
-	accountNonExpired BOOLEAN DEFAULT true,
-	accountNonLocked BOOLEAN DEFAULT true,
-	credentialsNonExpired BOOLEAN DEFAULT true,
-	nickname VARCHAR(30) NOT NULL,
-	email VARCHAR(125),
-	phone VARCHAR(20),
-	birth DATE
+	username	VARCHAR(50)	PRIMARY KEY,
+	password	VARCHAR(125),
+	enabled	BOOLEAN	DEFAULT true,
+	accountNonExpired	BOOLEAN	DEFAULT true,
+	accountNonLocked	BOOLEAN	DEFAULT true,
+	credentialsNonExpired	BOOLEAN	DEFAULT true,
+	nickname	VARCHAR(30)	NOT NULL,
+	email	VARCHAR(125),
+	phone	VARCHAR(20),
+	birth	DATE
 	)
 ;
 
 CREATE TABLE IF NOT EXISTS authorities ( 
-	id BIGINT PRIMARY KEY AUTO_INCREMENT,
-	username VARCHAR(50) NOT NULL,
-	authority VARCHAR(50),
+	id	BIGINT	PRIMARY KEY	AUTO_INCREMENT,
+	username	VARCHAR(50)	NOT NULL,
+	authority	VARCHAR(50),
 	
 	CONSTRAINT FK_USERS_AUTH_username
 	FOREIGN KEY (username)
@@ -25,16 +25,17 @@ CREATE TABLE IF NOT EXISTS authorities (
 ;
 
 CREATE TABLE IF NOT EXISTS tbl_board_info (
-	bi_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-	bi_name VARCHAR(100) NOT NULL,
-	bi_enabled	BOOLEAN	DEFAULT true
+	bi_id	BIGINT	PRIMARY KEY	AUTO_INCREMENT,
+	bi_name	VARCHAR(100)	NOT NULL,
+	bi_enabled	BOOLEAN	DEFAULT true,
+	bi_order	BIGINT	NOT NULL
 	)
 ;
 
 CREATE TABLE IF NOT EXISTS tbl_category (
-	cate_id INT PRIMARY KEY AUTO_INCREMENT,
-	cate_bi_id BIGINT NOT NULL,
-	cate_text VARCHAR(20),
+	cate_id	INT	PRIMARY KEY	AUTO_INCREMENT,
+	cate_bi_id	BIGINT	NOT NULL,
+	cate_text	VARCHAR(20),
 	
 	CONSTRAINT FK_BI_CATEGORY_bi_id
 	FOREIGN KEY (cate_bi_id)
@@ -81,17 +82,17 @@ CREATE TABLE IF NOT EXISTS tbl_board (
 ;
 
 CREATE TABLE IF NOT EXISTS tbl_comment (
-	cmt_no BIGINT PRIMARY KEY AUTO_INCREMENT,
-	cmt_board_no BIGINT	NOT NULL,
-	cmt_p_no VARCHAR(20) NOT NULL,
+	cmt_no	BIGINT	PRIMARY KEY	AUTO_INCREMENT,
+	cmt_board_no	BIGINT	NOT NULL,
+	cmt_p_no	VARCHAR(20)	NOT NULL,
 	cmt_group	BIGINT	NOT NULL,
 	cmt_order	INT	NOT NULL,	
 	cmt_depth	INT	NOT NULL,
 	cmt_writer	VARCHAR(50)	NOT NULL,
-	cmt_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP,
-	cmt_content	TEXT NOT NULL,
-	cmt_delete TINYINT NOT NULL DEFAULT 0,
-	cmt_recommend BIGINT NOT NULL DEFAULT 0,
+	cmt_datetime	TIMESTAMP	NOT NULL	DEFAULT CURRENT_TIMESTAMP,
+	cmt_content	TEXT	NOT NULL,
+	cmt_delete	TINYINT	NOT NULL	DEFAULT 0,
+	cmt_recommend	BIGINT	NOT NULL	DEFAULT 0,
 	
 	CONSTRAINT FK_BOARD_COMMENT_board_no
 	FOREIGN KEY (cmt_board_no)

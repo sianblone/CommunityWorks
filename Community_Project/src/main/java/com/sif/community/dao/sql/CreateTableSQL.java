@@ -34,7 +34,8 @@ public class CreateTableSQL {
 		= "CREATE TABLE IF NOT EXISTS tbl_board_info ( "
 		+ " bi_id	BIGINT	PRIMARY KEY	AUTO_INCREMENT, "
 		+ " bi_name	VARCHAR(100)	NOT NULL, "
-		+ " bi_enabled	BOOLEAN	DEFAULT true "
+		+ " bi_enabled	BOOLEAN	DEFAULT true, "
+		+ " bi_order	BIGINT	NOT NULL "
 		+ " ) "
 	;
 	
