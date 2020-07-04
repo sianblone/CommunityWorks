@@ -21,6 +21,7 @@ import com.sif.community.service.board.CategoryService;
 import com.sif.community.service.board.FileService;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.ProjectUtil;
 import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
@@ -216,7 +217,7 @@ public class BoardController {
 		log.debug("카운트 : {}", dataCount);
 		
 		// 2. 페이지네이션 테이블 게시판 정보 가져오기
-		PaginationDTO pageDTO = pageSvc.findByBoardInfo(boardOptionVO.getBoard_info(), "board");
+		PaginationDTO pageDTO = pageSvc.findByBiId(boardOptionVO.getBoard_info(), ProjectUtil.PAGE_LOCATION_BOARD);
 		
 		// 3. 페이지네이션 정보 만들기
 		pageDTO = pageSvc.makePageInfoMiddle(dataCount, pageDTO, pageNo, false);

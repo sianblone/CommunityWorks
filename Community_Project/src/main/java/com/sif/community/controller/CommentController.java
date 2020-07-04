@@ -14,6 +14,7 @@ import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.CommentService;
 import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.ProjectUtil;
 import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
@@ -96,7 +97,7 @@ public class CommentController {
 		log.debug("카운트 : {}", dataCount);
 		
 		// 2. 페이지네이션 테이블 댓글 정보 가져오기
-		PaginationDTO pageDTO = pageSvc.findByBoardInfo(cmtOptionVO.getCmt_bi_id(), "comment");
+		PaginationDTO pageDTO = pageSvc.findByBiId(cmtOptionVO.getCmt_bi_id(), ProjectUtil.PAGE_LOCATION_COMMENT);
 		
 		// 3. 페이지네이션 정보 만들기
 		pageDTO = pageSvc.makePageInfoMiddle(dataCount, pageDTO, pageNo, true);

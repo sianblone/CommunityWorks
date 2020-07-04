@@ -8,21 +8,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.AuthoritiesDao;
-import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.BoardInfoService;
 import com.sif.community.service.board.CategoryService;
+import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.ProjectUtil;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class AdminService {
 	
 	private final UserService userSvc;
+	private final PaginationService pageSvc;
 	private final AuthoritiesDao authDao;
 	private final BoardInfoService boardInfoSvc;
 	private final CategoryService cateSvc;
@@ -106,16 +111,41 @@ public class AdminService {
 		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
+	protected int savePagination(PaginationDTO pageDTO, long bi_id, int data_cnt, int page_range, String page_location) {
+		int result = 0;
+		if(pageDTO == null) {
+			// pageDTO가 없으면 insert
+			pageDTO = new PaginationDTO();
+			this.setPaginationDTO(pageDTO, bi_id, data_cnt, page_range, page_location);
+			result = pageSvc.insert(pageDTO);
+		} else {
+			// pageDTO가 있으면 update
+			this.setPaginationDTO(pageDTO, bi_id, data_cnt, page_range, page_location);
+			result = pageSvc.update(pageDTO);
+		}
+		
+		return result;
+	}
+	
+	protected void setPaginationDTO(PaginationDTO pageDTO, long bi_id, int data_cnt, int page_range, String page_location) {
+		pageDTO.setPage_bi_id(bi_id);
+		pageDTO.setPage_data_cnt(data_cnt);
+		pageDTO.setPage_range(page_range);
+		pageDTO.setPage_location(page_location);
+	}
+	
 	@Transactional
 	public int updateBoard(BoardInfoVO boardInfoVO, CategoryVO categoryOptionVO) {
-		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled가 들어있다
+		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled, data_cnt_board, data_cnt_comment, page_range_board, page_range_comment가 들어있다
 		// categoryOptionVO에는 카테고리 목록이 들어있다
+		long bi_id = boardInfoVO.getBi_id();
+		String bi_name = boardInfoVO.getBi_name();
 		
 		// DB의 게시판 정보(tbl_board_info) 불러오기
-		BoardInfoVO dbBoardInfoVO = boardInfoSvc.findByBiId(boardInfoVO.getBi_id());
+		BoardInfoVO dbBoardInfoVO = boardInfoSvc.findByBiId(bi_id);
 		
 		// 유효성 검사 시작
-		if(boardInfoVO.getBi_name().length() > 100) {
+		if(bi_name.length() > 100) {
 			// 게시판 이름이 100글자를 초과하는 경우
 			return -100;
 		} else if(dbBoardInfoVO == null) {
@@ -125,12 +155,23 @@ public class AdminService {
 		
 		// 유효성 검사 통과 시 
 		// 기존의 게시판 정보에 form에서 입력받은 정보(게시판 이름, 활성여부) 새로 세팅하기
-		dbBoardInfoVO.setBi_name(boardInfoVO.getBi_name());
+		dbBoardInfoVO.setBi_name(bi_name);
 		dbBoardInfoVO.setBi_enabled(boardInfoVO.isBi_enabled());
-		int ret = boardInfoSvc.update(dbBoardInfoVO);
+		int result = boardInfoSvc.update(dbBoardInfoVO);
 		
-		// 업데이트 성공 시 카테고리 테이블 업데이트
-		if(ret > 0) {
+		// 게시판 정보 업데이트 성공 시 페이지네이션 테이블 INSERT/UPDATE
+		if(result > 0) {
+			// 게시판 pageDTO INSERT/UPDATE
+			PaginationDTO pageDTO = pageSvc.findByBiId(bi_id, ProjectUtil.PAGE_LOCATION_BOARD);
+			result = this.savePagination(pageDTO, bi_id, boardInfoVO.getData_cnt_board(), boardInfoVO.getPage_range_board(), ProjectUtil.PAGE_LOCATION_BOARD);
+			
+			// 댓글 pageDTO INSERT/UPDATE
+			pageDTO = pageSvc.findByBiId(bi_id, ProjectUtil.PAGE_LOCATION_COMMENT);
+			result = this.savePagination(pageDTO, bi_id, boardInfoVO.getData_cnt_comment(), boardInfoVO.getPage_range_comment(), ProjectUtil.PAGE_LOCATION_COMMENT);
+		}
+		
+		// 페이지네이션 정보 업데이트 성공 시 카테고리 테이블 INSERT/UPDATE
+		if(result > 0) {
 			
 			List<Long> cate_id_list = categoryOptionVO.getCate_id_list();
 			List<String> cate_text_list = categoryOptionVO.getCate_text_list();
@@ -168,7 +209,7 @@ public class AdminService {
 			
 		}
 		
-		return ret;
+		return result;
 	}
 	
 	public int changeOrder(long bi_id, long order) {

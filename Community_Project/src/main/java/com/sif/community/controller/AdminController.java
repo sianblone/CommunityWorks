@@ -90,7 +90,7 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value="/board_setting_details", method=RequestMethod.POST)
 	public int board_setting_details(BoardInfoVO boardInfoOptionVO, CategoryVO categoryOptionVO) {
-		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
+		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled, data_cnt_board, data_cnt_comment, page_range_board, page_range_comment가 들어있다
 		// categoryOptionVO에는 카테고리 목록이 들어있다
 		log.debug("카테고리:{}", categoryOptionVO.toString());
 		int result = adminSvc.updateBoard(boardInfoOptionVO, categoryOptionVO);

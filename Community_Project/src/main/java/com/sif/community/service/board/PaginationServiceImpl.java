@@ -29,8 +29,8 @@ public class PaginationServiceImpl implements PaginationService {
 	}
 	
 	@Override
-	public PaginationDTO findByBoardInfo(Long bi_id, String page_location) {
-		return pageDao.findByBoardInfo(bi_id, page_location);
+	public PaginationDTO findByBiId(Long bi_id, String page_location) {
+		return pageDao.findByBiId(bi_id, page_location);
 	}
 	
 	// 가운데 정렬 방식 페이지네이션
@@ -165,6 +165,16 @@ public class PaginationServiceImpl implements PaginationService {
 				.build();
 		
 		return paginationDTO;
+	}
+	
+	@Override
+	public int insert(PaginationDTO pageDTO) {
+		return pageDao.insert(pageDTO);
+	}
+	
+	@Override
+	public int update(PaginationDTO pageDTO) {
+		return pageDao.update(pageDTO);
 	}
 	
 }

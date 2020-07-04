@@ -59,8 +59,6 @@
 		}
 	</style>
 	<script>
-		console.log("ddd = ${DDD}")
-		
 		$(function() {
 			$(document).on("click", "#btn_join", function() {
 				document.location.href = "${rootPath}/join"

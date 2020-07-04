@@ -9,6 +9,7 @@ import com.sif.community.dao.BoardInfoDao;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.ProjectUtil;
 import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
@@ -30,13 +31,20 @@ public class BoardInfoService {
 	// 메인 페이지에서 사용할 메소드
 	public List<BoardInfoVO> selectMainPage() {
 		int limit_value = 5;
-		PaginationDTO pageDTO = pageSvc.findByBoardInfo(null, "main");
+		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
 		if(pageDTO != null) limit_value = pageDTO.getPage_data_cnt();
 		return boardInfoDao.selectMainPage(limit_value);
 	}
 	
 	public BoardInfoVO findByBiId(long bi_id) {
-		return boardInfoDao.findByBiId(bi_id);
+		BoardInfoVO boardInfoVO = boardInfoDao.findByBiId(bi_id);
+		
+		// 관리자 페이지 게시판 수정에서 사용할 변수들 세팅
+		if(boardInfoVO.getData_cnt_board() == 0) boardInfoVO.setData_cnt_board(10);
+		if(boardInfoVO.getData_cnt_comment() == 0) boardInfoVO.setData_cnt_comment(10);
+		if(boardInfoVO.getPage_range_board() == 0) boardInfoVO.setPage_range_board(10);
+		if(boardInfoVO.getPage_range_comment() == 0) boardInfoVO.setPage_range_comment(10);
+		return boardInfoVO;
 	}
 	
 	public long maxOrderFromBoardInfo() {

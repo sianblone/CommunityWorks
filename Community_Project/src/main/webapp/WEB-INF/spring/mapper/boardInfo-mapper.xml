@@ -12,8 +12,11 @@
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">
-		SELECT *, ${limit_value} as limit_value
-		FROM tbl_board_info
+		SELECT bi.*, p.page_data_cnt AS data_cnt_main, ${limit_value} as limit_value
+		FROM tbl_board_info bi
+		LEFT JOIN tbl_pagination p
+		ON
+			bi.bi_id = p.page_bi_id AND p.page_location = 'main'
 		WHERE bi_enabled = 1
 		ORDER BY bi_order
 	</select>
@@ -46,9 +49,15 @@
 	</select>
 	
 	<select id="findByBiId" resultMap="boardInfoRM">
-		SELECT *
-		FROM tbl_board_info
-		WHERE bi_id = #{bi_id}
+		SELECT bi.*, p1.page_data_cnt AS data_cnt_board, p1.page_range AS page_range_board, p2.page_data_cnt AS data_cnt_comment, p2.page_range AS page_range_comment
+		FROM tbl_board_info bi
+		LEFT JOIN tbl_pagination p1
+		ON
+			bi.bi_id = p1.page_bi_id AND p1.page_location = 'board'
+		LEFT JOIN tbl_pagination p2
+		ON
+			bi.bi_id = p2.page_bi_id AND p2.page_location = 'comment'
+		WHERE bi.bi_id = #{bi_id}
 	</select>
 	<resultMap id="boardInfoRM" type="boardInfoVO">
 		<id property="bi_id" column="bi_id" />

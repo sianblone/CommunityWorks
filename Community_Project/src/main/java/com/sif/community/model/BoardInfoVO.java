@@ -25,4 +25,11 @@ public class BoardInfoVO {
 	private List<CategoryVO> bi_category;
 	private List<BoardVO> bi_board_list;
 	
+	private int data_cnt_main;
+	
+	private int data_cnt_board;
+	private int page_range_board;
+	private int data_cnt_comment;
+	private int page_range_comment;
+	
 }

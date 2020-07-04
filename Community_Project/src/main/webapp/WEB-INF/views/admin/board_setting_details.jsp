@@ -174,7 +174,7 @@
 			if(!enable_btn_edit_board) return false
 			
 			let formData = $("#board_setting_details_form").serialize()
-			formData += "&bi_id=" + $("#btn_edit_board").attr("data-id")
+			formData += "&bi_id=${BOARD_INFO.bi_id}"
 			
 			$.ajax({
 				url : "${rootPath}/admin/board_setting_details",
@@ -260,6 +260,26 @@
 		<input id="bi_name" class="my_data" name="bi_name" value="${BOARD_INFO.bi_name}" maxlength="100"/>
 	</div>
 	
+	<div class="my_form_item">
+		<span class="my_label">게시판 페이지 글 수</span>
+		<input id="data_cnt_board" class="my_data" name="data_cnt_board" value="${BOARD_INFO.data_cnt_board}" maxlength="8" type="number"/>
+	</div>
+	
+	<div class="my_form_item">
+		<span class="my_label">게시판 페이지 범위</span>
+		<input id="page_range_board" class="my_data" name="page_range_board" value="${BOARD_INFO.page_range_board}" maxlength="8" type="number"/>
+	</div>
+	
+	<div class="my_form_item">
+		<span class="my_label">댓글 페이지 댓글 수</span>
+		<input id="data_cnt_comment" class="my_data" name="data_cnt_comment" value="${BOARD_INFO.data_cnt_comment}" maxlength="8" type="number"/>
+	</div>
+	
+	<div class="my_form_item">
+		<span class="my_label">댓글 페이지 범위</span>
+		<input id="page_range_comment" class="my_data" name="page_range_comment" value="${BOARD_INFO.page_range_comment}" maxlength="8" type="number"/>
+	</div>
+	
 	<!-- 카테고리 영역 -->
 	<c:if test="${not empty BOARD_INFO.bi_category}">
 		<c:forEach items="${BOARD_INFO.bi_category}" var="cate" varStatus="s">
@@ -282,7 +302,7 @@
 	
 	<div class="btn_box">
 		<button id="btn_delete_board" class="btn_red" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
-		<button id="btn_edit_board" type="button" data-id="${BOARD_INFO.bi_id}">수정</button>
+		<button id="btn_edit_board" type="button">수정</button>
 	</div>
 	
 </form:form>
