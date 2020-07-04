@@ -4,24 +4,24 @@ public class CreateTableSQL {
 	
 	public static String create_tbl_users
 		= "CREATE TABLE IF NOT EXISTS tbl_users ( "
-		+ " username VARCHAR(50) PRIMARY KEY, "
-		+ " password VARCHAR(125), "
-		+ " enabled BOOLEAN DEFAULT true, "
-		+ " accountNonExpired BOOLEAN DEFAULT true, "
-		+ " accountNonLocked BOOLEAN DEFAULT true, "
-		+ " credentialsNonExpired BOOLEAN DEFAULT true, "
-		+ " nickname VARCHAR(30) NOT NULL, "
-		+ " email VARCHAR(125), "
-		+ " phone VARCHAR(20), "
-		+ " birth DATE "
+		+ " username	VARCHAR(50)	PRIMARY KEY, "
+		+ " password	VARCHAR(125), "
+		+ " enabled	BOOLEAN	DEFAULT true, "
+		+ " accountNonExpired	BOOLEAN	DEFAULT true, "
+		+ " accountNonLocked	BOOLEAN	DEFAULT true, "
+		+ " credentialsNonExpired	BOOLEAN	DEFAULT true, "
+		+ " nickname	VARCHAR(30)	NOT NULL, "
+		+ " email	VARCHAR(125), "
+		+ " phone	VARCHAR(20), "
+		+ " birth	DATE "
 		+ " ) "
 	;
 	
 	public static String create_authorities
 		= "CREATE TABLE IF NOT EXISTS authorities ( " 
-		+ " id BIGINT PRIMARY KEY AUTO_INCREMENT, "
-		+ " username VARCHAR(50) NOT NULL, "
-		+ " authority VARCHAR(50), "
+		+ " id BIGINT	PRIMARY KEY	AUTO_INCREMENT, "
+		+ " username	VARCHAR(50)	NOT NULL, "
+		+ " authority	VARCHAR(50), "
 		
 		+ " CONSTRAINT FK_USERS_AUTH_username "
 		+ " FOREIGN KEY (username) "
@@ -32,22 +32,38 @@ public class CreateTableSQL {
 	
 	public static String create_tbl_board_info
 		= "CREATE TABLE IF NOT EXISTS tbl_board_info ( "
-		+ " bi_id BIGINT PRIMARY KEY AUTO_INCREMENT, "
-		+ " bi_name VARCHAR(20) NOT NULL "
+		+ " bi_id	BIGINT	PRIMARY KEY	AUTO_INCREMENT, "
+		+ " bi_name	VARCHAR(100)	NOT NULL, "
+		+ " bi_enabled	BOOLEAN	DEFAULT true "
 		+ " ) "
 	;
 	
 	public static String create_tbl_category
 		= "CREATE TABLE IF NOT EXISTS tbl_category ( "
-		+ " cate_id INT UNIQUE AUTO_INCREMENT, "
+		+ " cate_id INT PRIMARY KEY AUTO_INCREMENT, "
 		+ " cate_bi_id BIGINT NOT NULL, "
 		+ " cate_text VARCHAR(20), "
 		
 		+ " CONSTRAINT FK_BI_CATEGORY_bi_id "
-		+ " FOREIGN KEY (cate_bi_id) "
+		+ " FOREIGN KEY (cate_bi_id) " 
 		+ " REFERENCES tbl_board_info(bi_id) "
 		+ " ON DELETE CASCADE "
 		+ " ) "
+	;
+	
+	public static String create_tbl_pagination
+		= "CREATE TABLE IF NOT EXISTS tbl_pagination ( "
+		+ " page_id	BIGINT	PRIMARY KEY	AUTO_INCREMENT, "
+		+ " page_bi_id	BIGINT, "
+		+ " page_location	VARCHAR(125)	NOT NULL, "
+		+ " page_data_cnt	INT	NOT NULL	DEFAULT 10, "
+		+ " page_range	INT	NOT NULL	DEFAULT 10, "
+	    
+	    + " CONSTRAINT FK_BI_PAGINATION_bi_id "
+	    + " FOREIGN KEY (page_bi_id) "
+	    + " REFERENCES tbl_board_info(bi_id) "
+	    + " ON DELETE CASCADE "
+	    + " ) "
 	;
 	
 	public static String create_tbl_board
@@ -77,17 +93,17 @@ public class CreateTableSQL {
 	
 	public static String create_tbl_comment
 		= "CREATE TABLE IF NOT EXISTS tbl_comment ( "
-		+ " cmt_no BIGINT PRIMARY KEY AUTO_INCREMENT, "
-		+ " cmt_board_no BIGINT	NOT NULL, "
-		+ " cmt_p_no VARCHAR(20) NOT NULL, "
+		+ " cmt_no	BIGINT	PRIMARY KEY	AUTO_INCREMENT, "
+		+ " cmt_board_no	BIGINT	NOT NULL, "
+		+ " cmt_p_no	VARCHAR(20)	NOT NULL, "
 		+ " cmt_group	BIGINT	NOT NULL, "
 		+ " cmt_order	INT	NOT NULL, "	
 		+ " cmt_depth	INT	NOT NULL, "
 		+ " cmt_writer	VARCHAR(50)	NOT NULL, "
-		+ " cmt_datetime	TIMESTAMP	NOT NULL		DEFAULT CURRENT_TIMESTAMP, "
-		+ " cmt_content	TEXT NOT NULL, "
-		+ " cmt_delete TINYINT NOT NULL DEFAULT 0, "
-		+ " cmt_recommend BIGINT NOT NULL DEFAULT 0, "
+		+ " cmt_datetime	TIMESTAMP	NOT NULL	DEFAULT CURRENT_TIMESTAMP, "
+		+ " cmt_content	TEXT	NOT NULL, "
+		+ " cmt_delete	TINYINT	NOT NULL	DEFAULT 0, "
+		+ " cmt_recommend	BIGINT	NOT NULL	DEFAULT 0, "
 		
 		+ " CONSTRAINT FK_BOARD_COMMENT_board_no "
 		+ " FOREIGN KEY (cmt_board_no) "

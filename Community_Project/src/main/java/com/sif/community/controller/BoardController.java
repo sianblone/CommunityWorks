@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
-import com.sif.community.model.PaginationVO;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.FileService;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.PaginationService;
@@ -47,19 +47,20 @@ public class BoardController {
 	
 	// 리스트 + 게시판 이름 + 검색 + 페이지 메소드
 	// 검색 값과 현재 페이지로 페이지네이션 select하기
+	// boardOptionVO에는 board_info, search_type, search_txt가 들어있다
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public String list(
 					Model model,
-					BoardVO boardVO,
+					BoardVO boardOptionVO,
 					Integer pageNo) {
 		// 없는 게시판(0)을 입력받으면 메인페이지로
-		if(boardVO.getBoard_info() == 0) return "redirect:/";
+		if(boardOptionVO.getBoard_info() == 0) return "redirect:/";
 		
-		if(boardVO.getSearch_type() == null) boardVO.setSearch_type("");
-		if(boardVO.getSearch_txt() == null) boardVO.setSearch_txt("");
+		if(boardOptionVO.getSearch_type() == null) boardOptionVO.setSearch_type("");
+		if(boardOptionVO.getSearch_txt() == null) boardOptionVO.setSearch_txt("");
 		
 		// boardVO에는 게시판번호(board_info), 검색옵션(search_type), 검색어(search_txt)가 들어있다
-		this.selectAllByPage(model, boardVO, pageNo);
+		this.selectAllByPage(model, boardOptionVO, pageNo);
 		
 		return "board/list";
 	}
@@ -162,16 +163,16 @@ public class BoardController {
 	}
 	
 	// 게시물 삭제버튼 클릭 시 사용할 메소드(게시글 deleted 칼럼 값 1로 바꿔주기)
-	// boardVO에는 board_no, board_info가 들어있다
+	// boardOptionVO에는 board_no, board_info가 들어있다
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String delete(BoardVO boardVO, Integer pageNo) {
+	public String delete(BoardVO boardOptionVO, Integer pageNo) {
 		String render = "";
-		int result = boardSvc.delete(boardVO.getBoard_no());
+		int result = boardSvc.delete(boardOptionVO.getBoard_no());
 		
 		if(result == -100 || result == -200) {
 			render = "board/error";
 		} else {
-			long board_info = boardVO.getBoard_info();
+			long board_info = boardOptionVO.getBoard_info();
 			render = "redirect:/board/list?board_info=" + board_info;
 			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
@@ -189,6 +190,8 @@ public class BoardController {
 		return result;
 	}
 	
+	// 완전삭제, 글 복구 시 사용할 메소드
+	// boardOptionVO에는 board_info, board_no가 들어있다
 	@RequestMapping(value = "/admin", method=RequestMethod.GET)
 	public String admin(BoardVO boardOptionVO, Integer pageNo, String command) {
 		String render = "";
@@ -206,38 +209,43 @@ public class BoardController {
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, BoardVO boardVO, Integer pageNo) {
+	// boardOptionVO에는 board_info, search_type, search_txt가 들어있다
+	private void selectAllByPage(Model model, BoardVO boardOptionVO, Integer pageNo) {
 		if(pageNo == null) pageNo = 1;
 		
 		// 1. 페이징 할 곳에서 dataCount(총 데이터 수) 가져오기
-		long dataCount = boardSvc.countAll(boardVO);
+		long dataCount = boardSvc.countAll(boardOptionVO);
 		log.debug("카운트 : {}", dataCount);
 		
-		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(dataCount, pageNo, false);
-		log.debug("페이지 : {}", pageVO.toString());
+		// 2. 페이지네이션 테이블 게시판 정보 가져오기
+		PaginationDTO pageDTO = pageSvc.findByBoardInfo(boardOptionVO.getBoard_info(), "board");
 		
-		// 3. 페이지네이션 정보 view로 보내주기
-		model.addAttribute("PAGE_DTO", pageVO);
+		// 3. 페이지네이션 정보 만들기
+		pageDTO = pageSvc.makePageInfoMiddle(dataCount, pageDTO, pageNo, false);
+		log.debug("페이지 : {}", pageDTO.toString());
 		
-		// 4. 페이지네이션 기본 쿼리 view로 보내주기
-		String page_default_query = "&board_info=" + boardVO.getBoard_info();
+		// 4. 게시판 페이지네이션 정보 view로 보내주기
+		model.addAttribute("PAGE_DTO", pageDTO);
+		
+		// 5. 게시판 페이지네이션 기본 쿼리 view로 보내주기
+		String page_default_query = "&board_info=" + boardOptionVO.getBoard_info();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
-		// 게시판 제목 표시
-		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardVO.getBoard_info());		
+		// 게시판 이름 표시(헤더)
+		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardOptionVO.getBoard_info());		
 		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
-		// 게시판 내용
-		List<BoardVO> boardList = boardSvc.selectAllByPage(boardVO, pageVO);
+		// 게시판 내용 view로 보내주기
+		List<BoardVO> boardList = boardSvc.selectAllByPage(boardOptionVO, pageDTO);
 		model.addAttribute("BOARD_LIST", boardList);
 	}
 	
+	// 이미지 업로드 시 사용할 메소드
 	@ResponseBody
 	@RequestMapping(value="/image_up", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String fileUp(MultipartFile upFile) {
 		
-		log.debug("파일업:" + upFile.getOriginalFilename());
+		log.debug("업로드한 파일명 : " + upFile.getOriginalFilename());
 		
 		String saveName = fileService.fileUp(upFile);
 		if(saveName == null) {

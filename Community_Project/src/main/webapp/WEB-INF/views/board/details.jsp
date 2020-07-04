@@ -72,7 +72,9 @@
 		$.ajax({
 			url: "${rootPath}/comment/list",
 			type: "GET",
-			data: { cmt_board_no : "${BOARD_VO.board_no}" },
+			data: {
+				cmt_board_no : "${BOARD_VO.board_no}"
+			},
 			success: function(result) {
 				$(".cmt_list").html(result)
 			},

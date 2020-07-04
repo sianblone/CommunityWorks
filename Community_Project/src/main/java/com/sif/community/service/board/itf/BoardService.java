@@ -8,15 +8,15 @@ import javax.servlet.http.HttpServletResponse;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
-import com.sif.community.model.PaginationVO;
+import com.sif.community.model.PaginationDTO;
 
 public interface BoardService {
 	
-	public long countAll(BoardVO boardVO);
-	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO);
+	public long countAll(BoardVO boardOptionVO);
+	public List<BoardVO> selectAllByPage(BoardVO boardOptionVO, PaginationDTO pageDTO);
 	public BoardVO findByBoardNo(long board_no);
 	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO);
-	public List<BoardInfoVO> selectMainPage(int limit);// 메인 페이지에서 사용할 메소드
+	public List<BoardInfoVO> selectMainPage();// 메인 페이지에서 사용할 메소드
 	public List<BoardInfoVO> selectAllBoardInfo();// 관리자 페이지에서 사용할 메소드
 	public BoardInfoVO findByBoardInfo(long board_info);
 	

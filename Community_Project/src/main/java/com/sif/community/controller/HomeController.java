@@ -22,11 +22,10 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(
-			@RequestParam(value = "limit", required = false, defaultValue = "5")int limit,
 			@RequestParam(value = "EMAIL_AUTH", required = false) boolean email_auth,
 			Model model) {
 		
-		List<BoardInfoVO> boardInfoList = boardSvc.selectMainPage(limit);
+		List<BoardInfoVO> boardInfoList = boardSvc.selectMainPage();
 		model.addAttribute("BOARD_INFO_LIST", boardInfoList);
 		model.addAttribute("EMAIL_AUTH", email_auth);
 		

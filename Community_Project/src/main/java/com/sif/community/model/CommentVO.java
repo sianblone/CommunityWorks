@@ -19,6 +19,7 @@ import lombok.ToString;
 @Builder
 public class CommentVO {
 	
+	// tbl_comment 칼럼
 	private long cmt_no;//	BIGINT		PRIMARY KEY	AUTO_INCREMENT
 	private long cmt_board_no;//	BIGINT	NOT NULL		
 	private long cmt_p_no;//	VARCHAR(20)	NOT NULL
@@ -31,6 +32,7 @@ public class CommentVO {
 	private int cmt_delete;//	TINYINT	NOT NULL		DEFAULT 0
 	private long cmt_recommend;//	BIGINT	NOT NULL		DEFAULT 0
 	
+	private long cmt_bi_id;
 	private String cmt_nickname;
 	private String cmt_custom_datetime;
 	private String cmt_custom_full_datetime;

@@ -8,20 +8,21 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CategoryVO;
-import com.sif.community.model.PaginationVO;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.itf.BoardService;
+import com.sif.community.service.board.itf.PaginationService;
 import com.sif.community.service.user.UserService;
 import com.sif.util.CookieUtil;
 import com.sif.util.SpringSecurityUtil;
@@ -36,38 +37,40 @@ public class BoardServiceImpl implements BoardService {
 	
 	private final BoardDao boardDao;
 	private final UserService userSvc;
+	@Qualifier("pageSvc")
+	private final PaginationService pageSvc;
 	
 	@Override
-	public long countAll(BoardVO boardVO) {
-		long totalCount = 0;
+	public long countAll(BoardVO boardOptionVO) {
+		long dataCount = 0;
 		
 		List<UserDetailsVO> usernameList = null;
-		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
+		if(boardOptionVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardOptionVO.getSearch_txt());
 		
 		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
-		totalCount = boardDao.countAll(boardVO, usernameList, isAdmin);
+		dataCount = boardDao.countAll(boardOptionVO, usernameList, isAdmin);
 		
-		return totalCount;
+		return dataCount;
 	}
 
 	@Override
-	public List<BoardVO> selectAllByPage(BoardVO boardVO, PaginationVO pageVO) {
+	public List<BoardVO> selectAllByPage(BoardVO boardOptionVO, PaginationDTO pageDTO) {
 		List<BoardVO> boardList = null;
 		
 		List<UserDetailsVO> usernameList = null;
 		// 닉네임 검색인 경우
-		if(boardVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardVO.getSearch_txt());
+		if(boardOptionVO.getSearch_type().equals("nickname")) usernameList = userSvc.findByNickname(boardOptionVO.getSearch_txt());
 		
 		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 리스트에 보여주기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
-		boardList = boardDao.selectAllByPage(boardVO, pageVO, usernameList, isAdmin);
+		boardList = boardDao.selectAllByPage(boardOptionVO, pageDTO, usernameList, isAdmin);
 		
 		return boardList;
 	}
@@ -83,7 +86,10 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public List<BoardInfoVO> selectMainPage(int limit_value) {
+	public List<BoardInfoVO> selectMainPage() {
+		int limit_value = 5;
+		PaginationDTO pageDTO = pageSvc.findByBoardInfo(null, "main");
+		if(pageDTO != null) limit_value = pageDTO.getPage_data_cnt();
 		return boardDao.selectMainPage(limit_value);
 	}
 	

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sif.community.model.CommentVO;
-import com.sif.community.model.PaginationVO;
+import com.sif.community.model.PaginationDTO;
+import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.CommentService;
 import com.sif.community.service.board.itf.PaginationService;
 
@@ -32,17 +33,23 @@ public class CommentController {
 	@Qualifier(value = "pageSvc")
 	private final PaginationService pageSvc;
 	
+	@Qualifier(value = "boardSvc")
+	private final BoardService boardSvc;
+	
 	@RequestMapping(value="/list",method=RequestMethod.GET)
 	public String list(
 			Model model,
 			@RequestParam(value = "cmt_board_no", required = true) long cmt_board_no,
 			Integer pageNo) {
 		
-		CommentVO commentVO = new CommentVO();
-		commentVO.setCmt_board_no(cmt_board_no);
+		CommentVO cmtOptionVO = new CommentVO();
+		cmtOptionVO.setCmt_board_no(cmt_board_no);
 		
-		// commentVO에는 게시글번호(cmt_board_no)만 들어있다
-		this.selectAllByPage(model, commentVO, pageNo);
+		long cmt_bi_id = boardSvc.findByBoardNo(cmt_board_no).getBoard_info();
+		cmtOptionVO.setCmt_bi_id(cmt_bi_id);
+		
+		// commentVO에는 cmt_board_no, cmt_bi_id가 들어있다
+		this.selectAllByPage(model, cmtOptionVO, pageNo);
 		
 		return "comment/comment_list";
 	}
@@ -80,38 +87,40 @@ public class CommentController {
 	}
 	
 	// 페이지네이션
-	private void selectAllByPage(Model model, CommentVO commentVO, Integer pageNo) {
+	// cmtOptionVO에는 cmt_board_no, cmt_bi_id가 들어있다
+	private void selectAllByPage(Model model, CommentVO cmtOptionVO, Integer pageNo) {
 		if(pageNo == null) pageNo = 1;
 		
-		log.debug("commentVO : {}", commentVO.toString());
+		// 1. 페이징 할 곳에서 dataCount(총 데이터 수) 가져오기
+		long dataCount = cmtSvc.countAll(cmtOptionVO);
+		// 1-2. 전체 댓글 수 view로 보내주기
+		model.addAttribute("CMT_TOTAL", dataCount);
+		log.debug("카운트 : {}", dataCount);
 		
-		// 1. 페이징 할 곳에서 totalCount(총 데이터 수) 가져오기
-		long totalCount = cmtSvc.countAll(commentVO);
-		model.addAttribute("CMT_TOTAL", totalCount);
-		log.debug("카운트 : {}", totalCount);
+		// 2. 페이지네이션 테이블 댓글 정보 가져오기
+		PaginationDTO pageDTO = pageSvc.findByBoardInfo(cmtOptionVO.getCmt_bi_id(), "comment");
 		
-		// 2. 페이지네이션 정보 만들기
-		PaginationVO pageVO = pageSvc.makePageInfoMiddle(totalCount, pageNo, true);
-		log.debug("페이지 : {}", pageVO.toString());
+		// 3. 페이지네이션 정보 만들기
+		pageDTO = pageSvc.makePageInfoMiddle(dataCount, pageDTO, pageNo, true);
+		log.debug("페이지 : {}", pageDTO.toString());
 		
-		// 3. 페이지네이션 정보 view로 보내주기
-		model.addAttribute("PAGE_DTO", pageVO);
+		// 4. 댓글 페이지네이션 정보 view로 보내주기
+		model.addAttribute("PAGE_DTO", pageDTO);
 		
-		// 4. 페이지네이션 기본 쿼리 view로 보내주기
-		String page_default_query = "&cmt_board_no=" + commentVO.getCmt_board_no();
+		// 5. 댓글 페이지네이션 기본 쿼리 view로 보내주기
+		String page_default_query = "&cmt_board_no=" + cmtOptionVO.getCmt_board_no();
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
-		// 게시판 내용
-		List<CommentVO> commentList = cmtSvc.selectAllByPage(commentVO, pageVO);
+		// 댓글 내용 view로 보내주기
+		List<CommentVO> commentList = cmtSvc.selectAllByPage(cmtOptionVO, pageDTO);
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
 		for(CommentVO cmtVO : commentList) {
-			// 현재 로그인한 사용자 아이디와 작성자 아이디가 같거나, 로그인한 사용자 권한이 ADMIN일 때 글 수정,삭제 가능
-			if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) cmtVO.setViewerAdmin(true);
+			// 로그인한 사용자가 작성자거나 관리자일 때 댓글 수정, 삭제 가능하도록 설정
 			if( cmtVO.getCmt_writer().equals(auth.getName()) ) cmtVO.setViewerWriter(true);
-			
+			if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) cmtVO.setViewerAdmin(true);
 		}
+		
 		model.addAttribute("CMT_LIST", commentList);
 	}
 	

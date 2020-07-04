@@ -13,7 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class PaginationVO {
+public class PaginationDTO {
 	
 	private long dataCount;// 전체 데이터 개수
 	private int pageCount;// 전체 페이지 수
@@ -31,5 +31,12 @@ public class PaginationVO {
 	private int nextPageNo;// 다음 페이지 번호
 	
 	private int pageNo;// 현재 페이지 번호
+	
+	// DB에서 가져올 정보
+	private int page_id;//	BIGINT	PRIMARY KEY	AUTO_INCREMENT
+	private long page_bi_id;//	BIGINT
+	private String page_location;//	VARCHAR(125)	NOT NULL
+	private int page_data_cnt;//	INT	NOT NULL	DEFAULT 10
+	private int page_range;//	INT	NOT NULL	DEFAULT 10
 
 }

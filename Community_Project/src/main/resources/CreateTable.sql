@@ -26,12 +26,13 @@ CREATE TABLE IF NOT EXISTS authorities (
 
 CREATE TABLE IF NOT EXISTS tbl_board_info (
 	bi_id BIGINT PRIMARY KEY AUTO_INCREMENT,
-	bi_name VARCHAR(20) NOT NULL
+	bi_name VARCHAR(100) NOT NULL,
+	bi_enabled	BOOLEAN	DEFAULT true
 	)
 ;
 
 CREATE TABLE IF NOT EXISTS tbl_category (
-	cate_id INT UNIQUE AUTO_INCREMENT,
+	cate_id INT PRIMARY KEY AUTO_INCREMENT,
 	cate_bi_id BIGINT NOT NULL,
 	cate_text VARCHAR(20),
 	
@@ -41,6 +42,19 @@ CREATE TABLE IF NOT EXISTS tbl_category (
 	ON DELETE CASCADE
 	)
 ;
+
+CREATE TABLE IF NOT EXISTS tbl_pagination (
+	page_id	BIGINT	PRIMARY KEY	AUTO_INCREMENT,
+	page_bi_id	BIGINT,
+	page_location	VARCHAR(125)	NOT NULL,
+	page_data_cnt	INT	NOT NULL	DEFAULT 10,
+	page_range	INT	NOT NULL	DEFAULT 10,
+    
+    CONSTRAINT FK_BI_PAGINATION_bi_id
+    FOREIGN KEY (page_bi_id)
+    REFERENCES tbl_board_info(bi_id)
+    ON DELETE CASCADE
+);
 
 CREATE TABLE IF NOT EXISTS tbl_board ( 
 	board_no	BIGINT		PRIMARY KEY	AUTO_INCREMENT,

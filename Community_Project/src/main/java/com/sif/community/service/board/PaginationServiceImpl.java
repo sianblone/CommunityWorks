@@ -1,8 +1,10 @@
 package com.sif.community.service.board;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sif.community.model.PaginationVO;
+import com.sif.community.dao.PaginationDao;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.PaginationService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service(value = "pageSvc")
 public class PaginationServiceImpl implements PaginationService {
+	
+	@Autowired
+	private PaginationDao pageDao;
 	
 	private int dataPerPage = 10;// 한 페이지에 보여줄 데이터(로우) 개수
 	private int pageRange = 10;// 페이지 하단에 보여줄 페이지 개수(범위)
@@ -23,28 +28,40 @@ public class PaginationServiceImpl implements PaginationService {
 		this.pageRange = pageRange;
 	}
 	
+	@Override
+	public PaginationDTO findByBoardInfo(Long bi_id, String page_location) {
+		return pageDao.findByBoardInfo(bi_id, page_location);
+	}
+	
 	// 가운데 정렬 방식 페이지네이션
 	// 처음 < ··· 3 4 [5] 6 7 ··· > 끝
-	// 처음 < ··· 5 6 [7] 8 9 ··· > 끝 
-	public PaginationVO makePageInfoMiddle(long dataCount, int pageNo, boolean isReversePagination) {
-		PaginationVO paginationVO = this.makePageInfo(dataCount, pageNo, isReversePagination, true);
-		return paginationVO;
+	// 처음 < ··· 5 6 [7] 8 9 ··· > 끝
+	public PaginationDTO makePageInfoMiddle(long dataCount, PaginationDTO pageDTO, int pageNo, boolean isReversePagination) {
+		PaginationDTO paginationDTO = this.makePageInfo(dataCount, pageDTO, pageNo, isReversePagination, true);
+		return paginationDTO;
 	}
 	
 	// 일반 방식 페이지네이션
 	// 처음 < ··· 1 [2] 3 4 5 ··· > 끝
 	// 처음 < ··· 6 7 8 9 [10] ··· > 끝
-	public PaginationVO makePageInfo(long dataCount, int pageNo, boolean isReversePagination, boolean isMiddlePagination) {
+	// pageOptionDTO는 null이 아니면 page_id, page_bi_id, page_location, page_data_cnt, page_range가 들어있다
+	public PaginationDTO makePageInfo(long dataCount, PaginationDTO pageOptionDTO, int pageNo, boolean isReversePagination, boolean isMiddlePagination) {
 		// 데이터가 없으면 전체 페이지 수, 범위의 시작 페이지, 범위의 끝 페이지, 현재 페이지만 1로 세팅 후 return
 		if(dataCount < 1) {
-			PaginationVO pageVO = PaginationVO.builder()
+			PaginationDTO paginationDTO = PaginationDTO.builder()
 					.pageCount(1)
 					.startPageNo(1)
 					.endPageNo(1)
 					.pageNo(1)
 					.build();
 					
-			return pageVO ;// 데이터가 없으면 전체 페이지 수, 범위의 시작 페이지, 범위의 끝 페이지, 현재 페이지만 1로 세팅 후 return
+			return paginationDTO ;// 데이터가 없으면 전체 페이지 수, 범위의 시작 페이지, 범위의 끝 페이지, 현재 페이지만 1로 세팅 후 return
+		}
+		
+		// 한 페이지에 보여줄 데이터 개수, 페이지 하단에 보여줄 페이지 개수(범위) DB에서 가져오기
+		if(pageOptionDTO != null) {
+			this.setDataPerPage(pageOptionDTO.getPage_data_cnt());
+			this.setPageRange(pageOptionDTO.getPage_range());
 		}
 		
 //		pageCount(전체 페이지 수) : (전체 데이터 개수 + 한 페이지에 보여줄 데이터 개수 - 1) / 한 페이지에 보여줄 데이터 개수
@@ -128,7 +145,7 @@ public class PaginationServiceImpl implements PaginationService {
 		}
 		int limit = dataPerPage;
 		
-		PaginationVO paginationVO = PaginationVO.builder()
+		PaginationDTO paginationDTO = PaginationDTO.builder()
 				.dataCount(dataCount)
 				.pageCount(pageCount)
 				
@@ -147,7 +164,7 @@ public class PaginationServiceImpl implements PaginationService {
 				.pageNo(pageNo)
 				.build();
 		
-		return paginationVO;
+		return paginationDTO;
 	}
-
+	
 }

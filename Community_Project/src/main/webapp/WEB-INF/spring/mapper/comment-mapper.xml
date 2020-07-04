@@ -30,7 +30,7 @@
 				AND c.cmt_delete = 0
 			</if>
 		ORDER BY c.cmt_group ASC, c.cmt_order ASC
-		LIMIT #{pageVO.limit} OFFSET #{pageVO.offset}
+		LIMIT #{pageDTO.limit} OFFSET #{pageDTO.offset}
 	</select>
 	
 	<select id="findByCmtNo" resultType="commentVO">

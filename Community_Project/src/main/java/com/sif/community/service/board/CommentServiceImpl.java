@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sif.community.dao.CommentDao;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.CommentVO;
-import com.sif.community.model.PaginationVO;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.CommentService;
 import com.sif.util.SpringSecurityUtil;
 
@@ -30,20 +30,20 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public long countAll(CommentVO commentVO) {
-		long totalCount = 0;
+		long dataCount = 0;
 		
 		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 count하기
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
-		totalCount = cmtDao.countAll(commentVO, isAdmin);
+		dataCount = cmtDao.countAll(commentVO, isAdmin);
 		
-		return totalCount;
+		return dataCount;
 	}
 
 	@Override
-	public List<CommentVO> selectAllByPage(CommentVO commentVO, PaginationVO pageVO) {
+	public List<CommentVO> selectAllByPage(CommentVO commentVO, PaginationDTO pageDTO) {
 		List<CommentVO> cmtList = null;
 		
 		boolean isAdmin = false;
@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
 		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
 			isAdmin = true;
 		}
-		cmtList = cmtDao.selectAllByPage(commentVO, pageVO, isAdmin);
+		cmtList = cmtDao.selectAllByPage(commentVO, pageDTO, isAdmin);
 		
 		return cmtList;
 	}
