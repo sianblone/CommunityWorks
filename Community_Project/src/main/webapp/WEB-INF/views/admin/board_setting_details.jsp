@@ -126,6 +126,7 @@
 	$(function() {
 		
 		let enable_btn_edit_board = true
+		let enable_btn_delete_board = true
 		
 		$(document).off("click","#btn_add_category").on("click","#btn_add_category",function(){
 			let cate_input = "<div class='my_form_item category_box new_category'>"
@@ -171,9 +172,6 @@
 		$(document).off("click", "#btn_edit_board").on("click", "#btn_edit_board", function() {
 			
 			if(!enable_btn_edit_board) return false
-			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-			enable_btn_edit_board = false
-			$("body").css("cursor", "wait")
 			
 			let formData = $("#board_setting_details_form").serialize()
 			formData += "&bi_id=" + $("#btn_edit_board").attr("data-id")
@@ -182,6 +180,11 @@
 				url : "${rootPath}/admin/board_setting_details",
 				type : "POST",
 				data : formData,
+				beforeSend : function() {
+					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+					enable_btn_edit_board = false
+					$("body").css("cursor", "wait")
+				},
 				success : function(result) {
 					if(result == -100) {
 						alert("게시판 이름은 100글자 이내여야 합니다.")
@@ -202,6 +205,37 @@
 				$("body").css("cursor", "default")
 			})
 			
+		})
+		
+		$(document).off("click", "#btn_delete_board").on("click", "#btn_delete_board", function() {
+			
+			if(!enable_btn_delete_board) return false
+			
+			if(confirm("해당 게시판의 모든 게시물이 삭제됩니다.\n정말로 게시판을 삭제하시겠습니까?")) {
+				
+				let bi_id = $(this).attr("data-id")
+				$.ajax({
+					url: "${rootPath}/admin/delete_board",
+					type: "POST",
+					data: { bi_id : bi_id },
+					beforeSend: function(ajx) {
+						ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_delete_board = false
+						$("body").css("cursor", "wait")
+					},
+					success: function(result) {
+						alert("게시판이 삭제되었습니다.")
+						document.location.replace(document.location.href)
+					},
+					error: function(error) {
+						alert("서버 통신 오류")
+					}
+				}).always(function() {
+				enable_btn_delete_board = true
+				$("body").css("cursor", "default")
+			})
+			}
 		})
 		
 	})
@@ -247,6 +281,7 @@
 	</div>
 	
 	<div class="btn_box">
+		<button id="btn_delete_board" class="btn_red" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
 		<button id="btn_edit_board" type="button" data-id="${BOARD_INFO.bi_id}">수정</button>
 	</div>
 	

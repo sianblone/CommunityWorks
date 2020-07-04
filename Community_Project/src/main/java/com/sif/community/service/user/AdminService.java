@@ -32,7 +32,7 @@ public class AdminService {
 	// 유저 정보는 유저 테이블에, 권한은 권한 테이블에 저장하기
 	@Transactional
 	public int updateUserFromAdmin(UserDetailsVO userVO, String[] arrAuth) {
-		int ret = this.valid_update_user_from_admin(userVO);
+		int ret = this.validUpdateUserFromAdmin(userVO);
 		// 유효성 검사 통과 실패 시 유효성 검사 결과값 바로 리턴
 		if(ret < 0) return ret;
 		
@@ -72,7 +72,7 @@ public class AdminService {
 		return ret;
 	}
 	
-	protected int valid_update_user_from_admin(UserDetailsVO userVO) {
+	protected int validUpdateUserFromAdmin(UserDetailsVO userVO) {
 		String email = userVO.getEmail();
 		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
 		int result = 0;
@@ -101,13 +101,13 @@ public class AdminService {
 			return false;
 		}
 	}
-
-	public int create_board(BoardInfoVO boardInfoVO) {
+	
+	public int insertBoard(BoardInfoVO boardInfoVO) {
 		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
 	@Transactional
-	public int update_tbl_board_info(BoardInfoVO boardInfoVO, CategoryVO categoryOptionVO) {
+	public int updateBoard(BoardInfoVO boardInfoVO, CategoryVO categoryOptionVO) {
 		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled가 들어있다
 		// categoryOptionVO에는 카테고리 목록이 들어있다
 		
@@ -170,9 +170,17 @@ public class AdminService {
 		
 		return ret;
 	}
+	
+	public int changeOrder(long bi_id, long order) {
+		return boardInfoSvc.changeOrder(bi_id, order);
+	}
 
-	public int delete_category(long cate_id) {
+	public int deleteCategory(long cate_id) {
 		return cateSvc.delete(cate_id);
+	}
+
+	public int deleteBoard(long bi_id) {
+		return boardInfoSvc.delete(bi_id);
 	}
 
 }

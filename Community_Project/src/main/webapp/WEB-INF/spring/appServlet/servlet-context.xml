@@ -36,7 +36,7 @@
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>
-			<beans:bean class='com.sif.community.interceptor.TopMenuInterceptor'/>
+			<beans:bean class='com.sif.community.interceptor.BoardInfoInterceptor'/>
 		</interceptor>
 	</interceptors>
 </beans:beans>

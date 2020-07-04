@@ -5,27 +5,17 @@
 	<select id="selectAll" resultType="boardInfoVO">
 		SELECT *
 		FROM tbl_board_info
-	</select>
-	
-	<select id="findByBiId" resultMap="boardInfoRM">
-		SELECT *
-		FROM tbl_board_info
-		WHERE bi_id = #{bi_id}
-	</select>
-	<resultMap id="boardInfoRM" type="boardInfoVO">
-		<id property="bi_id" column="bi_id" />
-		<collection property="bi_category" column="bi_id" ofType="categoryVO" select="findCategoryByBiId" />
-	</resultMap>
-	<select id="findCategoryByBiId" resultType="categoryVO">
-		SELECT *
-		FROM tbl_category
-		WHERE cate_bi_id = #{bi_id}
+		<if test="checkEnabled == true">
+			WHERE bi_enabled = 1
+		</if>
+		ORDER BY bi_order
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">
 		SELECT *, ${limit_value} as limit_value
 		FROM tbl_board_info
 		WHERE bi_enabled = 1
+		ORDER BY bi_order
 	</select>
 	<resultMap id="selectMainPageRM" type="boardInfoVO">
 		<id property="bi_id" column="bi_id"/>
@@ -55,11 +45,41 @@
 		LIMIT #{limit_value}
 	</select>
 	
+	<select id="findByBiId" resultMap="boardInfoRM">
+		SELECT *
+		FROM tbl_board_info
+		WHERE bi_id = #{bi_id}
+	</select>
+	<resultMap id="boardInfoRM" type="boardInfoVO">
+		<id property="bi_id" column="bi_id" />
+		<collection property="bi_category" column="bi_id" ofType="categoryVO" select="findCategoryByBiId" />
+	</resultMap>
+	<select id="findCategoryByBiId" resultType="categoryVO">
+		SELECT *
+		FROM tbl_category
+		WHERE cate_bi_id = #{bi_id}
+	</select>
+	
+	<select id="findByOrder" resultType="boardInfoVO">
+		SELECT *
+		FROM tbl_board_info
+		WHERE bi_order = #{bi_order}
+	</select>
+	
+	<select id="maxOrderFromBoardInfo" resultType="long">
+		SELECT IFNULL(MAX(bi_order),0)
+		FROM tbl_board_info
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO tbl_board_info (
-			bi_name
+			bi_name,
+			bi_enabled,
+			bi_order
 		) VALUES (
-			#{bi_name}
+			#{bi_name},
+			#{bi_enabled},
+			#{bi_order}
 		)
 	</insert>
 	
@@ -67,7 +87,8 @@
 		UPDATE `tbl_board_info`
 		SET
 			`bi_name` = #{bi_name},
-			`bi_enabled` = #{bi_enabled}
+			`bi_enabled` = #{bi_enabled},
+			`bi_order` = #{bi_order}
 		WHERE `bi_id` = #{bi_id}
 	</update>
 	

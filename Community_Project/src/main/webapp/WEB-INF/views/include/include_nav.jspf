@@ -65,6 +65,14 @@
     	top: 60px;
 	    border: 2px solid #fff;
 	}
+	
+	#navbar .disabled {
+		background-color: #999;
+	}
+	#navbar .disabled:hover {
+		background-color: #aaa;
+		color: black;
+	}
 </style>
 <script>
 	$(function() {
@@ -93,9 +101,9 @@
 		<li class="slide_menu">
 			<div class="label">게시판</div>
 			<ul class="sub_menu">
-				<c:forEach items="${topMenuList}" var="t">
+				<c:forEach items="${BOARD_INFO_LIST}" var="bi">
 					<li>
-						<a class="label" href="${rootPath}/board/list?board_info=${t.bi_id}">${t.bi_name}</a>
+						<a class="label<c:if test="${not bi.bi_enabled}"> disabled</c:if>" href="${rootPath}/board/list?board_info=${bi.bi_id}">${bi.bi_name}</a>
 					</li>
 				</c:forEach>
 			</ul>

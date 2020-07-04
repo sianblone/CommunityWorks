@@ -73,6 +73,11 @@ CREATE TABLE IF NOT EXISTS tbl_board (
 	board_delete	TINYINT	NOT NULL		DEFAULT 0,
 	board_recommend	BIGINT	NOT NULL		DEFAULT 0,
 	board_category	INT,
+	
+	CONSTRAINT FK_BI_BOARD_board_info
+	FOREIGN KEY (board_info)
+	REFERENCES tbl_board_info(bi_id)
+	ON DELETE CASCADE,
 
 	CONSTRAINT FK_CATE_BOARD_board_category
 	FOREIGN KEY (board_category)

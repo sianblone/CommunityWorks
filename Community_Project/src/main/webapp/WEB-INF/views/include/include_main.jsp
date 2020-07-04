@@ -14,6 +14,7 @@
 	
 	.card_box {
 		display: flex;
+		flex-wrap: wrap;
 	}
 	
 	#no_board {
