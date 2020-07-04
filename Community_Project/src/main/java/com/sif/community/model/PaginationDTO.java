@@ -38,5 +38,7 @@ public class PaginationDTO {
 	private String page_location;//	VARCHAR(125)	NOT NULL
 	private int page_data_cnt;//	INT	NOT NULL	DEFAULT 10
 	private int page_range;//	INT	NOT NULL	DEFAULT 10
+	
+	private int data_cnt_main;
 
 }

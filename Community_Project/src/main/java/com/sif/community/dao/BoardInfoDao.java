@@ -11,7 +11,7 @@ public interface BoardInfoDao {
 	public List<BoardInfoVO> selectMainPage(@Param("limit_value") int limit_value);
 	// checkEnabled에 따라 활성화된 게시판만 가져오거나 비활성화된 게시판도 전부 가져오기
 	public List<BoardInfoVO> selectAll(boolean checkEnabled);
-	public BoardInfoVO findByBiId(long bi_id);
+	public BoardInfoVO findByBiId(Long bi_id);
 	public BoardInfoVO findByOrder(long bi_order);
 	public long maxOrderFromBoardInfo();
 	

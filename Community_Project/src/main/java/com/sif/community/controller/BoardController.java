@@ -54,7 +54,7 @@ public class BoardController {
 					Model model,
 					BoardVO boardOptionVO,
 					Integer pageNo) {
-		// 없는 게시판(0)을 입력받으면 메인페이지로
+		// 없는 게시판(0)을 입력받으면 메인 페이지로
 		if(boardOptionVO.getBoard_info() == 0) return "redirect:/";
 		
 		if(boardOptionVO.getSearch_type() == null) boardOptionVO.setSearch_type("");
@@ -102,7 +102,7 @@ public class BoardController {
 	@RequestMapping(value="/save", method=RequestMethod.GET)
 	public String save(BoardVO boardOptionVO, Model model) {
 		
-		// 없는 게시판(0)을 입력받으면 메인페이지로
+		// 없는 게시판(0)을 입력받으면 메인 페이지로
 		if(boardOptionVO.getBoard_info() == 0) {
 			return "redirect:/";
 		}
@@ -143,7 +143,7 @@ public class BoardController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	public String save(BoardVO boardVO, Integer pageNo) {
 		
-		// 없는 게시판(0)을 입력받으면 메인페이지로
+		// 없는 게시판(0)을 입력받으면 메인 페이지로
 		if(boardVO.getBoard_info() == 0) {
 			return "redirect:/";
 		}

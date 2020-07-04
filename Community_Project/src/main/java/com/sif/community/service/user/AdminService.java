@@ -111,7 +111,7 @@ public class AdminService {
 		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
-	protected int savePagination(PaginationDTO pageDTO, long bi_id, int data_cnt, int page_range, String page_location) {
+	protected int savePagination(PaginationDTO pageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
 		int result = 0;
 		if(pageDTO == null) {
 			// pageDTO가 없으면 insert
@@ -127,11 +127,28 @@ public class AdminService {
 		return result;
 	}
 	
-	protected void setPaginationDTO(PaginationDTO pageDTO, long bi_id, int data_cnt, int page_range, String page_location) {
+	protected void setPaginationDTO(PaginationDTO pageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
 		pageDTO.setPage_bi_id(bi_id);
 		pageDTO.setPage_data_cnt(data_cnt);
 		pageDTO.setPage_range(page_range);
 		pageDTO.setPage_location(page_location);
+	}
+	
+	// 관리자 페이지 메인페이지 설정 GET에서 사용할 메소드
+	public PaginationDTO mainPageInfo() {
+		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
+		if(pageDTO == null) pageDTO = new PaginationDTO();
+		
+		// 관리자 페이지 메인페이지 설정에서 사용할 변수 세팅
+		int data_cnt = pageDTO.getPage_data_cnt() == 0 ? 5 : pageDTO.getPage_data_cnt();
+		pageDTO.setData_cnt_main(data_cnt);
+		return pageDTO;
+	}
+	
+	// 관리자 페이지 메인페이지 설정 POST에서 사용할 메소드
+	public int updateMainPage(int page_data_cnt) {
+		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
+		return this.savePagination(pageDTO, null, page_data_cnt, 10, ProjectUtil.PAGE_LOCATION_MAIN);
 	}
 	
 	@Transactional

@@ -31,6 +31,9 @@
 		padding: 0px;
 	}
 	
+	.change_order {
+		cursor: pointer;
+	}
 	.change_order:hover {
 		background-color: var(--color-dodgerblue);
 		color: white;

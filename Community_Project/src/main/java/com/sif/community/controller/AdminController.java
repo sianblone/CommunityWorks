@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
+import com.sif.community.model.PaginationDTO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.BoardInfoService;
+import com.sif.community.service.board.itf.PaginationService;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
+import com.sif.util.ProjectUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +32,7 @@ public class AdminController {
 	
 	private final UserService userSvc;
 	private final AdminService adminSvc;
+	private final PaginationService pageSvc;
 	private final BoardInfoService boardInfoSvc;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
@@ -118,6 +122,23 @@ public class AdminController {
 	public int delete_category(long cate_id) {
 		
 		return adminSvc.deleteCategory(cate_id);
+	}
+	
+	// 메인 페이지 수정 화면
+	@RequestMapping(value="/main_page_setting", method=RequestMethod.GET)
+	public String mainPageSetting(Model model) {
+		PaginationDTO pageDTO = adminSvc.mainPageInfo();
+		model.addAttribute("PAGE_DTO", pageDTO);
+		
+		return "admin/main_page_setting";
+	}
+	
+	// 메인 페이지 수정 POST 메소드
+	@RequestMapping(value="/main_page_setting", method=RequestMethod.POST)
+	public String mainPageSetting(int page_data_cnt) {
+		adminSvc.updateMainPage(page_data_cnt);
+		
+		return "redirect:/admin/main_page_setting";
 	}
 
 }

@@ -47,7 +47,7 @@
 		let enable_btn_main = true
 		
 		// 유저 목록
-		$(document).on("click", "#user_list", function() {
+		$(document).off("click", "#user_list").on("click", "#user_list", function() {
 			if(!enable_btn_main) return false
 			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 			enable_btn_main = false
@@ -63,13 +63,29 @@
 		})
 		
 		// 게시판 설정
-		$(document).on("click", "#board_setting", function() {
+		$(document).off("click", "#board_setting").on("click", "#board_setting", function() {
 			if(!enable_btn_main) return false
 			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 			enable_btn_main = false
 			$("body").css("cursor", "wait")
 			
 			$.get("${rootPath}/admin/board_setting", function(result) {
+				$("#admin_content").html(result)
+			}).always(function() {
+				// ajax 완료 후 버튼 기능 키기
+				enable_btn_main = true
+				$("body").css("cursor", "default")
+			})
+		})
+		
+		// 게시판 설정
+		$(document).off("click", "#main_page_setting").on("click", "#main_page_setting", function() {
+			if(!enable_btn_main) return false
+			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+			enable_btn_main = false
+			$("body").css("cursor", "wait")
+			
+			$.get("${rootPath}/admin/main_page_setting", function(result) {
 				$("#admin_content").html(result)
 			}).always(function() {
 				// ajax 완료 후 버튼 기능 키기
@@ -93,6 +109,7 @@
 				<ul>
 					<li id="user_list">유저 목록</li>
 					<li id="board_setting">게시판 설정</li>
+					<li id="main_page_setting">메인 페이지 설정</li>
 				</ul>
 			</nav>
 			<article id="vertical_line">

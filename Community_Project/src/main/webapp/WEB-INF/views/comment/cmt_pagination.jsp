@@ -45,7 +45,11 @@
 </style>
 <script>
 	$(function() {
+		let enable_btn_page = true
+		
 		$(document).off("click", ".page_middot").on("click", ".page_middot", function() {
+			if(!enable_btn_page) return false
+			
 			let jump_page = prompt("이동할 페이지 (1~" + ${PAGE_DTO.pageCount} + ")")
 			
 			if(jump_page == null) {
@@ -56,17 +60,27 @@
 				$.ajax({
 					url: requestURL,
 					type: "GET",
+					beforeSend: function() {
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_page = false
+						$("body").css("cursor", "wait")
+					},
 					success: function(result) {
 						$(".cmt_list").html(result)
 					},
 					error: function(error) {
 						console.log("댓글 불러오기 실패")
 					}
+				}).always(function() {
+					enable_btn_page = true
+					$("body").css("cursor", "default")
 				})
 			}
 		})
 		
-		$(document).on("click", ".page_link", function() {
+		$(document).off("click", ".page_link").on("click", ".page_link", function() {
+			if(!enable_btn_page) return false
+			
 			let requestURL = "${rootPath}/comment/list"
 			let query = $(this).data("href")
 			requestURL += query
@@ -74,12 +88,20 @@
 			$.ajax({
 				url: requestURL,
 				type: "GET",
+				beforeSend: function() {
+					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+					enable_btn_page = false
+					$("body").css("cursor", "wait")
+				},
 				success: function(result) {
 					$(".cmt_list").html(result)
 				},
 				error: function(error) {
 					console.log("댓글 불러오기 실패")
 				}
+			}).always(function() {
+				enable_btn_page = true
+				$("body").css("cursor", "default")
 			})
 		})
 	})

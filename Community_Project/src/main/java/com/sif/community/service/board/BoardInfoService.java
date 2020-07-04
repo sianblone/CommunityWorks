@@ -36,10 +36,12 @@ public class BoardInfoService {
 		return boardInfoDao.selectMainPage(limit_value);
 	}
 	
-	public BoardInfoVO findByBiId(long bi_id) {
+	public BoardInfoVO findByBiId(Long bi_id) {
 		BoardInfoVO boardInfoVO = boardInfoDao.findByBiId(bi_id);
 		
-		// 관리자 페이지 게시판 수정에서 사용할 변수들 세팅
+		if(boardInfoVO == null) boardInfoVO = new BoardInfoVO();
+		
+		// 관리자 페이지 게시판 설정에서 사용할 변수들 세팅
 		if(boardInfoVO.getData_cnt_board() == 0) boardInfoVO.setData_cnt_board(10);
 		if(boardInfoVO.getData_cnt_comment() == 0) boardInfoVO.setData_cnt_comment(10);
 		if(boardInfoVO.getPage_range_board() == 0) boardInfoVO.setPage_range_board(10);

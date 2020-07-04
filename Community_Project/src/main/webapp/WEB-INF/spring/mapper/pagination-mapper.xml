@@ -5,7 +5,13 @@
 	<select id="findByBiId" resultType="paginationDTO">
 		SELECT *
 		FROM tbl_pagination
-		WHERE page_bi_id = #{bi_id} AND page_location = #{page_location}
+		WHERE page_location = #{page_location} 
+		<if test="bi_id != null">
+			AND page_bi_id = #{bi_id}
+		</if>
+		<if test="bi_id == null">
+			AND page_bi_id IS NULL
+		</if>
 	</select>
 	
 	<insert id="insert">
