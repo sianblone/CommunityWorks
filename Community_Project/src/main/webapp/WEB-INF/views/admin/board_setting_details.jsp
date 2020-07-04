@@ -3,15 +3,89 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:set var="rootPath" value="${pageContext.request.contextPath}"/>
 <style>
+	/* toggle CSS */
+	/* The switch - the box around the slider */
+	.switch {
+	  position: relative;
+	  display: inline-block;
+	  width: 60px;
+	  height: 26px;
+	  margin: auto;
+	  vertical-align:middle;
+	}
+	
+	/* Hide default HTML checkbox */
+	.switch input {display:none;}
+	
+	/* The slider */
+	.slider {
+	  position: absolute;
+	  cursor: pointer;
+	  top: 0;
+	  left: 0;
+	  right: 0;
+	  bottom: 0;
+	  background-color: #ccc;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+	
+	.slider:before {
+	  position: absolute;
+	  content: "";
+	  height: 20px;
+	  width: 20px;
+	  left: 3px;
+	  bottom: 3px;
+	  background-color: white;
+	  -webkit-transition: .4s;
+	  transition: .4s;
+	}
+	/* toggle CSS End */
+	
+	input:checked + .slider {
+	  background-color: #2196F3;
+	}
+	
+	input:focus + .slider {
+	  box-shadow: 0 0 1px #2196F3;
+	}
+	
+	input:checked + .slider:before {
+	  -webkit-transform: translateX(34px);
+	  -ms-transform: translateX(34px);
+	  transform: translateX(34px);
+	}
+	
+	/* Rounded sliders */
+	.slider.round {
+	  border-radius: 26px;
+	}
+	
+	.slider.round:before {
+	  border-radius: 50%;
+	}
+	
+	p {
+		margin:0px;
+		display:inline-block;
+		font-size:15px;
+		font-weight:bold;
+	}
+</style>
+<style>
 	form {
 		width: 100%;
 		margin: 0px auto;
 	}
 	
-	.my_form_item {
+	.my_form_item, .switch {
 		display: flex;
 		align-items: center;
 		padding: 5px 0px;
+	}
+	.switch {
+		margin-left: 5px;
 	}
 	
 	.my_label {
@@ -25,14 +99,6 @@
 		width: 60%;
 	}
 	
-	.new_category span, .new_category select {
-		color: var(--color-dodgerblue);
-	}
-	
-	.cancel_category, .delete_category {
-		margin-left: 10px;
-	}
-	
 	.btn_box {
 		display: flex;
 	}
@@ -43,6 +109,15 @@
 		padding: 10px;
 		margin-top: 20px;
 	}
+	
+	.new_category span, .new_category select {
+		color: var(--color-dodgerblue);
+	}
+	
+	.cancel_category, .delete_category {
+		margin-left: 10px;
+	}
+	
 	#btn_edit_board {
 		margin-left: auto;
 	}
@@ -109,7 +184,7 @@
 				data : formData,
 				success : function(result) {
 					if(result == -100) {
-						alert("게시판 이름은 20글자 이내여야 합니다.")
+						alert("게시판 이름은 100글자 이내여야 합니다.")
 					} else if(result == -101) {
 						alert("카테고리는 20글자 이내여야 합니다.")
 					} else if(result == -200) {
@@ -139,8 +214,16 @@
 	</div>
 	
 	<div class="my_form_item">
+		<span class="my_label">활성여부</span>
+		<label class="switch">
+			<input type="checkbox" name="bi_enabled" <c:if test="${BOARD_INFO.bi_enabled}">checked</c:if>/>
+			<span class="slider round"></span>
+		</label>
+	</div>
+	
+	<div class="my_form_item">
 		<span class="my_label">게시판 이름</span>
-		<input id="bi_name" class="my_data" name="bi_name" value="${BOARD_INFO.bi_name}" maxlength="20"/>
+		<input id="bi_name" class="my_data" name="bi_name" value="${BOARD_INFO.bi_name}" maxlength="100"/>
 	</div>
 	
 	<!-- 카테고리 영역 -->

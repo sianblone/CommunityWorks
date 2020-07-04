@@ -56,7 +56,7 @@ public class UserController {
 	@ResponseBody
 	@RequestMapping(value = "/mypage", method=RequestMethod.POST)
 	public int mypage(UserDetailsVO userVO) {
-		int ret= userSvc.update_user(userVO);
+		int ret= userSvc.updateUser(userVO);
 		
 		return ret;
 	}

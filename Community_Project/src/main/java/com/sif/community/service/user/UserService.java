@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -54,13 +55,24 @@ public class UserService {
 		return userDao.findByUsernameFromAuthorities(username);
 	}
 	
-	public UserDetailsVO findById(long id) {
-		return userDao.findById(id);
+	// 닉네임과 일치하는 유저 정보 가져오기
+	public List<UserDetailsVO> findByNickname(String nickname) {
+		return userDao.findByNickname(nickname);
+	}
+	
+	public int updateUserFromAdmin(UserDetailsVO userVO) {
+		boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		
+		if(isAdmin) {
+			return userDao.updateUserFromAdmin(userVO);
+		} else {
+			return -200;
+		}
 	}
 	
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
-	public int update_user(UserDetailsVO userVO) {
+	public int updateUser(UserDetailsVO userVO) {
 		// 유저 정보는 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
 		
 		// SecurityContextHolder에서 인증정보 가져오기
@@ -77,12 +89,12 @@ public class UserService {
 		loginUserVO.setMonth(userVO.getMonth());
 		loginUserVO.setDay(userVO.getDay());
 		
-		int ret = this.valid_update(loginUserVO);
+		int ret = this.validUpdate(loginUserVO);
 		// 유효성 검사 통과 실패 시 유효성 검사 결과값 바로 리턴
 		if(ret < 0) return ret;
 		
 		// DB에 업데이트 된 유저정보 저장
-		ret = userDao.update_user(loginUserVO);
+		ret = userDao.updateUser(loginUserVO);
 		if(ret > 0) {
 			// 업데이트 성공시, 전역으로 쓰는 SecurityContextHolder(현재 로그인 된 사용자 정보)에 새로운 Authentication 업데이트 시켜주기
 			Authentication newAuth = new UsernamePasswordAuthenticationToken(loginUserVO, auth.getCredentials(), auth.getAuthorities());
@@ -92,7 +104,7 @@ public class UserService {
 		return ret;
 	}
 	
-	protected int valid_update(UserDetailsVO userVO) {
+	protected int validUpdate(UserDetailsVO userVO) {
 		String birth = String.format("%s-%s-%s", userVO.getYear(), userVO.getMonth(), userVO.getDay());
 		int result = 0;
 		
@@ -161,7 +173,7 @@ public class UserService {
 		// 새로운 비밀번호 암호화하기
 		userVO.setPassword(bcryptEncoder.encode(password));
 		// DB에 username 기준으로 암호화 된 비밀번호 update하기
-		return userDao.update_pw(userVO);
+		return userDao.updatePw(userVO);
 	}
 	
 	public List<UserDetailsVO> find_my_ids(UserDetailsVO userVO) {
@@ -227,7 +239,7 @@ public class UserService {
 							.build();
 		
 		// DB에 새로운 비밀번호 저장
-		return userDao.update_pw(userVO);
+		return userDao.updatePw(userVO);
 	}
 	
 	// 이메일 변경 메소드
@@ -271,7 +283,7 @@ public class UserService {
 		
 		// 인증코드를 정확히 입력했을 경우
 		if(dec_code.equals(auth_code)) {
-			int result = userDao.update_email(userVO);
+			int result = userDao.updateEmail(userVO);
 			// DB update 성공 = 리턴 1, 실패 = 리턴 7
 			if(result > 0) ret = 1; else ret = 7;
 			
@@ -307,9 +319,4 @@ public class UserService {
 		return ret;
 	}
 	
-	// 닉네임과 일치하는 유저 정보 가져오기
-	public List<UserDetailsVO> findByNickname(String nickname) {
-		return userDao.findByNickname(nickname);
-	}
-
 }

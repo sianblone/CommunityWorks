@@ -5,7 +5,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,27 +19,30 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
 import com.sif.community.model.PaginationDTO;
+import com.sif.community.service.board.BoardInfoService;
+import com.sif.community.service.board.CategoryService;
 import com.sif.community.service.board.FileService;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.PaginationService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @RequestMapping(value = "/board")
 @Controller
 public class BoardController {
 		
-	@Autowired
-	private FileService fileService;
-	
-	@Autowired
+	private final FileService fileService;
 	@Qualifier(value = "pageSvc")
-	private PaginationService pageSvc;
-	
-	@Autowired
+	private final PaginationService pageSvc;
 	@Qualifier(value = "boardSvc")
-	private BoardService boardSvc;
+	private final BoardService boardSvc;
+	@Qualifier(value = "cateSvc")
+	private final CategoryService cateSvc;
+	@Qualifier(value = "boardInfoSvc")
+	private final BoardInfoService boardInfoSvc;
 	
 	// 게시판 컨트롤러
 	// 리스트(GET) + 게시판 이름 + 검색 + 페이지 / 상세보기(GET) / 저장(GET: 화면 보여주기, POST: 입력 받기) / 삭제(POST)
@@ -113,8 +115,8 @@ public class BoardController {
 			// 쿼리에서 board_no를 받지 않은 경우(=신규작성 글 또는 답글) 새 글 작성 페이지 보여주기
 			// 답글인 경우 save.jsp에서 SpEL 태그를 이용해 URL 쿼리의 board_p_no를 받아와 POST action에 지정해주고 save POST 메소드로 submit
 			// 컨트롤러 save POST 메소드의 VO에 board_p_no 값이 매핑되어 자동 세팅
-			model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
-			model.addAttribute("BOARD_INFO", boardSvc.findByBoardInfo(boardOptionVO.getBoard_info()));
+			model.addAttribute("CATEGORY_LIST", cateSvc.findByBiId( boardOptionVO.getBoard_info() ) );
+			model.addAttribute("BOARD_INFO", boardInfoSvc.findByBiId( boardOptionVO.getBoard_info() ) );
 			return "board/save";
 		}
 		
@@ -134,8 +136,8 @@ public class BoardController {
 		
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 수정 view 보여주기
 		model.addAttribute("BOARD_VO",boardVO);
-		model.addAttribute("CATEGORY_LIST", boardSvc.selectCategoryByBoard(boardOptionVO));
-		model.addAttribute("BOARD_INFO", boardSvc.findByBoardInfo(boardOptionVO.getBoard_info()));
+		model.addAttribute("CATEGORY_LIST", cateSvc.findByBiId(boardOptionVO.getBoard_info() ));
+		model.addAttribute("BOARD_INFO", boardInfoSvc.findByBiId(boardOptionVO.getBoard_info() ));
 		
 		return "board/save";
 	}
@@ -232,7 +234,7 @@ public class BoardController {
 		model.addAttribute("PAGE_DEFAULT_QUERY", page_default_query);
 		
 		// 게시판 이름 표시(헤더)
-		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(boardOptionVO.getBoard_info());		
+		BoardInfoVO boardInfoVO = boardInfoSvc.findByBiId(boardOptionVO.getBoard_info());		
 		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
 		// 게시판 내용 view로 보내주기

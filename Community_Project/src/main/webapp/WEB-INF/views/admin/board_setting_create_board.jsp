@@ -40,6 +40,6 @@
 </script>
 <form:form id="create_board_form" autocomplete="${FORM_AUTOCOMPLETE}">
 	<input type="hidden" />
-	<input id="bi_name" name="bi_name" placeholder="게시판 이름" />
+	<input id="bi_name" name="bi_name" placeholder="게시판 이름" maxlength="100"/>
 	<button id="btn_create_board" type="button">게시판 생성</button>
 </form:form>

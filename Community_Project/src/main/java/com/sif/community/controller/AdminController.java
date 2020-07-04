@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.UserDetailsVO;
-import com.sif.community.service.board.itf.BoardService;
+import com.sif.community.service.board.BoardInfoService;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
 
@@ -27,7 +27,7 @@ public class AdminController {
 	
 	private final UserService userSvc;
 	private final AdminService adminSvc;
-	private final BoardService boardSvc;
+	private final BoardInfoService boardInfoSvc;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String admin() {
@@ -51,20 +51,20 @@ public class AdminController {
 	
 	@RequestMapping(value="/user_details", method=RequestMethod.POST)
 	public String mypage(UserDetailsVO userVO, String[] auth, Model model) {
-		int ret = adminSvc.update_user_from_admin(userVO, auth);
+		int ret = adminSvc.updateUserFromAdmin(userVO, auth);
 		
 		return "redirect:/admin/user_details/" + userVO.getUsername();
 	}
 	
 	@RequestMapping(value="/board_setting", method=RequestMethod.GET)
 	public String board_setting(Model model) {
-		model.addAttribute("BOARD_INFO_LIST", boardSvc.selectAllBoardInfo());
+		model.addAttribute("BOARD_INFO_LIST", boardInfoSvc.selectAll());
 		return "admin/board_setting";
 	}
 	
 	@RequestMapping(value="/board_setting_details", method=RequestMethod.GET)
-	public String board_setting_details(long board_info, Model model) {
-		BoardInfoVO boardInfoVO = boardSvc.findByBoardInfo(board_info);
+	public String board_setting_details(long bi_id, Model model) {
+		BoardInfoVO boardInfoVO = boardInfoSvc.findByBiId(bi_id);
 		model.addAttribute("BOARD_INFO", boardInfoVO);
 		
 		return "admin/board_setting_details";

@@ -11,16 +11,16 @@ public interface UserDao {
 	public UserDetailsVO findByUsernameFromAuthorities(String username);
 
 	public List<UserDetailsVO> selectAll();
-	public UserDetailsVO findById(long id);
 	public UserDetailsVO findByUsername(String username);
 	@Select("SELECT username FROM tbl_users WHERE email = #{email}")
 	public List<UserDetailsVO> findByEmail(String email);
 	public List<UserDetailsVO> findByNickname(String nickname);
 	
 	public int insert(UserDetailsVO userVO);
-	public int update_user(UserDetailsVO userVO);
-	public int update_email(UserDetailsVO userVO);
-	public int update_pw(UserDetailsVO userVO);
+	public int updateUserFromAdmin(UserDetailsVO userVO);
+	public int updateUser(UserDetailsVO userVO);
+	public int updateEmail(UserDetailsVO userVO);
+	public int updatePw(UserDetailsVO userVO);
 	
 	
 

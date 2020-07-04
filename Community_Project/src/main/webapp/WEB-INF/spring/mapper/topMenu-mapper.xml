@@ -5,7 +5,8 @@
 	
 	<select id="getTopMenuList" resultType="boardInfoVO">
 		SELECT bi_id, bi_name
-		FROM tbl_board_info 
+		FROM tbl_board_info
+		WHERE bi_enabled = 1
 		ORDER BY bi_id
 	</select>
 	

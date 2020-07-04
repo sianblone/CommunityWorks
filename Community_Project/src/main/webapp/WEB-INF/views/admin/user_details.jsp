@@ -41,6 +41,7 @@
 	  -webkit-transition: .4s;
 	  transition: .4s;
 	}
+	/* toggle CSS End */
 	
 	input:checked + .slider {
 	  background-color: #2196F3;
@@ -63,13 +64,6 @@
 	
 	.slider.round:before {
 	  border-radius: 50%;
-	}
-	
-	p {
-		margin:0px;
-		display:inline-block;
-		font-size:15px;
-		font-weight:bold;
 	}
 </style>
 <style>
@@ -98,6 +92,17 @@
 		width: 60%;
 	}
 	
+	.btn_box {
+		display: flex;
+	}
+	
+	.btn_box button {
+		display: block;
+		width: 120px;
+		padding: 10px;
+		margin-top: 20px;
+	}
+	
 	.birth {
 		display: flex;
 		width: 60%;
@@ -117,16 +122,6 @@
 		margin-left: 10px;
 	}
 	
-	.btn_box {
-		display: flex;
-	}
-	
-	.btn_box button {
-		display: block;
-		width: 120px;
-		padding: 10px;
-		margin-top: 20px;
-	}
 	#btn_edit {
 		margin-left: auto;
 	}

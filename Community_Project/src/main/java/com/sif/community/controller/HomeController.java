@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sif.community.model.BoardInfoVO;
-import com.sif.community.service.board.itf.BoardService;
+import com.sif.community.service.board.BoardInfoService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,14 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class HomeController {
 	@Autowired
-	protected BoardService boardSvc;
+	protected BoardInfoService boardInfoSvc;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(
 			@RequestParam(value = "EMAIL_AUTH", required = false) boolean email_auth,
 			Model model) {
 		
-		List<BoardInfoVO> boardInfoList = boardSvc.selectMainPage();
+		List<BoardInfoVO> boardInfoList = boardInfoSvc.selectMainPage();
 		model.addAttribute("BOARD_INFO_LIST", boardInfoList);
 		model.addAttribute("EMAIL_AUTH", email_auth);
 		

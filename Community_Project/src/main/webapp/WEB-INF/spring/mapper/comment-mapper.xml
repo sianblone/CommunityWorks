@@ -91,7 +91,7 @@
 		WHERE `cmt_no` = #{cmt_no}
 	</update>
 	
-	<update id="update_delete">
+	<update id="updateDelete">
 		UPDATE tbl_comment
 		SET
 			cmt_delete = #{cmt_delete}

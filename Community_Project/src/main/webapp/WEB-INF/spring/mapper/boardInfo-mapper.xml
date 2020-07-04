@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sif.community.dao.BoardInfoDao">
+	<select id="selectAll" resultType="boardInfoVO">
+		SELECT *
+		FROM tbl_board_info
+	</select>
+	
+	<select id="findByBiId" resultMap="boardInfoRM">
+		SELECT *
+		FROM tbl_board_info
+		WHERE bi_id = #{bi_id}
+	</select>
+	<resultMap id="boardInfoRM" type="boardInfoVO">
+		<id property="bi_id" column="bi_id" />
+		<collection property="bi_category" column="bi_id" ofType="categoryVO" select="findCategoryByBiId" />
+	</resultMap>
+	<select id="findCategoryByBiId" resultType="categoryVO">
+		SELECT *
+		FROM tbl_category
+		WHERE cate_bi_id = #{bi_id}
+	</select>
+	
+	<select id="selectMainPage" resultMap="selectMainPageRM">
+		SELECT *, ${limit_value} as limit_value
+		FROM tbl_board_info
+		WHERE bi_enabled = 1
+	</select>
+	<resultMap id="selectMainPageRM" type="boardInfoVO">
+		<id property="bi_id" column="bi_id"/>
+		<collection property="bi_board_list" column="{ bi_id = bi_id, limit_value = limit_value }" ofType="boardVO" select="selectMainPageBoard"/>
+	</resultMap>
+	<select id="selectMainPageBoard" resultType="boardVO">
+		SELECT
+			b.board_no, b.board_p_no, b.board_group, b.board_order, b.board_depth, b.board_info, b.board_writer, b.board_datetime,
+			b.board_subject, b.board_content, b.board_count, b.board_filename, b.board_delete, b.board_recommend, b.board_category,
+			u.nickname AS board_nickname, bi.bi_name AS board_name, cate.cate_text AS board_cate_text,
+			(SELECT COUNT(c.cmt_no) FROM tbl_comment c WHERE b.board_no = c.cmt_board_no AND c.cmt_delete = 0) AS board_cmt_count
+		FROM tbl_board b
+		LEFT JOIN tbl_board_info bi
+		ON
+			b.board_info = bi.bi_id
+		LEFT JOIN tbl_users u
+		ON
+			b.board_writer = u.username
+		LEFT JOIN tbl_category cate
+		ON
+			b.board_category = cate.cate_id
+		WHERE
+			b.board_info = #{bi_id}
+			AND
+			b.board_delete = 0
+		ORDER BY b.board_group DESC, b.board_order ASC
+		LIMIT #{limit_value}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tbl_board_info (
+			bi_name
+		) VALUES (
+			#{bi_name}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE `tbl_board_info`
+		SET
+			`bi_name` = #{bi_name},
+			`bi_enabled` = #{bi_enabled}
+		WHERE `bi_id` = #{bi_id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM tbl_board_info
+		WHERE bi_id = #{bi_id}
+	</delete>
+
+</mapper>

@@ -18,7 +18,8 @@ import lombok.ToString;
 public class BoardInfoVO {
 	
 	private long bi_id;//	BIGINT		PRIMARY KEY	AUTO_INCREMENT
-	private String bi_name;//	VARCHAR(20)	NOT NULL
+	private String bi_name;//	VARCHAR(100)	NOT NULL
+	private boolean bi_enabled;
 		
 	private List<CategoryVO> bi_category;
 	private List<BoardVO> bi_board_list;

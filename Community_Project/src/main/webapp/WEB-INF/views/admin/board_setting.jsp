@@ -40,7 +40,7 @@
 			$.ajax({
 				url: "${rootPath}/admin/board_setting_details",
 				type: "GET",
-				data: { board_info : $(this).data("id") },
+				data: { bi_id : $(this).data("id") },
 				success: function(result) {
 					$("#admin_content").html(result)
 				},

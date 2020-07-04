@@ -152,7 +152,7 @@ public class CommentServiceImpl implements CommentService {
 		}
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
 		commentVO.setCmt_delete(1);
-		cmtDao.update_delete(commentVO);
+		cmtDao.updateDelete(commentVO);
 		
 		return result;
 	}

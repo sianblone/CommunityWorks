@@ -19,13 +19,6 @@
 		FROM tbl_users as a JOIN tbl_users as b
 		ON a.username = b.username
 	</select>
-
-	<select id="findById" resultMap="userDetailsRM">
-		SELECT a.*, YEAR(b.birth) as year, MONTH(b.birth) as month, DAY(b.birth) as day
-		FROM tbl_users as a JOIN tbl_users as b
-		ON a.username = b.username
-		WHERE a.username = #{username}
-	</select>
 	
 	<select id="findByUsername" resultMap="userDetailsRM">
 		SELECT a.*, YEAR(b.birth) as year, MONTH(b.birth) as month, DAY(b.birth) as day
@@ -58,23 +51,34 @@
 		)
 	</insert>
 	
-	<update id="update_user">
+	<update id="updateUserFromAdmin">
 		UPDATE `tbl_users`
 		SET
-		`nickname` = #{nickname},
-		`phone` = #{phone},
-		`birth` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
+			`enabled` = #{enabled},
+			`email` = #{email},
+			`nickname` = #{nickname},
+			`phone` = #{phone},
+			`birth` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
 		WHERE `username` = #{username}
 	</update>
 	
-	<update id="update_pw">
+	<update id="updateUser">
 		UPDATE `tbl_users`
 		SET
-		`password` = #{password}
+			`nickname` = #{nickname},
+			`phone` = #{phone},
+			`birth` = CONCAT( #{year}, '-', #{month}, '-', #{day} )
 		WHERE `username` = #{username}
 	</update>
 	
-	<update id="update_email">
+	<update id="updatePw">
+		UPDATE `tbl_users`
+		SET
+			`password` = #{password}
+		WHERE `username` = #{username}
+	</update>
+	
+	<update id="updateEmail">
 		UPDATE `tbl_users`
 		SET
 		`email` = #{email}

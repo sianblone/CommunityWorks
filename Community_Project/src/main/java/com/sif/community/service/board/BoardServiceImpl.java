@@ -16,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.BoardDao;
-import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.BoardVO;
-import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationDTO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.itf.BoardService;
@@ -78,29 +76,6 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public BoardVO findByBoardNo(long board_no) {
 		return boardDao.findByBoardNo(board_no);
-	}
-	
-	@Override
-	public List<CategoryVO> selectCategoryByBoard(BoardVO boardOptionVO) {
-		return boardDao.selectCategoryByBoard(boardOptionVO);
-	}
-	
-	@Override
-	public List<BoardInfoVO> selectMainPage() {
-		int limit_value = 5;
-		PaginationDTO pageDTO = pageSvc.findByBoardInfo(null, "main");
-		if(pageDTO != null) limit_value = pageDTO.getPage_data_cnt();
-		return boardDao.selectMainPage(limit_value);
-	}
-	
-	@Override
-	public List<BoardInfoVO> selectAllBoardInfo() {
-		return boardDao.selectAllBoardInfo();
-	}
-	
-	@Override
-	public BoardInfoVO findByBoardInfo(long board_info) {
-		return boardDao.findByBoardInfo(board_info);
 	}
 	
 	@Transactional
@@ -203,7 +178,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
 		boardVO.setBoard_delete(1);
-		result = boardDao.update_delete(boardVO);
+		result = boardDao.updateDelete(boardVO);
 		
 		return result;
 	}
@@ -227,7 +202,7 @@ public class BoardServiceImpl implements BoardService {
 		if(command.equals("restore")) {
 			// 글 복구 클릭
 			boardVO.setBoard_delete(0);
-			result = boardDao.update_delete(boardVO);
+			result = boardDao.updateDelete(boardVO);
 		} else if(command.equals("delete")) {
 			// 글 완전삭제 클릭
 			result = boardDao.delete(board_no);

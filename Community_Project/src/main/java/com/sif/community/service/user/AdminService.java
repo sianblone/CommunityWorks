@@ -7,15 +7,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sif.community.dao.AdminDao;
 import com.sif.community.dao.AuthoritiesDao;
-import com.sif.community.dao.BoardDao;
-import com.sif.community.dao.CategoryDao;
 import com.sif.community.dao.UserDao;
 import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.CategoryVO;
 import com.sif.community.model.UserDetailsVO;
+import com.sif.community.service.board.BoardInfoService;
+import com.sif.community.service.board.CategoryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,23 +22,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class AdminService {
 	
-	private final UserDao userDao;
-	private final AdminDao adminDao;
+	private final UserService userSvc;
 	private final AuthoritiesDao authDao;
-	private final BoardDao boardDao;
-	private final CategoryDao cateDao;
+	private final BoardInfoService boardInfoSvc;
+	private final CategoryService cateSvc;
 	
 	// 관리자가 다른 유저 정보 수정하기
 	// 유저 정보 form과 권한 정보 form 값을 가져와서
 	// 유저 정보는 유저 테이블에, 권한은 권한 테이블에 저장하기
 	@Transactional
-	public int update_user_from_admin(UserDetailsVO userVO, String[] arrAuth) {
+	public int updateUserFromAdmin(UserDetailsVO userVO, String[] arrAuth) {
 		int ret = this.valid_update_user_from_admin(userVO);
 		// 유효성 검사 통과 실패 시 유효성 검사 결과값 바로 리턴
 		if(ret < 0) return ret;
 		
 		// DB의 유저 정보 불러오기
-		UserDetailsVO dbUserVO = userDao.findByUsername(userVO.getUsername());
+		UserDetailsVO dbUserVO = userSvc.findByUsername(userVO.getUsername());
 		
 		// 기존의 유저정보에 form에서 입력받은 정보 새로 세팅하기
 		// 계정활성여부, 닉네임, 이메일, 핸드폰, 생년, 생월, 생일
@@ -52,7 +50,7 @@ public class AdminService {
 		dbUserVO.setMonth(userVO.getMonth());
 		dbUserVO.setDay(userVO.getDay());
 		
-		ret = adminDao.update_user_from_admin(dbUserVO);
+		ret = userSvc.updateUserFromAdmin(dbUserVO);
 		
 		// 업데이트 성공 시 권한 테이블 업데이트
 		if(ret > 0) {
@@ -85,7 +83,7 @@ public class AdminService {
 		} else if( !this.dateCheck(birth) ) {
 			// 생년월일 유효성 검사
 			result = -103;
-		} else if(userDao.findByUsername(userVO.getUsername()) == null) {
+		} else if(userSvc.findByUsername(userVO.getUsername()) == null) {
 			// DB에 존재하는 아이디인지 검사
 			result = -200;
 		}
@@ -105,20 +103,20 @@ public class AdminService {
 	}
 
 	public int create_board(BoardInfoVO boardInfoVO) {
-		return adminDao.create_board(boardInfoVO);
+		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
 	@Transactional
-	public int update_tbl_board_info(BoardInfoVO boardInfoOptionVO, CategoryVO categoryOptionVO) {
-		// boardInfoOptionVO에는 게시판 ID(bi_id)와 게시판 이름(bi_name)이 들어있다
+	public int update_tbl_board_info(BoardInfoVO boardInfoVO, CategoryVO categoryOptionVO) {
+		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled가 들어있다
 		// categoryOptionVO에는 카테고리 목록이 들어있다
 		
 		// DB의 게시판 정보(tbl_board_info) 불러오기
-		BoardInfoVO dbBoardInfoVO = boardDao.findByBoardInfo(boardInfoOptionVO.getBi_id());
+		BoardInfoVO dbBoardInfoVO = boardInfoSvc.findByBiId(boardInfoVO.getBi_id());
 		
 		// 유효성 검사 시작
-		if(boardInfoOptionVO.getBi_name().length() > 20) {
-			// 게시판 이름이 20글자를 초과하는 경우
+		if(boardInfoVO.getBi_name().length() > 100) {
+			// 게시판 이름이 100글자를 초과하는 경우
 			return -100;
 		} else if(dbBoardInfoVO == null) {
 			// DB에 게시판 ID가 존재하지 않는 경우
@@ -126,9 +124,10 @@ public class AdminService {
 		}
 		
 		// 유효성 검사 통과 시 
-		// 기존의 게시판 정보에 form에서 입력받은 정보(게시판 이름) 새로 세팅하기
-		dbBoardInfoVO.setBi_name(boardInfoOptionVO.getBi_name());
-		int ret = adminDao.update_tbl_board_info(dbBoardInfoVO);
+		// 기존의 게시판 정보에 form에서 입력받은 정보(게시판 이름, 활성여부) 새로 세팅하기
+		dbBoardInfoVO.setBi_name(boardInfoVO.getBi_name());
+		dbBoardInfoVO.setBi_enabled(boardInfoVO.isBi_enabled());
+		int ret = boardInfoSvc.update(dbBoardInfoVO);
 		
 		// 업데이트 성공 시 카테고리 테이블 업데이트
 		if(ret > 0) {
@@ -160,11 +159,11 @@ public class AdminService {
 								.cate_bi_id(dbBoardInfoVO.getBi_id())
 								.cate_text(cate_text)
 								.build();
-						cateDao.update(categoryVO);
+						cateSvc.update(categoryVO);
 					}
 					
 				}
-				if(categoryList.size() > 0) cateDao.insert(categoryList);
+				if(categoryList.size() > 0) cateSvc.insert(categoryList);
 			}
 			
 		}
@@ -173,7 +172,7 @@ public class AdminService {
 	}
 
 	public int delete_category(long cate_id) {
-		return cateDao.delete(cate_id);
+		return cateSvc.delete(cate_id);
 	}
 
 }

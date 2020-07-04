@@ -16,7 +16,7 @@ public interface CommentDao {
 	
 	public int insert(CommentVO commentVO);
 	public int update(CommentVO commentVO);
-	public int update_delete(CommentVO commentVO);
+	public int updateDelete(CommentVO commentVO);
 	public int delete(long comment_no);
 	
 

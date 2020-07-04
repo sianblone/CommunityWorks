@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS tbl_board (
 	board_subject	VARCHAR(125)	NOT NULL,
 	board_content	TEXT	NOT NULL,
 	board_count	BIGINT			DEFAULT 0,
-	board_filename	VARCHAR(256),
+	board_filename	VARCHAR(260),
 	board_delete	TINYINT	NOT NULL		DEFAULT 0,
 	board_recommend	BIGINT	NOT NULL		DEFAULT 0,
 	board_category	INT,
