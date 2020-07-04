@@ -5,18 +5,14 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sif.community.dao.CommentDao;
-import com.sif.community.model.BoardVO;
 import com.sif.community.model.CommentVO;
 import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.CommentService;
-import com.sif.util.SpringSecurityUtil;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +30,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 count하기
-		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if(SpSec.isAdmin()) {
 			isAdmin = true;
 		}
 		dataCount = cmtDao.countAll(commentVO, isAdmin);
@@ -48,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 		
 		boolean isAdmin = false;
 		// 현재 사용자가 관리자 권한을 가지고 있을 때 delete = 1인 게시물도 리스트에 보여주기
-		if(SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if(SpSec.isAdmin()) {
 			isAdmin = true;
 		}
 		cmtList = cmtDao.selectAllByPage(commentVO, pageDTO, isAdmin);
@@ -80,8 +76,7 @@ public class CommentServiceImpl implements CommentService {
 			
 			// 1-2. 게시글번호로 검색한 데이터가 DB에 있는 경우
 			// 로그인한 사용자가 댓글 작성자거나 관리자면 댓글 수정
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			if(auth.getName().equals(commentVO.getCmt_writer()) || auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+			if(SpSec.username().equals(commentVO.getCmt_writer()) || SpSec.isAdmin()) {
 				dbCommentVO.setCmt_content(commentVO.getCmt_content());
 				result = cmtDao.update(dbCommentVO);
 			}
@@ -121,9 +116,9 @@ public class CommentServiceImpl implements CommentService {
 	
 	protected CommentVO saveSetting(CommentVO commentVO) {
 		// 로그인한 경우 작성자 이름을 로그인한 사용자 이름으로 세팅
-		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
+		boolean isLoggedIn = SpSec.isLoggedIn();
 		if(isLoggedIn) {
-			commentVO.setCmt_writer(SecurityContextHolder.getContext().getAuthentication().getName());
+			commentVO.setCmt_writer(SpSec.username());
 		}
 		
 		// 날짜+시간 세팅
@@ -145,9 +140,8 @@ public class CommentServiceImpl implements CommentService {
 			return -100;
 		}
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		// 현재 삭제 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자가 아니고 관리자도 아니면 에러 페이지 보여주기
-		if(!auth.getName().equals(commentVO.getCmt_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if(!SpSec.username().equals(commentVO.getCmt_writer()) && !SpSec.isAdmin()) {
 			return -200;
 		}
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제

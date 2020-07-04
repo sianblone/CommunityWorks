@@ -6,7 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.user.UserService;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,8 +44,7 @@ public class UserController {
 	@RequestMapping(value = "/mypage", method=RequestMethod.GET)
 	public String mypage(Model model) {
 		// 현재 로그인 된 SecurityContextHolder의 사용자 ID로 DB 조회하기
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		UserDetailsVO userVO = userSvc.findByUsername(username);
+		UserDetailsVO userVO = userSvc.findByUsername(SpSec.username());
 		
 		model.addAttribute("loginVO", userVO);
 		

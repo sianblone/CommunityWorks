@@ -4,9 +4,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import com.sif.community.dao.BoardDao;
 import com.sif.community.model.BoardVO;
 
@@ -22,8 +19,7 @@ public class CookieUtil {
 	public static int boardCookie(HttpServletRequest request, HttpServletResponse response, BoardVO boardOptionVO, BoardDao boardDao, String addName) {
 		int result = 0;
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
+		String username = SpSec.username();
 		// 체크할 쿠키 이름 생성
 		String cookieName = "cmnt200630_boardNo_" + boardOptionVO.getBoard_no();
 		String cookieNameUsername = "cmnt200630_boardNo_" + boardOptionVO.getBoard_no() + "_username_" + username;
@@ -33,7 +29,7 @@ public class CookieUtil {
 			cookieNameUsername += "_" + addName;
 		}
 		
-		boolean isLoggedIn = SpringSecurityUtil.isLoggedIn();
+		boolean isLoggedIn = SpSec.isLoggedIn();
 		log.debug("isLoggedIn === " + isLoggedIn);
 		boolean isAlreadyChecked = false;
 		Cookie[] reqCookies = request.getCookies();

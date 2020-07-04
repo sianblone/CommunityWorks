@@ -22,6 +22,7 @@ import com.sif.community.model.AuthorityVO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.user.itf.SendService;
 import com.sif.util.PbeEncryptor;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 
@@ -61,7 +62,7 @@ public class UserService {
 	}
 	
 	public int updateUserFromAdmin(UserDetailsVO userVO) {
-		boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		boolean isAdmin = SpSec.isAdmin();
 		
 		if(isAdmin) {
 			return userDao.updateUserFromAdmin(userVO);
@@ -73,7 +74,8 @@ public class UserService {
 	// 로그인 한 유저가 자기 정보 수정하기
 	@Transactional
 	public int updateUser(UserDetailsVO userVO) {
-		// 유저 정보는 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
+		// SecurityContextHolder는 Spring Security로 로그인 시에만 발급되며 유저 정보가 수정되더라도 자동으로 갱신되지 않는다
+		// 따라서 유저 정보가 수정될 때마다 SecurityContextHolder의 토큰을 갱신해주어야 한다
 		
 		// SecurityContextHolder에서 인증정보 가져오기
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -148,7 +150,7 @@ public class UserService {
 	
 	@Transactional
 	public boolean check_pw(String password) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		String username = SpSec.username();
 		String loginPW = userDao.findByUsername(username).getPassword();
 		// 현재 로그인한 사용자의 암호화된 DB 비밀번호와 입력된 password와 비교
 		boolean ret = bcryptEncoder.matches(password, loginPW);

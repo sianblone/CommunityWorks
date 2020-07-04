@@ -6,9 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +21,7 @@ import com.sif.community.service.board.CategoryService;
 import com.sif.community.service.board.FileService;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -73,16 +71,15 @@ public class BoardController {
 	@RequestMapping(value="/details", method=RequestMethod.GET)
 	public String details(BoardVO boardOptionVO, Model model, HttpServletRequest request, HttpServletResponse response) {
 		BoardVO boardVO = boardSvc.findByBoardNo(boardOptionVO.getBoard_no());
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		
 		// 현재 로그인한 사용자가 관리자가 아닐 때 delete 값이 1인 게시물 열람 불가
-		if(!auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) && boardVO.getBoard_delete() == 1) {
+		if(!SpSec.isAdmin() && boardVO.getBoard_delete() == 1) {
 			return "board/error";
 		}
 		
 		// 현재 로그인한 사용자가 작성자거나 로그인한 사용자 권한이 ADMIN일 때 글 수정, 삭제 가능
-		if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) boardVO.setViewerAdmin(true);
-		if( boardVO.getBoard_writer().equals(auth.getName()) ) boardVO.setViewerWriter(true);
+		if( SpSec.isAdmin() ) boardVO.setViewerAdmin(true);
+		if( boardVO.getBoard_writer().equals(SpSec.username()) ) boardVO.setViewerWriter(true);
 		
 		// 조회수 증가 (쿠키를 이용한 중복체크)
 		int result = boardSvc.updateBoardCount(boardOptionVO, request, response);
@@ -128,9 +125,8 @@ public class BoardController {
 		}
 		
 		// DB에 board_no로 검색한 데이터가 있으면(이미 있는 글이면) 수정하기	
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		// 현재 수정 버튼을 누른 사용자(로그인한 사용자)가 게시글 작성자가 아니고 관리자도 아니면 에러 페이지 보여주기
-		if(!auth.getName().equals(boardVO.getBoard_writer()) && !auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+		if(!SpSec.username().equals(boardVO.getBoard_writer()) && !SpSec.isAdmin()) {
 			return "board/error";
 		}
 		

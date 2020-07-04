@@ -3,9 +3,6 @@ package com.sif.community.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +14,7 @@ import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.BoardService;
 import com.sif.community.service.board.itf.CommentService;
 import com.sif.community.service.board.itf.PaginationService;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -114,11 +112,10 @@ public class CommentController {
 		// 댓글 내용 view로 보내주기
 		List<CommentVO> commentList = cmtSvc.selectAllByPage(cmtOptionVO, pageDTO);
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		for(CommentVO cmtVO : commentList) {
 			// 로그인한 사용자가 작성자거나 관리자일 때 댓글 수정, 삭제 가능하도록 설정
-			if( cmtVO.getCmt_writer().equals(auth.getName()) ) cmtVO.setViewerWriter(true);
-			if( auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN")) ) cmtVO.setViewerAdmin(true);
+			if( cmtVO.getCmt_writer().equals(SpSec.username()) ) cmtVO.setViewerWriter(true);
+			if( SpSec.isAdmin() ) cmtVO.setViewerAdmin(true);
 		}
 		
 		model.addAttribute("CMT_LIST", commentList);
