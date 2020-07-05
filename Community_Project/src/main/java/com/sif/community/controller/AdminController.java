@@ -2,8 +2,6 @@ package com.sif.community.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +17,6 @@ import com.sif.community.service.board.BoardInfoService;
 import com.sif.community.service.board.itf.PaginationService;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
-import com.sif.util.ProjectUtil;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +29,6 @@ public class AdminController {
 	
 	private final UserService userSvc;
 	private final AdminService adminSvc;
-	private final PaginationService pageSvc;
 	private final BoardInfoService boardInfoSvc;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)

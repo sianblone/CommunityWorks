@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.user.JoinService;
 import com.sif.community.service.user.UserService;
+import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,8 @@ public class JoinController {
 	// 회원가입 화면 보여주기
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String join(UserDetailsVO userVO, Model model) {
+		// 로그인한 사용자가 접근하면 메인페이지로 보내기
+		if(SpSec.isLoggedIn()) return "redirect:/";
 		//return "user/join";
 		return "user/join_test";
 	}

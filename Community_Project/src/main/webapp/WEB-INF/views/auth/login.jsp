@@ -60,6 +60,8 @@
 	</style>
 	<script>
 		$(function() {
+			$("#username").focus()
+			
 			$(document).on("click", "#btn_join", function() {
 				document.location.href = "${rootPath}/join"
 			})

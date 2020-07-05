@@ -191,8 +191,6 @@
 		<section class="cmt_list">
 			<%@ include file="/WEB-INF/views/comment/comment_list.jsp" %>
 		</section>
-		
-		<%@ include file="/WEB-INF/views/comment/comment_write.jsp" %>
 	</main>
 	<%@ include file="/WEB-INF/views/include/context_menu.jsp" %>
 	<%@ include file="/WEB-INF/views/include/include_footer.jsp" %>

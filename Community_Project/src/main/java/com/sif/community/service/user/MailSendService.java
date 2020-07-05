@@ -54,7 +54,7 @@ public class MailSendService implements SendService {
 		return ret;
 	}
 	/**
-	 * 회원가입 한 사용자에게 인증 email 발송
+	 * 회원가입한 사용자에게 인증 email 발송
 	 * username을 암호화시켜서 인증을 수행할 수 있는 링크를 email 본문에 작성하여 전송
 	 * @param userVO
 	 * @return

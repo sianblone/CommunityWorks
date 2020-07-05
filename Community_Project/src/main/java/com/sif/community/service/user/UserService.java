@@ -71,7 +71,7 @@ public class UserService {
 		}
 	}
 	
-	// 로그인 한 유저가 자기 정보 수정하기
+	// 로그인한 유저가 자기 정보 수정하기
 	@Transactional
 	public int updateUser(UserDetailsVO userVO) {
 		// SecurityContextHolder는 Spring Security로 로그인 시에만 발급되며 유저 정보가 수정되더라도 자동으로 갱신되지 않는다
@@ -277,7 +277,7 @@ public class UserService {
 		
 		// 페이지 인증코드 복호화
 		String dec_code = PbeEncryptor.decrypt(enc_auth_code);
-		// 현재 로그인 한 유저 아이디 가져오고 form에서 받은 이메일 세팅하기
+		// 현재 로그인한 유저 아이디 가져오고 form에서 받은 이메일 세팅하기
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
 		UserDetailsVO userVO = userDao.findByUsername(username);

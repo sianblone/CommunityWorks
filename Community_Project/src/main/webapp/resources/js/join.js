@@ -1,6 +1,6 @@
 $(function() {
 	
-let enable_btn_join = true
+	let enable_btn_join = true
 	
 	function isEmail(email) {
 		let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
@@ -75,6 +75,8 @@ let enable_btn_join = true
 	}
 	
 	// ----------------------------------------------------------
+	
+	$("#username").focus()
 	
 	$(document).on("click", "#btn_join", function() {
 		if(!enable_btn_join) return false
