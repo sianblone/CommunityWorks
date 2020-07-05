@@ -72,14 +72,14 @@ public class CommentController {
 	
 	// 댓글 삭제 시 사용할 메소드
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
-	public String delete(long cmt_no, Integer pageNo, Model model) {
+	public String delete(long cmt_no, long cmt_board_no, Integer pageNo, Model model) {
 		String render = "";
 		int result = cmtSvc.delete(cmt_no);
 		
 		if(result == -100 || result == -200) {
 			render = "comment/cmt_error";
 		} else {
-			render = "redirect:/comment/list?cmt_board_no=" + cmt_no;
+			render = "redirect:/comment/list?cmt_board_no=" + cmt_board_no;
 			if(pageNo != null) render += "&pageNo=" + pageNo;
 		}
 		return render;

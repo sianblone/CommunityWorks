@@ -31,16 +31,24 @@
 		flex-direction: column;
 	}
 	.cmt_item_group:first-child {
-		width: 15%;
+		width: 17%;
 	}
 	.cmt_item_group:nth-child(2) {
-		width: 70%;
+		width: 83%;
 	}
-	.cmt_item_group:last-child {
-		width: 8%;
-		text-align: center;
+	
+	.cmt_item_btn_box {
+		margin: 5px 10px 10px 10px;
+		text-align: right;
 	}
-	.depth-1 {
+	.cmt_item_btn_box button {
+		padding: 0.2rem 0.5rem;
+	}
+	.btn_cmt_delete {
+		color: red;
+	}
+	
+	.depth1 {
 		margin-left: 20px;
 	}
 	.cmt_parent_writer {
@@ -48,15 +56,6 @@
 	}
 	.cmt_datetime {
 		font-size: 11px;
-	}
-	.btn_cmt_reply, .btn_cmt_delete {
-		cursor: pointer;
-	}
-	.btn_cmt_reply:hover, .btn_cmt_delete:hover {
-		text-decoration: underline;
-	}
-	.btn_cmt_delete {
-		color: red;
 	}
 	.deleted {
 		color: gray;
@@ -73,6 +72,8 @@
 <script>
 	$(function() {
 		let enable_btn_cmt_reply_save = true
+		let enable_btn_cmt_delete = true
+		let enable_btn_cmt_edit = true
 		
 		$(document).off("click", ".btn_cmt_reply").on("click", ".btn_cmt_reply", function() {
 			let cmt_write_reply = $(this).closest(".cmt_list_item").find(".cmt_reply").find(".cmt_write_reply")
@@ -126,16 +127,24 @@
 		})
 		
 		$(document).off("click", ".btn_cmt_delete").on("click", ".btn_cmt_delete", function() {
+			if(!enable_btn_cmt_delete) return false
+			
 			if(confirm("정말 삭제하시겠습니까?")) {
-				let cmt_no = $(this).closest(".cmt_item_box").attr("data-id")
+				let cmt_no = $(this).closest(".cmt_list_item").attr("data-id")
+				let cmt_board_no = $(this).closest(".cmt_list_item").attr("data-cmt-board")
+				
 				$.ajax({
 					url: "${rootPath}/comment/delete",
 					type: "POST",
 					beforeSend: function(ajx) {
 						ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_cmt_delete = false
+						$("body").css("cursor", "progress")
 					},
 					data: {
 						cmt_no: cmt_no,
+						cmt_board_no: cmt_board_no,
 						pageNo: "${PAGE_DTO.pageNo}"
 					},
 					success: function(result) {
@@ -144,6 +153,9 @@
 					error: function(error) {
 						alert("서버 통신 오류")
 					}
+				}).always(function() {
+					enable_btn_cmt_delete = true
+					$("body").css("cursor", "default")
 				})
 			}
 		})
@@ -154,10 +166,10 @@
 	댓글<span class="cmt_count"> ${CMT_TOTAL}</span>
 </article>
 <c:forEach items="${CMT_LIST}" var="C">
-	<article class="cmt_list_item">
-		<section class="cmt_item_box context_parent<c:if test="${C.cmt_delete == 1}"> deleted</c:if>" data-id="${C.cmt_no}" data-nickname="${C.cmt_nickname}">
+	<article class="cmt_list_item context_parent" data-id="${C.cmt_no}" data-cmt-board="${C.cmt_board_no}" data-nickname="${C.cmt_nickname}">
+		<section class="cmt_item_box<c:if test="${C.cmt_delete == 1}"> deleted</c:if>">
 			<div class="cmt_item_group">
-				<div class="cmt_writer_box<c:if test="${C.cmt_depth > 0}"> depth-1</c:if>">
+				<div class="cmt_writer_box<c:if test="${C.cmt_depth > 0}"> depth1</c:if>">
 					<span class="use_context context_nickname">${C.cmt_nickname}</span>
 					<span class="cmt_datetime">${C.cmt_custom_full_datetime}</span>
 				</div>
@@ -167,14 +179,15 @@
 				<span><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 1}"><span
 				class="cmt_parent_writer">[${C.cmt_parent_writer}] </span></c:if>${C.cmt_content}</span>
 			</div>
-			
-			<div class="cmt_item_group">
-				<c:choose>
-					<c:when test="${C.viewerAdmin || C.viewerWriter}"><span class="btn_cmt_delete">&times;</span></c:when>
-					<c:otherwise><span>&#8203;</span></c:otherwise>
-				</c:choose>
-				<span class="btn_cmt_reply">[답글]</span>
-			</div>
+		</section>
+		
+		<section class="cmt_item_btn_box">
+			<c:choose>
+				<c:when test="${C.viewerAdmin || C.viewerWriter}"><button
+				class="btn_cmt_delete btn_red">&times;</button></c:when><c:otherwise></c:otherwise>
+			</c:choose>
+			<button class="btn_cmt_edit btn_blue">수정</button>
+			<button class="btn_cmt_reply btn_blue">답글</button>
 		</section>
 		
 		<section class="cmt_reply">
