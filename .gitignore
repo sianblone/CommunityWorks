@@ -1,6 +1,7 @@
 target/
 Servers/
 RemoteSystemsTempFiles/
+logs/
 
 # mySecurity File
 
