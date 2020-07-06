@@ -16,7 +16,7 @@
 	<select id="selectAllByPage" resultType="commentVO">
 		SELECT
 			c.cmt_no, c.cmt_board_no, c.cmt_p_no, c.cmt_group, c.cmt_order, c.cmt_depth, c.cmt_writer, c.cmt_datetime, c.cmt_content, c.cmt_delete, c.cmt_recommend,
-			u.nickname AS cmt_nickname, cp.cmt_writer AS cmt_parent_writer
+			u.nickname AS cmt_nickname, cp.cmt_writer AS cmt_parent_writer, up.nickname AS cmt_parent_nickname
 		FROM tbl_comment c
 		LEFT JOIN tbl_users u
 		ON
@@ -24,6 +24,9 @@
 		LEFT JOIN tbl_comment cp
 		ON
 			c.cmt_p_no = cp.cmt_no
+		LEFT JOIN tbl_users up
+		ON
+			cp.cmt_writer = up.username
 		WHERE
 			c.cmt_board_no = #{commentVO.cmt_board_no}
 			<if test="!isAdmin">

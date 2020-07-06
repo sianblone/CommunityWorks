@@ -51,11 +51,12 @@ public class AdminController {
 		return "admin/user_details";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value="/user_details", method=RequestMethod.POST)
-	public String mypage(UserDetailsVO userVO, String[] auth) {
-		int ret = adminSvc.updateUserFromAdmin(userVO, auth);
+	public int mypage(UserDetailsVO userVO, String[] auth) {
+		int result = adminSvc.updateUserFromAdmin(userVO, auth);
 		
-		return "redirect:/admin/user_details/" + userVO.getUsername();
+		return result;
 	}
 	
 	// 게시판 리스트

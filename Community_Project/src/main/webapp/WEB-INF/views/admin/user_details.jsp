@@ -168,11 +168,6 @@
 				return false
 			}
 			
-			// 유효성 검사 통과 시
-			// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-			enable_btn_edit = false
-			$("body").css("cursor", "wait")
-			
 			let formData = $("#user_details_form").serialize()
 			formData += "&username=" + $("#btn_edit").data("id")
 			
@@ -180,6 +175,11 @@
 				url : "${rootPath}/admin/user_details",
 				type : "POST",
 				data : formData,
+				beforeSend: function(ajx) {
+					// 유효성 검사 통과 시
+					// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+					enable_btn_edit = false
+				},
 				success : function(result) {
 					if(result == -102) {
 						alert("이메일을 정확히 입력하세요.")
@@ -188,7 +188,6 @@
 					} else if(result == -200) {
 						alert("등록되지 않은 아이디입니다.")
 					} else if(result > 0) {
-						$("#admin_content").html(result)
 						alert("변경사항이 저장되었습니다.")
 					}
 				},
@@ -197,7 +196,6 @@
 				}
 			}).always(function() {
 				enable_btn_edit = true
-				$("body").css("cursor", "default")
 			})
 		})
 		
@@ -281,7 +279,7 @@
 	</div>
 	
 	<div class="btn_box">
-		<button id="btn_edit" type="button" data-id="${USER_VO.username}">수정</button>
+		<button id="btn_edit" class="m10px" type="button" data-id="${USER_VO.username}">수정</button>
 	</div>
 	
 </form:form>

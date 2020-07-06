@@ -111,17 +111,17 @@ public class AdminService {
 		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
-	protected int savePagination(PaginationDTO pageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
+	protected int savePagination(PaginationDTO dbPageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
 		int result = 0;
-		if(pageDTO == null) {
-			// pageDTO가 없으면 insert
-			pageDTO = new PaginationDTO();
-			this.setPaginationDTO(pageDTO, bi_id, data_cnt, page_range, page_location);
-			result = pageSvc.insert(pageDTO);
+		if(dbPageDTO == null) {
+			// dbPageDTO가 없으면 insert
+			dbPageDTO = new PaginationDTO();
+			this.setPaginationDTO(dbPageDTO, bi_id, data_cnt, page_range, page_location);
+			result = pageSvc.insert(dbPageDTO);
 		} else {
-			// pageDTO가 있으면 update
-			this.setPaginationDTO(pageDTO, bi_id, data_cnt, page_range, page_location);
-			result = pageSvc.update(pageDTO);
+			// dbPageDTO가 있으면 update
+			this.setPaginationDTO(dbPageDTO, bi_id, data_cnt, page_range, page_location);
+			result = pageSvc.update(dbPageDTO);
 		}
 		
 		return result;
@@ -140,8 +140,7 @@ public class AdminService {
 		if(pageDTO == null) pageDTO = new PaginationDTO();
 		
 		// 관리자 페이지 메인페이지 설정에서 사용할 변수 세팅
-		int data_cnt = pageDTO.getPage_data_cnt() == 0 ? 5 : pageDTO.getPage_data_cnt();
-		pageDTO.setData_cnt_main(data_cnt);
+		if(pageDTO.getPage_data_cnt() == 0) pageDTO.setPage_data_cnt(ProjectUtil.PAGE_DEFAULT_LIMIT_VALUE);
 		return pageDTO;
 	}
 	

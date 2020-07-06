@@ -30,9 +30,10 @@ public class BoardInfoService {
 	
 	// 메인 페이지에서 사용할 메소드
 	public List<BoardInfoVO> selectMainPage() {
-		int limit_value = 5;
-		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
-		if(pageDTO != null) limit_value = pageDTO.getPage_data_cnt();
+		int limit_value = ProjectUtil.PAGE_DEFAULT_LIMIT_VALUE;
+		PaginationDTO dbPageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
+		// dbPageDTO가 있으면 limit_value를 db에 있는 값으로 세팅
+		if(dbPageDTO != null) limit_value = dbPageDTO.getPage_data_cnt();
 		return boardInfoDao.selectMainPage(limit_value);
 	}
 	

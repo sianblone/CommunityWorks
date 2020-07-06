@@ -34,7 +34,7 @@
 		font-size: 11px;
 		vertical-align: middle;
 	}
-	tr:not(.deleted) a {
+	tr a {
 		color: black;
 	}
 	tr.deleted a {
@@ -118,7 +118,7 @@
 									test='${not empty param.pageNo}'>&pageNo=${param.pageNo}</c:if>"><c:if
 									test="${B.board_depth > 0}">└<span class="board_p_no">[${B.board_p_no}] </span></c:if><c:if test="${B.board_delete == 1}">[삭제됨] </c:if><c:if
 									test="${B.board_cate_text != null}">[${B.board_cate_text}] </c:if>${B.board_subject}<c:if
-									test="${B.board_cmt_count > 0}"> [${B.board_cmt_count}]</c:if></a></td>
+									test="${B.board_cmt_count > 0}"> <span class="board_cmt_count">[${B.board_cmt_count}]</span></c:if></a></td>
 									<td class="b_nickname text-center"><span class="use_context context_nickname">${B.board_nickname}</span></td>
 									<td class="b_date text-center">${B.board_custom_datetime}</td>
 									<td class="b_count text-center">${B.board_count}</td>

@@ -102,15 +102,15 @@
 					return false
 				}
 				
-				// 유효성 검사 통과 시
-				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_find_id = false
-				$("body").css("cursor", "wait")
-				
 				$.ajax({
 					url : "${rootPath}/user/find-id",
 					type : "POST",
 					data : $("#find_id_form").serialize(),
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_find_id = false
+					},
 					success : function(result) {
 						if(result == "") {
 							// 백엔드에서 null을 jsp와 렌더링하면 ""를 받게된다
@@ -130,7 +130,6 @@
 					}
 				}).always(function() {
 					enable_btn_find_id = true
-					$("body").css("cursor", "default")
 				})
 			})
 			
@@ -151,15 +150,15 @@
 					return false
 				}
 				
-				// 유효성 검사 통과 시
-				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_find_pw = false
-				$("body").css("cursor", "wait")
-				
 				$.ajax({
 					url : "${rootPath}/user/find-pw",
 					type : "POST",
 					data : $("#find_pw_form").serialize(),
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_find_pw = false
+					},
 					success : function(result) {
 						if(result == 1) {
 							alert("등록되지 않은 아이디입니다.")
@@ -178,7 +177,6 @@
 					}
 				}).always(function() {
 					enable_btn_find_pw = true
-					$("body").css("cursor", "default")
 				})
 			})
 			

@@ -63,7 +63,6 @@
 					beforeSend: function() {
 						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 						enable_btn_page = false
-						$("body").css("cursor", "wait")
 					},
 					success: function(result) {
 						$(".cmt_list").html(result)
@@ -73,7 +72,6 @@
 					}
 				}).always(function() {
 					enable_btn_page = true
-					$("body").css("cursor", "default")
 				})
 			}
 		})
@@ -91,7 +89,6 @@
 				beforeSend: function() {
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_btn_page = false
-					$("body").css("cursor", "wait")
 				},
 				success: function(result) {
 					$(".cmt_list").html(result)
@@ -101,7 +98,6 @@
 				}
 			}).always(function() {
 				enable_btn_page = true
-				$("body").css("cursor", "default")
 			})
 		})
 	})

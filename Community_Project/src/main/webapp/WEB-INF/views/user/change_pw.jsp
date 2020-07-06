@@ -52,10 +52,6 @@
 					return false
 				}
 				
-				// 유효성 검사 통과 시
-				// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_change_pw = false
-				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/change-pw",
@@ -64,6 +60,11 @@
 							"${_csrf.parameterName}" : "${_csrf.token}",
 							password : $("#password").val(),
 							re_password : $("#re_password").val()
+					},
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_change_pw = false
 					},
 					success : function(result) {
 						// 비밀번호 유효성 검사가 true면
@@ -82,7 +83,6 @@
 					}
 				}).always(function() {
 					enable_btn_change_pw = true
-					$("body").css("cursor", "default")
 				})
 			})
 		})

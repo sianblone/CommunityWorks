@@ -39,6 +39,4 @@ public class PaginationDTO {
 	private int page_data_cnt;//	INT	NOT NULL	DEFAULT 10
 	private int page_range;//	INT	NOT NULL	DEFAULT 10
 	
-	private int data_cnt_main;
-
 }

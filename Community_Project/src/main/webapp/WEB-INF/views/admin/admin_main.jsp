@@ -51,14 +51,12 @@
 			if(!enable_btn_main) return false
 			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 			enable_btn_main = false
-			$("body").css("cursor", "wait")
 			
 			$.get("${rootPath}/admin/user_list", function(result) {
 				$("#admin_content").html(result)
 			}).always(function() {
 				// ajax 완료 후 버튼 기능 키기
 				enable_btn_main = true
-				$("body").css("cursor", "default")
 			})
 		})
 		
@@ -67,14 +65,12 @@
 			if(!enable_btn_main) return false
 			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 			enable_btn_main = false
-			$("body").css("cursor", "wait")
 			
 			$.get("${rootPath}/admin/board_setting", function(result) {
 				$("#admin_content").html(result)
 			}).always(function() {
 				// ajax 완료 후 버튼 기능 키기
 				enable_btn_main = true
-				$("body").css("cursor", "default")
 			})
 		})
 		
@@ -83,14 +79,12 @@
 			if(!enable_btn_main) return false
 			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 			enable_btn_main = false
-			$("body").css("cursor", "wait")
 			
 			$.get("${rootPath}/admin/main_page_setting", function(result) {
 				$("#admin_content").html(result)
 			}).always(function() {
 				// ajax 완료 후 버튼 기능 키기
 				enable_btn_main = true
-				$("body").css("cursor", "default")
 			})
 		})
 		

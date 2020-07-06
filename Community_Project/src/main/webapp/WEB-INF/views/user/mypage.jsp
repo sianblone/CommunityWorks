@@ -111,10 +111,6 @@
 					return false
 				}
 				
-				// 유효성 검사 통과 시
-				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_send_email = false
-				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/change-email",
@@ -122,6 +118,11 @@
 					data : {
 						"${_csrf.parameterName}" : "${_csrf.token}",
 						email : email.val()
+					},
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_send_email = false
 					},
 					success : function(result) {
 						if(result == "-102") {
@@ -139,7 +140,6 @@
 					}
 				}).always(function() {
 					enable_btn_send_email = true
-					$("body").css("cursor", "default")
 				})
 				
 			})
@@ -155,10 +155,6 @@
 					return false
 				}
 				
-				// 유효성 검사 통과 시
-				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_auth_code = false
-				$("body").css("cursor", "wait")
 					
 				$.ajax({
 					url : "${rootPath}/user/change-email-auth",
@@ -167,6 +163,11 @@
 						"${_csrf.parameterName}" : "${_csrf.token}",
 						enc_auth_code : $("#encrypted_auth_code").text(),
 						auth_code : $("#auth_code").val()
+					},
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_auth_code = false
 					},
 					success : function(result) {
 						if(result == 1) {
@@ -186,7 +187,6 @@
 					}
 				}).always(function() {
 					enable_btn_auth_code = true
-					$("body").css("cursor", "default")
 				})
 				
 			})
@@ -195,15 +195,16 @@
 				if(!confirm("정말로 수정하시겠습니까?")) return false
 				if(!enable_btn_edit) return false
 				
-				// 유효성 검사 통과 시
-				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-				enable_btn_edit = false
-				$("body").css("cursor", "wait")
 				
 				$.ajax({
 					url : "${rootPath}/user/mypage",
 					method : "POST",
 					data : $("#my_form").serialize(),
+					beforeSend: function(ajx) {
+						// 유효성 검사 통과 시
+						// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+						enable_btn_edit = false
+					},
 					success : function(result) {
 						if(result > 0) {
 							alert("정보가 수정되었습니다.")
@@ -219,7 +220,6 @@
 					}
 				}).always(function() {
 					enable_btn_edit = true
-					$("body").css("cursor", "default")
 				})
 			})
 			

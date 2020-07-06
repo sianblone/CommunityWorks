@@ -59,7 +59,6 @@
 				beforeSend : function() {
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_btn_edit = false
-					$("body").css("cursor", "wait")
 				},
 				success : function(result) {
 					alert("변경사항이 저장되었습니다.")
@@ -70,7 +69,6 @@
 				}
 			}).always(function() {
 				enable_btn_edit = true
-				$("body").css("cursor", "default")
 			})
 			
 		})
@@ -80,12 +78,12 @@
 <form:form id="main_page_setting_form" autocomplete="${FORM_AUTOCOMPLETE}">
 	<input type="hidden"/>
 	<div class="my_form_item">
-		<span class="my_label">메인 페이지 글 수</span>
-		<input id="page_data_cnt" class="my_data" name="page_data_cnt" value="${PAGE_DTO.data_cnt_main}" maxlength="8" type="number"/>
+		<span class="my_label">메인 페이지 게시판에 표시할 최대 글 수</span>
+		<input id="page_data_cnt" class="my_data" name="page_data_cnt" value="${PAGE_DTO.page_data_cnt}" maxlength="8" type="number"/>
 	</div>
 	
 	<div class="btn_box">
-		<button id="btn_edit" type="button">수정</button>
+		<button id="btn_edit" class="m10px" type="button">수정</button>
 	</div>
 	
 </form:form>

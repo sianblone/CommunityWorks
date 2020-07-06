@@ -32,11 +32,12 @@ public class CommentVO {
 	private int cmt_delete;//	TINYINT	NOT NULL		DEFAULT 0
 	private long cmt_recommend;//	BIGINT	NOT NULL		DEFAULT 0
 	
-	private long cmt_bi_id;
-	private String cmt_nickname;
-	private String cmt_custom_datetime;
-	private String cmt_custom_full_datetime;
-	private String cmt_parent_writer;
+	private long cmt_bi_id;// 부모글의 게시판 번호
+	private String cmt_nickname;// 작성자 닉네임
+	private String cmt_custom_datetime;// 댓글 날짜 형식 Ex. yyyy.MM.dd 또는 HH:mm
+	private String cmt_custom_full_datetime;// 댓글 날짜 형식 Ex. yyyy.MM.dd HH:mm:ss
+	private String cmt_parent_writer;// 부모댓글 작성자 ID
+	private String cmt_parent_nickname;// 부모댓글 작성자 닉네임
 	
 	// 댓글 보는 사람이 댓글 작성자 또는 관리자인지 판별
 	private boolean viewerWriter;

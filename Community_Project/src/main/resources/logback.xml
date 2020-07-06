@@ -55,7 +55,7 @@
 	-->
 	
 	<logger name="org.springframework" additivity="false" level="INFO">
-		<appender-ref ref="ROLLING" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 	
 	<logger name="org.mybatis" additivity="false" level="INFO">
@@ -63,7 +63,7 @@
 	</logger>
 	
 	<logger name="com.sif.community.controller" additivity="false" level="DEBUG">
-		<appender-ref ref="ROLLING" />
+		<appender-ref ref="CONSOLE" />
 	</logger>
 
 	<logger name="com.sif.community.service" additivity="false" level="DEBUG">

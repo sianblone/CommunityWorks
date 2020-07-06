@@ -28,6 +28,8 @@
 	}
 	td:last-child {
 		border-right: none;
+	}
+	td:nth-child(5) {
 		padding: 0px;
 	}
 	
@@ -42,6 +44,9 @@
 	.btn_box {
 		text-align: right;
 		margin-top: 15px;
+	}
+	#btn_add_board {
+		margin-right: 12px;
 	}
 </style>
 <script>
@@ -62,7 +67,6 @@
 				beforeSend: function() {
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_board_info = false
-					$("body").css("cursor", "wait")
 				},
 				success: function(result) {
 					$("#admin_content").html(result)
@@ -72,7 +76,6 @@
 				}
 			}).always(function() {
 				enable_board_info = true
-				$("body").css("cursor", "default")
 			})
 		})
 		
@@ -85,7 +88,6 @@
 				beforeSend: function() {
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_btn_add_board = false
-					$("body").css("cursor", "wait")
 				},
 				success: function(result) {
 					$("#admin_content").html(result)
@@ -95,7 +97,6 @@
 				}
 			}).always(function() {
 				enable_btn_add_board = false
-				$("body").css("cursor", "default")
 			})
 		})
 		
@@ -114,7 +115,6 @@
 					ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_btn_change_order = false
-					$("body").css("cursor", "wait")
 				},
 				success: function(result) {
 					$("#admin_content").html(result)
@@ -124,7 +124,6 @@
 				}
 			}).always(function() {
 				enable_btn_change_order = false
-				$("body").css("cursor", "default")
 			})
 			
 			return false
@@ -152,7 +151,7 @@
 		<c:choose>
 			<c:when test="${empty BOARD_INFO_LIST}">
 				<tr>
-					<td colSpan="3">생성된 게시판이 없습니다</td>
+					<td colSpan="5">생성된 게시판이 없습니다</td>
 				</tr>
 			</c:when>
 			<c:otherwise>

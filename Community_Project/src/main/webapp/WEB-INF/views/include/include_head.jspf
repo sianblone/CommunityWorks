@@ -106,6 +106,13 @@
 		opacity: 1;
 	}
 	
+	.mr10px {
+		margin-right: 10px;
+	}
+	.m10px {
+		margin: 10px;
+	}
+	
 	/* input number 화살표 지우기 */
 	/* Chrome, Safari, Edge, Opera */
 	input::-webkit-outer-spin-button,

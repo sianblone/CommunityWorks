@@ -12,11 +12,8 @@
 	</select>
 	
 	<select id="selectMainPage" resultMap="selectMainPageRM">
-		SELECT bi.*, p.page_data_cnt AS data_cnt_main, ${limit_value} as limit_value
+		SELECT bi.*, ${limit_value} as limit_value
 		FROM tbl_board_info bi
-		LEFT JOIN tbl_pagination p
-		ON
-			bi.bi_id = p.page_bi_id AND p.page_location = 'main'
 		WHERE bi_enabled = 1
 		ORDER BY bi_order
 	</select>

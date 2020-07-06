@@ -183,7 +183,6 @@
 				beforeSend : function() {
 					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 					enable_btn_edit_board = false
-					$("body").css("cursor", "wait")
 				},
 				success : function(result) {
 					if(result == -100) {
@@ -202,7 +201,6 @@
 				}
 			}).always(function() {
 				enable_btn_edit_board = true
-				$("body").css("cursor", "default")
 			})
 			
 		})
@@ -222,7 +220,6 @@
 						ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
 						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 						enable_btn_delete_board = false
-						$("body").css("cursor", "wait")
 					},
 					success: function(result) {
 						alert("게시판이 삭제되었습니다.")
@@ -233,7 +230,6 @@
 					}
 				}).always(function() {
 				enable_btn_delete_board = true
-				$("body").css("cursor", "default")
 			})
 			}
 		})
@@ -301,8 +297,8 @@
 	</div>
 	
 	<div class="btn_box">
-		<button id="btn_delete_board" class="btn_red" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
-		<button id="btn_edit_board" type="button">수정</button>
+		<button id="btn_delete_board" class="btn_red m10px" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
+		<button id="btn_edit_board" class="m10px" type="button">수정</button>
 	</div>
 	
 </form:form>

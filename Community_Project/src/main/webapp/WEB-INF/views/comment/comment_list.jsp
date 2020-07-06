@@ -173,7 +173,7 @@
 			return false
 		})
 		
-		// 댓글 답글 등록 버튼
+		// 대댓글/수정 등록 버튼
 		$(document).off("click", ".btn_cmt_save").on("click", ".btn_cmt_save", function() {
 			if(!enable_btn_cmt_save) return false
 			
@@ -193,15 +193,16 @@
 				return false
 			}
 			
-			// 유효성 검사 통과 시
-			// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-			enable_btn_cmt_save = false
-			$("body").css("cursor", "progress")
 			
 			$.ajax({
 				url: "${rootPath}/comment/save",
 				type: "POST",
 				data: cmt_form.serialize(),
+				beforeSend: function(ajx) {
+					// 유효성 검사 통과 시
+					// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+					enable_btn_cmt_save = false
+				},
 				success: function(result) {
 					cmt_form.find(".cmt_content").val("")
 					$(".cmt_list").html(result)
@@ -211,11 +212,10 @@
 				}
 			}).always(function() {
 				enable_btn_cmt_save = true
-				$("body").css("cursor", "default")
 			})
 		})
 		
-		$(document).on("click", ".cmt_content_unauth", function() {
+		$(document).off("click", ".cmt_content_unauth").on("click", ".cmt_content_unauth", function() {
 			if(confirm("로그인하시겠습니까?")) {
 				document.location.href = "${rootPath}/user/login"
 			}
@@ -235,7 +235,6 @@
 						ajx.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
 						// 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
 						enable_btn_cmt_delete = false
-						$("body").css("cursor", "progress")
 					},
 					data: {
 						cmt_no: cmt_no,
@@ -250,7 +249,6 @@
 					}
 				}).always(function() {
 					enable_btn_cmt_delete = true
-					$("body").css("cursor", "default")
 				})
 			}
 		})
@@ -274,16 +272,15 @@
 				
 				<div class="cmt_item_group">
 					<span><c:if test="${C.cmt_delete == 1}">[삭제됨] </c:if><c:if test="${C.cmt_depth > 1}"><span
-					class="cmt_parent_writer">[${C.cmt_parent_writer}] </span></c:if><span class="cmt_content">${C.cmt_content}</span></span>
+					class="cmt_parent_writer">[${C.cmt_parent_nickname}] </span></c:if><span class="cmt_content">${C.cmt_content}</span></span>
 				</div>
 			</article>
 			
 			<article class="cmt_item_btn_box">
-				<c:choose>
-					<c:when test="${C.viewerAdmin || C.viewerWriter}"><button
-					class="btn_cmt_delete btn_red">&times;</button></c:when><c:otherwise></c:otherwise>
-				</c:choose>
-				<button class="btn_cmt_edit btn_blue">수정</button>
+				<c:if test="${C.viewerAdmin || C.viewerWriter}">
+					<button	class="btn_cmt_delete btn_red">&times;</button>
+					<button class="btn_cmt_edit btn_blue">수정</button>
+				</c:if>
 				<button class="btn_cmt_reply btn_blue">답글</button>
 			</article>
 			

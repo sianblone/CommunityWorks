@@ -84,15 +84,15 @@ $(function() {
 		// 유효성 검사
 		if(regJoin() == false) return false
 		
-		// 유효성 검사 통과 시
-		// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
-		enable_btn_join = false
-		$("body").css("cursor", "wait")
-		
 		$.ajax({
 			url : rootPath + "/join/join",
 			method : "POST",
 			data : $("#join-form").serialize(),
+			beforeSend: function(ajx) {
+				// 유효성 검사 통과 시
+				// 이메일 스팸 및 서버 부하를 줄이기 위해 ajax 완료될 때까지 버튼 기능 끄기
+				enable_btn_join = false
+			},
 			success : function(result) {
 				if(result > 0) {
 					alert("가입을 환영합니다!\n이메일로 발송된 인증 링크를 클릭하세요.")
@@ -116,7 +116,6 @@ $(function() {
 			}
 		}).always(function() {
 			enable_btn_join = true
-			$("body").css("cursor", "default")
 		})
 	})
 	
