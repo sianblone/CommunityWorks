@@ -1,81 +1,5 @@
 $(function() {
 	
-	let enable_btn_join = true
-	
-	function isEmail(email) {
-		let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
-		return regex.test(email)
-	}
-
-	function regId(username) {
-		let regex = /^[a-zA-Z0-9]{4,12}$/
-		return regex.test(username)
-	}
-
-	function regYear(year) {
-		let regex = /^[0-9]{4}$/
-		return regex.test(year)
-	}
-
-	function regMonthOrDay(monthOrDay) {
-		let regex = /^[0-9]{1,2}$/
-		return regex.test(monthOrDay)
-	}
-
-	let username = $("#username")
-	let password = $("#password")
-	let re_password = $("#re_password")
-	let email = $("#email")
-	let year = $("#year")
-	let month = $("#month")
-	let day = $("#day")
-
-	function regJoin() {
-		if(username.val() == "") {
-			alert("아이디를 입력하세요.")
-			username.focus()
-			return false
-		} else if ( !regId(username.val()) ) {
-			alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력하세요.")
-			username.focus()
-			return false
-		} else if (password.val() == "") {
-			alert("비밀번호를 입력하세요.")
-			password.focus()
-			return false
-		} else if (re_password.val() == "") {
-			alert("비밀번호 확인을 입력하세요.")
-			re_password.focus()
-			return false
-		} else if (password.val() != re_password.val()) {
-			alert("비밀번호가 다릅니다.\n다시 확인하세요.")
-			re_password.focus()
-			return false
-		} else if(email.val() == "") {
-			alert("이메일을 입력하세요.")
-			email.focus()
-			return false
-		} else if( !isEmail(email.val()) ) {
-			alert("올바른 형식의 이메일이 아닙니다.")
-			email.focus()
-			return false
-		} else if ( !regYear(year.val()) ) {
-			alert("생년을 정확히 입력하세요.")
-			year.focus()
-			return false
-		} else if ( !regMonthOrDay(month.val()) ) {
-			alert("생월을 정확히 입력하세요.")
-			month.focus()
-			return false
-		} else if ( !regMonthOrDay(day.val()) ) {
-			alert("생일을 정확히 입력하세요.")
-			day.focus()
-			return false
-		}
-	}
-	
-	// ----------------------------------------------------------
-	
 	$("#username").focus()
 	
 	$(document).on("click", "#btn_join", function() {
@@ -127,7 +51,6 @@ $(function() {
 		if( !regId(username) ) {
 			$("#m_username").text("* 아이디는 4~12자의 영문 대소문자와 숫자로만 입력하세요")
 			$("#m_username").css("color", "var(--color-danger)")
-			$(".message").css("display", "block")
 			return false
 		}
 		
@@ -139,17 +62,14 @@ $(function() {
 				if(result) {
 					$("#m_username").text("* 이미 사용중인 ID입니다")
 					$("#m_username").css("color", "var(--color-danger)")
-					$(".message").css("display", "block")
 				} else {
 					$("#m_username").text("* 사용 가능한 ID입니다")
 					$("#m_username").css("color", "var(--color-success)")
-					$(".message").css("display", "block")
 				}
 			},
 			error : function() {
 				$("#m_username").text("* 서버 통신 오류")
 				$("#m_username").css("color", "var(--color-danger)")
-				$(".message").css("display", "block")
 			}
 		})
 	})

@@ -31,10 +31,9 @@
 	}
 	
 	.btn_box button {
-		display: block;
 		width: 120px;
-		padding: 10px;
 		margin-top: 20px;
+		padding: 10px;
 	}
 	
 	#btn_edit {
@@ -83,7 +82,7 @@
 	</div>
 	
 	<div class="btn_box">
-		<button id="btn_edit" class="m10px" type="button">수정</button>
+		<button id="btn_edit" class="btn_confirm mg-10px" type="button">수정</button>
 	</div>
 	
 </form:form>

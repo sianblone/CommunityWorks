@@ -25,5 +25,5 @@
 		<option value="writer" <c:if test="${param.search_type == 'writer'}">selected="selected"</c:if>>아이디</option>
 	</select>
 	<input name="search_txt" id="search_txt" placeholder="검색어를 입력하세요" value="${param.search_txt}"/>
-	<button id="search_btn">검색</button>
+	<button id="search_btn" class="btn_confirm">검색</button>
 </form:form>

@@ -94,7 +94,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>관리자 페이지</h2>
+		<h2><a class="header_item">관리자 페이지</a></h2>
 	</header>
 	
 	<main>

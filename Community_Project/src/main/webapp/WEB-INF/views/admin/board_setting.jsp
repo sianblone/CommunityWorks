@@ -169,5 +169,5 @@
 	</tbody>
 </table>
 <div class="btn_box">
-	<button id="btn_add_board">게시판 추가</button>
+	<button id="btn_add_board" class="btn_confirm">게시판 추가</button>
 </div>

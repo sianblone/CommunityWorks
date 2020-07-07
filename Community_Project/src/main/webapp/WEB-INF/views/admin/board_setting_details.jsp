@@ -104,10 +104,9 @@
 	}
 	
 	.btn_box button {
-		display: block;
 		width: 120px;
-		padding: 10px;
 		margin-top: 20px;
+		padding: 10px;
 	}
 	
 	.new_category span, .new_category select {
@@ -297,8 +296,8 @@
 	</div>
 	
 	<div class="btn_box">
-		<button id="btn_delete_board" class="btn_red m10px" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
-		<button id="btn_edit_board" class="m10px" type="button">수정</button>
+		<button id="btn_delete_board" class="btn_red mg-10px" type="button" data-id="${BOARD_INFO.bi_id}">삭제</button>
+		<button id="btn_edit_board" class="btn_confirm mg-10px" type="button">수정</button>
 	</div>
 	
 </form:form>

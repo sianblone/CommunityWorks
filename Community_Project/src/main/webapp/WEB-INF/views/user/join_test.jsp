@@ -13,87 +13,12 @@
 			text-align: center;
 		}
 	</style>
+	<script src="${rootPath}/resources/js/join_valid.js" defer></script>
 	<script>
 		let rootPath = "${rootPath}"
-		
 		$(function() {
-			let enable_btn_join = true
 			
-			function isEmail(email) {
-				let regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{1,6})+$/
-				return regex.test(email)
-			}
-
-			function regId(username) {
-				let regex = /^[a-zA-Z0-9]{4,12}$/
-				return regex.test(username)
-			}
-
-			function regYear(year) {
-				let regex = /^[0-9]{4}$/
-				return regex.test(year)
-			}
-
-			function regMonthOrDay(monthOrDay) {
-				let regex = /^[0-9]{1,2}$/
-				return regex.test(monthOrDay)
-			}
-
-			let username = $("#username")
-			let password = $("#password")
-			let re_password = $("#re_password")
-			let email = $("#email")
-			let year = $("#year")
-			let month = $("#month")
-			let day = $("#day")
-
-			function regJoin() {
-				if(username.val() == "") {
-					alert("아이디를 입력하세요.")
-					username.focus()
-					return false
-				} else if ( !regId(username.val()) ) {
-					alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력하세요.")
-					username.focus()
-					return false
-				} else if (password.val() == "") {
-					alert("비밀번호를 입력하세요.")
-					password.focus()
-					return false
-				} else if (re_password.val() == "") {
-					alert("비밀번호 확인을 입력하세요.")
-					re_password.focus()
-					return false
-				} else if (password.val() != re_password.val()) {
-					alert("비밀번호가 다릅니다.\n다시 확인하세요.")
-					re_password.focus()
-					return false
-				} else if(email.val() == "") {
-					alert("이메일을 입력하세요.")
-					email.focus()
-					return false
-				} else if( !isEmail(email.val()) ) {
-					alert("올바른 형식의 이메일이 아닙니다.")
-					email.focus()
-					return false
-				} else if ( !regYear(year.val()) ) {
-					alert("생년을 정확히 입력하세요.")
-					year.focus()
-					return false
-				} else if ( !regMonthOrDay(month.val()) ) {
-					alert("생월을 정확히 입력하세요.")
-					month.focus()
-					return false
-				} else if ( !regMonthOrDay(day.val()) ) {
-					alert("생일을 정확히 입력하세요.")
-					day.focus()
-					return false
-				}
-			}
-			
-			// ----------------------------------------------------------
-			
-			// join_text에서 사용하는 이벤트
+			// join_test에서 사용하는 이벤트
 			$(document).on("click", "#btn_test_join", function() {
 				if(!enable_btn_join) return false
 				// 유효성 검사
@@ -133,12 +58,12 @@
 			})
 		})
 	</script>
-	<script src="${rootPath}/resources/js/join.js"></script>
+	<script src="${rootPath}/resources/js/join.js" defer></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>회원가입</h2>
+		<h2><a class="header_item">회원가입</a></h2>
 	</header>
 	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="${FORM_AUTOCOMPLETE}" onSubmit="return false">
 		<div class="form_item">
@@ -147,7 +72,7 @@
 		
 		<div class="form_item">
 			<input id="username" name="username"/>
-			<span id="m_username" class="message"></span>
+			<span id="m_username" class="message">&#8203;</span>
 		</div>
 		
 		<div class="form_item">
@@ -220,11 +145,11 @@
 		</div>
 		
 		<div class="form_item btn_box">
-			<button id="btn_join" type="button">회원가입</button>
+			<button id="btn_join" class="btn_confirm" type="button">회원가입</button>
 		</div>
 		
 		<div class="form_item btn_box">
-			<button id="btn_test_join" type="button">회원가입(개발테스트)</button>
+			<button id="btn_test_join" class="btn_confirm" type="button">회원가입(개발테스트)</button>
 		</div>
 	</form:form>
 </body>

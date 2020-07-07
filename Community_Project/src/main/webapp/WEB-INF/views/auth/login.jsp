@@ -45,38 +45,27 @@
 			display: flex;
 			justify-content: space-around;
 		}
-		.btn_box button {
-			flex: 1;
+		.btn_box > a {
+			flex: 1 1 0;
+			display: flex;
 			margin: 20px;
-			padding: 10px;
-			border: none;
-			background-color: var(--button-bg-color);
-			color: var(--button-color);
-			cursor: pointer;
 		}
-		.btn_box button:hover {
-			background-color: var(--button-hover-bg-color);
+		.btn_box > a button {
+			flex-grow: 1;
 		}
+		
 	</style>
 	<script>
 		$(function() {
 			$("#username").focus()
-			
-			$(document).on("click", "#btn_join", function() {
-				document.location.href = "${rootPath}/join"
-			})
-			
-			$(document).on("click", "#btn_find", function() {
-				document.location.href = "${rootPath}/user/find-id"
-			})
 		})
 	</script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
-	<!-- Spring Security는 보통 Spring Form 태그와 연계하여 사용한다 -->
+	<!-- Spring Security는 보통 Spring Form(form:form) 태그와 연계하여 사용한다 -->
 	<header>
-		<h2>로그인</h2>
+		<h2><a class="header_item">로그인</a></h2>
 	</header>
 	
 	<form:form class="login_form" action="${rootPath}/login" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
@@ -106,9 +95,9 @@
 		</div>
 		
 		<div class="form_item btn_box">
-			<button id="btn_login">로그인</button>
-			<button id="btn_find" type="button">ID/비밀번호 찾기</button>
-			<button id="btn_join" type="button">회원가입</button>
+			<a class="rm_deco_hover"><button id="btn_login" class="btn_confirm">로그인</button></a>
+			<a class="rm_deco_hover" href="${rootPath}/user/find-id"><button id="btn_find" class="btn_confirm" type="button">ID/비밀번호 찾기</button></a>
+			<a class="rm_deco_hover" href="${rootPath}/join"><button id="btn_join" class="btn_confirm" type="button">회원가입</button></a>
 		</div>
 	</form:form>
 </body>

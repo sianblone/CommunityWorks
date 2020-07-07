@@ -6,9 +6,6 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 <style>
-	header {
-		cursor: pointer;
-	}
 	.details_info_hr {
 		margin-top: 0;
 	}
@@ -57,10 +54,6 @@
 		display: flex;
 		justify-content: flex-end;
 		margin-bottom: 1rem;
-	}
-	
-	.details_button_box button {
-		margin-right: 10px;
 	}
 </style>
 <script>
@@ -137,16 +130,13 @@
 			})
 		})
 		
-		$("header").click(function() {
-			document.location.href = "${rootPath}/board/list?board_info=${BOARD_VO.board_info}"
-		})
 	})
 </script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>${BOARD_VO.board_name}</h2>
+		<h2><a class="header_item" href="${rootPath}/board/list?board_info=${BOARD_VO.board_info}">${BOARD_VO.board_name}</a></h2>
 	</header>
 	<main>
 		<hr class="details_info_hr"/>
@@ -177,15 +167,15 @@
 		<hr/>
 		<article class="details_button_box">
 			<c:if test="${BOARD_VO.viewerAdmin}">
-				<button id="btn_delete_complete" class="btn_red">완전삭제</button>
-				<button id="btn_restore" class="btn_blue">글 복구</button>
+				<button id="btn_delete_complete" class="btn_red mr-10px">완전삭제</button>
+				<button id="btn_restore" class="btn_blue mr-10px">글 복구</button>
 			</c:if>
 			<c:if test="${BOARD_VO.viewerAdmin || BOARD_VO.viewerWriter}">
-				<button id="btn_edit" class="btn_blue">수정</button>
-				<button id="btn_delete" class="btn_red">삭제</button>
+				<button id="btn_edit" class="btn_blue mr-10px">수정</button>
+				<button id="btn_delete" class="btn_red mr-10px">삭제</button>
 			</c:if>
-			<button id="btn_reply" class="btn_blue">답글</button>
-			<button id="btn_list" class="btn_blue">목록</button>
+			<button id="btn_reply" class="btn_blue mr-10px">답글</button>
+			<button id="btn_list" class="btn_blue mr-10px">목록</button>
 		</article>
 		
 		<section class="cmt_list">

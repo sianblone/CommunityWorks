@@ -57,13 +57,6 @@
 			width: 100%;
 			margin-top: 20px;
 			padding: 10px;
-			border: none;
-			background-color: var(--button-bg-color);
-			color: var(--button-color);
-			cursor: pointer;
-		}
-		.btn_box button:hover {
-			background-color: var(--button-hover-bg-color);
 		}
 		.forms form:first-child {
 			border-right: 2px solid gray;
@@ -186,7 +179,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>ID/PW 찾기</h2>
+		<h2><a class="header_item">ID/PW 찾기</a></h2>
 	</header>
 	<section class="forms">
 		<form:form id="find_id_form" action="${rootPath}/user/find-id" method="POST" autocomplete="${FORM_AUTOCOMPLETE}">
@@ -208,7 +201,7 @@
 			</div>
 			
 			<div class="form_item btn_box">
-				<button id="btn-find-id" type="button">ID 찾기</button>
+				<button id="btn-find-id" class="btn_confirm" type="button">ID 찾기</button>
 			</div>
 		</form:form>
 		
@@ -227,7 +220,7 @@
 			</div>
 			
 			<div class="form_item btn_box">
-				<button id="btn-find-pw" type="button">비밀번호 찾기</button>
+				<button id="btn-find-pw" class="btn_confirm" type="button">비밀번호 찾기</button>
 			</div>
 		</form:form>
 	</section>

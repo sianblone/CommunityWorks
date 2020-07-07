@@ -52,7 +52,6 @@
 					return false
 				}
 				
-				
 				$.ajax({
 					url : "${rootPath}/user/change-pw",
 					type : "POST",
@@ -91,7 +90,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>비밀번호 변경</h2>
+		<h2><a class="header_item">비밀번호 변경</a></h2>
 	</header>
 	<form:form id="change_pw_form" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="label">
@@ -110,7 +109,7 @@
 			<input id="re_password" name="re_password" type="password"/>
 		</div>
 		
-		<button id="btn_confirm" type="button">확인</button>
+		<button id="btn_confirm" class="btn_confirm" type="button">확인</button>
 	</form:form>
 </body>
 </html>

@@ -36,7 +36,7 @@
 		<div id="email_auth">이메일 인증이 완료되었습니다!</div>
 	</c:if>
 	<header>
-		<h2>커뮤니티 메인 페이지</h2>
+		<h2><a class="header_item">커뮤니티 메인 페이지</a></h2>
 	</header>
 
 	<%@ include file="/WEB-INF/views/include/include_main.jsp" %>

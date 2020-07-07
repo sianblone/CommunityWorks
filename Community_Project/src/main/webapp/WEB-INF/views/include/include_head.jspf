@@ -22,7 +22,6 @@
 		--input-border-width: 2px;
 		--input-border-color: rgba(0, 0, 0, 0.05);
 		
-		--button-bg-color: #1E90FF;
 		--button-hover-bg-color: #6495ED;
 		--button-color: white;
 		
@@ -51,17 +50,29 @@
 	body {
 		overflow-y: scroll;
 	}
-	main, header {
+	main, .header_item {
 		min-width: var(--main-min-width);
 		max-width: var(--main-max-width);
 		margin: 0 auto;
 	}
-	header {
+	.header_item {
+		display: block;
 		text-align: center;
 		padding: 30px 0px;
-		color: var(--color-dodgerblue);
-		cursor: default;
+		color: var(--color-dodgerblue) !important;
+		
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
+	.header_item:hover {
+		text-decoration: none;
+	}
+	.hd_link {
+		cursor: pointer;
+	}
+	
 	input {
 		padding: 0.5rem 1rem;
 		font-size: 0.9rem;
@@ -69,20 +80,41 @@
 	input:focus {
 		outline: none
 	}
+	
+	.block_drag {
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	.rm_deco_hover:hover {
+		text-decoration: none;
+	}
+	
 	button {
 		cursor: pointer;
+		text-align: center;
+		vertical-align: middle;
 		padding: 0.5rem 1rem;
 		font-size: 0.9rem;
-		border: none;
-		background-color: var(--button-bg-color);
-		color: white;
-	}
-	button:hover {
-		opacity: 0.8;
+		
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
 	}
 	button:focus {
 		outline: none;
-		box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+		box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, .5);
+	}
+	
+	.btn_confirm {
+		border: none;
+		background-color: var(--color-dodgerblue);
+		color: white;
+	}
+	.btn_confirm:hover {
+		opacity: 0.8;
 	}
 	
 	.btn_blue {
@@ -106,10 +138,10 @@
 		opacity: 1;
 	}
 	
-	.mr10px {
+	.mr-10px {
 		margin-right: 10px;
 	}
-	.m10px {
+	.mg-10px {
 		margin: 10px;
 	}
 	

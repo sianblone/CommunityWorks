@@ -8,9 +8,6 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 <style>
-	header {
-		cursor: pointer;
-	}
 	#board_category {
 		width: auto;
 	}
@@ -103,10 +100,6 @@
 			}
 		})
 		
-		$("header").click(function() {
-			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
-		})
-		
 	})
 	</script>
 </head>
@@ -114,7 +107,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>${BOARD_INFO.bi_name}</h2>
+		<h2><a class="header_item" href="${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}">${BOARD_INFO.bi_name}</a></h2>
 	</header>
 	<main>
 		<form:form id="save_form" method="POST" enctype="multipart/form-data" action="${rootPath}/board/save" autocomplete="${FORM_AUTOCOMPLETE}">

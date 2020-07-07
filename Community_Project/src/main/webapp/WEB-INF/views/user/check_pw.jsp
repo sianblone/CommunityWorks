@@ -26,7 +26,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>비밀번호 확인</h2>
+		<h2><a class="header_item">비밀번호 확인</a></h2>
 	</header>
 	<form:form id="check_pw_form" action="${rootPath}/user/check-pw" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="label">

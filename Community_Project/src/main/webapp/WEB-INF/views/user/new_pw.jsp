@@ -90,7 +90,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>비밀번호 재설정</h2>
+		<h2><a class="header_item">비밀번호 재설정</a></h2>
 	</header>
 	<form:form id="find_form" modelAttribute="userVO" autocomplete="${FORM_AUTOCOMPLETE}">
 		<p>새로운 비밀번호를 입력하세요</p><br/>
@@ -111,7 +111,7 @@
 			<input id="re_password" name="re_password" type="password"/>
 		</div>
 		
-		<button id="btn_confirm" type="button">확인</button>
+		<button id="btn_confirm" class="btn_confirm" type="button">확인</button>
 	</form:form>
 </body>
 </html>

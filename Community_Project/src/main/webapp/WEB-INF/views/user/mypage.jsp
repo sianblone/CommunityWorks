@@ -229,7 +229,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>마이페이지</h2>
+		<h2><a class="header_item">마이페이지</a></h2>
 	</header>
 	<form:form id="my_form" class="my_form" autocomplete="${FORM_AUTOCOMPLETE}">
 		<div class="my_form_item">
@@ -283,7 +283,7 @@
 		</div>
 		
 		<div class="flex">
-			<button id="btn_edit" type="button">수정</button>
+			<button id="btn_edit" class="btn_confirm" type="button">수정</button>
 		</div>
 	</form:form>
 	
@@ -299,14 +299,14 @@
 					<div class="email_change_item">
 						<p>변경할 이메일을 입력하세요.</p>
 						<input type="email" id="email" placeholder="Email 입력"/>
-						<button id="btn_send_email">인증메일 발송</button>
+						<button id="btn_send_email" class="btn_confirm">인증메일 발송</button>
 					</div>
 					
 					<div class="auth_code_box">
 						<p>이메일로 발송된 인증코드를 입력하세요.</p>
 						<span id="encrypted_auth_code"></span>
 						<input id="auth_code" placeholder="인증코드 입력"/>
-						<button id="btn_auth_code">확인</button>
+						<button id="btn_auth_code" class="btn_confirm">확인</button>
 					</div>
 				</div>
 			</article>

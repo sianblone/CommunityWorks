@@ -6,9 +6,6 @@
 <head>
 <%@ include file="/WEB-INF/views/include/include_head.jspf"%>
 <style>
-	header {
-		cursor: pointer;
-	}
 	table {
 		table-layout: fixed;
 		font-family: gulim, 굴림;
@@ -21,8 +18,8 @@
 		border-bottom: 1px solid skyblue;
 	}
 	th {
-		border-top: 2px solid var(--button-bg-color);
-		border-bottom: 1px solid var(--button-bg-color);
+		border-top: 2px solid var(--color-dodgerblue);
+		border-bottom: 1px solid var(--color-dodgerblue);
 		
 		height: 40px;
 		text-align: center;
@@ -59,6 +56,7 @@
 	let bi_id = "${BOARD_INFO.bi_id}"
 	
 	$(function() {
+		
 		$(document).off("click", ".btn_write").on("click", ".btn_write", function() {
 			let url = "${rootPath}/board/save?board_info=${BOARD_INFO.bi_id}";
 
@@ -69,9 +67,6 @@
 			document.location.href = url
 		})
 		
-		$(document).off("click", "header").on("click", "header", function() {
-			document.location.href = "${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}"
-		})
 	})
 </script>
 </head>
@@ -79,7 +74,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf"%>
 	<header>
-		<h2>${BOARD_INFO.bi_name}</h2>
+		<h2><a class="header_item" href="${rootPath}/board/list?board_info=${BOARD_INFO.bi_id}">${BOARD_INFO.bi_name}</a></h2>
 	</header>
 	<main>
 		<article>
@@ -131,7 +126,7 @@
 			</table>
 		</article>
 		<article class="d-flex justify-content-end">
-			<button class="btn_write">글쓰기</button>
+			<button class="btn_write btn_confirm">글쓰기</button>
 		</article>
 		<%@ include file="/WEB-INF/views/include/search.jsp" %>
 	</main>

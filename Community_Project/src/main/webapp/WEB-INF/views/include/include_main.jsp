@@ -58,7 +58,7 @@
 					<div class="col-lg-6 cardbox">
 						<div class="card shadow">
 							<div class="card-body">
-								<h4 class="card-title boardname_box">
+								<h4 class="card-title boardname_box block_drag">
 									<span>${boardInfoVO.bi_name}</span><a class="more"
 										href="${rootPath}/board/list?board_info=${boardInfoVO.bi_id}"><img
 										id="img_add" src="${rootPath}/resources/images/add.png"></a>

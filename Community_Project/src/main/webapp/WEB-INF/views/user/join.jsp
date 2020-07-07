@@ -8,6 +8,7 @@
 <head>
 	<%@ include file="/WEB-INF/views/include/include_head.jspf" %>
 	<link rel="stylesheet" href="${rootPath}/resources/css/join.css"/>
+	<script src="${rootPath}/resources/js/join_valid.js"></script>
 	<script>
 		let rootPath = "${rootPath}"
 	</script>
@@ -16,7 +17,7 @@
 <body>
 	<%@ include file="/WEB-INF/views/include/include_nav.jspf" %>
 	<header>
-		<h2>회원가입</h2>
+		<h2><a class="header_item">회원가입</a></h2>
 	</header>
 	<form:form id="join-form" action="${rootPath}/join/join" method="POST" autocomplete="${FORM_AUTOCOMPLETE}" onSubmit="return false">
 		<div class="form_item">
@@ -25,7 +26,7 @@
 		
 		<div class="form_item">
 			<input id="username" name="username"/>
-			<span id="m_username" class="message"></span>
+			<span id="m_username" class="message">&#8203;</span>
 		</div>
 		
 		<div class="form_item">
@@ -86,7 +87,7 @@
 		</div>
 		
 		<div class="form_item btn_box">
-			<button id="btn_join" type="button">회원가입</button>
+			<button id="btn_join" class="btn_confirm" type="button">회원가입</button>
 		</div>
 	</form:form>
 </body>
