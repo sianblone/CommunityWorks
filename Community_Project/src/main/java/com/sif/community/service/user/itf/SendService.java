@@ -2,8 +2,6 @@ package com.sif.community.service.user.itf;
 
 import java.io.UnsupportedEncodingException;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sif.community.model.UserDetailsVO;
 
 public interface SendService {

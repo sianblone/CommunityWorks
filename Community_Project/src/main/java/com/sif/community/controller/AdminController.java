@@ -14,7 +14,6 @@ import com.sif.community.model.CategoryVO;
 import com.sif.community.model.PaginationDTO;
 import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.BoardInfoService;
-import com.sif.community.service.board.itf.PaginationService;
 import com.sif.community.service.user.AdminService;
 import com.sif.community.service.user.UserService;
 
