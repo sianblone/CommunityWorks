@@ -31,7 +31,9 @@
 			</bean>
 		</property>
 	</bean>
-			
+	
+	<!-- 트랜잭션 관리자 활성화 -->
+	<tx:annotation-driven/>
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="mysqlDS"/>
 	</bean>

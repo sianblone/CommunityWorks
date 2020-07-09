@@ -29,10 +29,6 @@
 	<context:component-scan base-package="com.sif.community.controller" />
 	<context:component-scan base-package="com.sif.community.service" />
 	
-	<beans:bean class='org.mybatis.spring.SqlSessionTemplate' id='sqlSessionTemplate'>
-		<beans:constructor-arg index='0' ref='ssfb'/>
-	</beans:bean>
-	
 	<interceptors>
 		<interceptor>
 			<mapping path="/**"/>

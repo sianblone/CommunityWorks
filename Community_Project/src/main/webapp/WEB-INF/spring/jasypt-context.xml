@@ -5,24 +5,26 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans-4.3.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context-4.3.xsd">
 		
-	<!-- jasypt의 StandardPBE...Encryptor 클래스가 db.connection.properties 파일의 암호화된 문자열을 읽어서 복호화한 후 -->
-	<!-- 일반 문자열로 변환하여 property로 사용할 수 있도록 도와주는 보조 클래스 -->
-	<!-- 바로 집어넣어도 되지만 이 프로젝트에선 bean으로 만들어서 집어넣는 방법 선택 -->
+	<!--
+		jasypt의 StandardPBEStringEncryptor 클래스
+		db.connection.properties 파일의 암호화된 문자열을 읽어서 복호화한 후 사용할 수 있도록 해줄 암호화/복호화 클래스
+		config에는 암호화 알고리즘과 암호화 비밀번호가 들어있다		
+	-->
 	<bean id="encryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
-		<property name="config" ref="jasyptConfig"/>
+		<property name="config" ref="encryptorConfig"/>
 	</bean>
 	
-	<!-- StandardPBE... 클래스가 암호문을 복호화할 때 사용할 salt 키를 설정할 보조 클래스 -->
-	<!-- 서버나 컴퓨터에 설정된 환경변수 값을 읽어서 salt로 사용하도록 만들기 -->
-	<bean id="jasyptConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+	<!-- encryptor 클래스가 암호문을 복호화할 때 사용할 비밀번호를 설정할 Config 클래스 -->
+	<!-- 서버나 컴퓨터에 설정된 환경변수 값을 읽어서 비밀번호로 사용하도록 만들기 -->
+	<bean id="encryptorConfig" class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
 		<property name="algorithm" value="PBEWithMD5AndDES" />
 		<property name="passwordEnvName" value="ENV_PASS" />
 	</bean>
 	
-	<!-- db.connection.properties로부터 username과 password를 가져와서 사용하기 위한 준비 -->
-	<!-- 이 부분이 있어야 ${mysql.username}을 사용해서 불러올 수 있다 -->
-	<!-- 가져온 암호화된 문자열을 평문으로 복호화한다 -->
-	<bean id="ppConfig2" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+	<!-- db.connection.properties로부터 username과 password를 가져와서 사용하기 위한 PlaceholderConfigurer 클래스 -->
+	<!-- 이 클래스가 있어야 properties 파일 내의 ${key}를 통해 value를 읽어와서 사용할 수 있다 (Ex. ${mysql.username}) -->
+	<!-- 생성자에서 encrytor를  가져온 암호화된 문자열을 평문으로 복호화 -->
+	<bean id="ppConfigurer" class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
 		<constructor-arg ref="encryptor"/>
 		<property name="fileEncoding" value="UTF-8"/>
 		<property name="locations">

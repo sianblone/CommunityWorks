@@ -3,6 +3,13 @@
 
 <mapper namespace="com.sif.community.dao.AuthoritiesDao">
 
+	<!-- username과 연결된 권한 SELECT -->
+	<select id="findByUsername">
+		SELECT *
+		FROM authorities
+		WHERE username = #{username}
+	</select>
+
 	<insert id="insert" parameterType="list">
 		INSERT INTO authorities(username, authority)
 		VALUES
@@ -11,4 +18,9 @@
 		</foreach>
 	</insert>
 	
+	<!-- username과 연결된 권한 DELETE -->
+	<delete id="delete">
+		DELETE FROM authorities
+		WHERE username = #{username}
+	</delete>
 </mapper>
