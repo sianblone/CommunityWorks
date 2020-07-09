@@ -30,7 +30,7 @@
 			/WEB-INF/spring/db-context.xml
 			/WEB-INF/spring/security-context.xml
 			/WEB-INF/spring/gmail-mail-context.xml
-			/WEB-INF/spring/fileup-context.xml
+			/WEB-INF/spring/fileupload-context.xml
 		</param-value>
 	</context-param>
 	

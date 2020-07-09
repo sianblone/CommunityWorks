@@ -6,27 +6,27 @@
 
 ## 사용법(기본 설정)
 ### 암호화 Key 설정 : 방법 1과 방법 2 중 하나를 선택해서 진행
-* 방법 1 : 서버에 환경변수 값 설정하기
-* com.sif.util 패키지 안의 DefaultSetting.java를 Java Application으로 실행, 오류 발생 확인
-* 프로젝트 우클릭 -> Run As -> Run on Server 클릭, 오류 발생 확인
-* 프로젝트 우클릭 -> Run As -> Run Configurations 클릭
-* Tomcat v9.0 Server at localhost과 DefaultSetting의 Environment에 각각 Add 클릭 후 NAME은 ENV_PASS, VALUE는 암호화 키로 사용할 문자열 입력(암호화 키는 Tomcat v9.0과 DefaultSetting 똑같이 설정)
+#### 방법 1 : 서버에 환경변수 값 설정하기
+1. com.sif.util 패키지 안의 DefaultSetting.java를 Java Application으로 실행, 오류 발생 확인
+2. 프로젝트 우클릭 -> Run As -> Run on Server 클릭, 오류 발생 확인
+3. 프로젝트 우클릭 -> Run As -> Run Configurations 클릭
+4. Tomcat v9.0 Server at localhost과 DefaultSetting의 Environment에 각각 Add 클릭 후 NAME은 ENV_PASS, VALUE는 암호화 키로 사용할 문자열 입력(암호화 키는 Tomcat v9.0과 DefaultSetting 똑같이 설정)
 
-* 방법 2 : 서버 컴퓨터에 환경변수 값 설정하기
-* 서버 컴퓨터로 사용할 PC에서(Windows 10 기준) 내 컴퓨터 -> 속성 -> 고급 시스템 설정 -> 환경 변수에 사용자 변수나 시스템 변수 만들기
-* 변수 이름 : ENV_PASS, 변수 값 : 암호화 키로 사용할 문자열
+#### 방법 2 : 서버 컴퓨터에 환경변수 값 설정하기
+1. 서버 컴퓨터로 사용할 PC에서(Windows 10 기준) 내 컴퓨터 -> 속성 -> 고급 시스템 설정 -> 환경 변수에 사용자 변수나 시스템 변수 만들기
+2. 변수 이름 : ENV_PASS, 변수 값 : 암호화 키로 사용할 문자열
 
 ### DB 설정
 * MySQL DBMS에서 Schema(Database), User 생성
 
 ### SMTP 발송용 메일 설정(Gmail)
-* Gmail에서 SMTP 메일로 사용할 Gmail 계정 로그인 -> 메일 -> 설정 -> 전달 및 POP/IMAP 탭 -> IMAP 사용 클릭 -> 변경사항 저장
-* Gmail에서 앱 비밀번호(2단계 인증 사용해야 발급 가능) 발급
+1. Gmail에서 SMTP 메일로 사용할 Gmail 계정 로그인 -> 메일 -> 설정 -> 전달 및 POP/IMAP 탭 -> IMAP 사용 클릭 -> 변경사항 저장
+2. Gmail에서 앱 비밀번호(2단계 인증 사용해야 발급 가능) 발급
 
 ### 서버에서 읽을 properties 파일 설정
-* com.sif.util 패키지 안의 DefaultSetting을 Java Application으로 실행 후 MySQL, Gmail 설정
-* /WEB-INF/spring/properties 폴더 클릭 후 새로고침(F5) (새로고침 하지 않으면 새로 생성된 파일 인식 못함)
-* 어플리케이션 실행 후 작동 확인
+1. com.sif.util 패키지 안의 DefaultSetting을 Java Application으로 실행 후 MySQL, Gmail 설정
+2. /WEB-INF/spring/properties 폴더 클릭 후 새로고침(F5) (새로고침 하지 않으면 새로 생성된 파일 인식 못함)
+3. 어플리케이션 실행 후 작동 확인
 
 ## pom.xml에서 받은 라이브러리 목록
 ### Spring Security
@@ -69,7 +69,7 @@
 2. contextConfigLocation에 jasypt -> db -> security 순서로 context.xml을 로드하도록 설정. 논리적인 연동 순서대로 로드하지 않으면 오류 발생
 
 ## 파일 업로드 설정
-1. 파일업로드-context.xml에 CommonsMultipartResolver 설정. id는 반드시 multipartResolver로 설정
+1. fileupload-context.xml에 CommonsMultipartResolver 설정. id는 반드시 multipartResolver로 설정
 2. multipartResolver 안에 maxUploadSize, maxUploadSizePerFile, defaultEncoding 설정
 
 ### web.xml에 파일 업로드 설정
@@ -86,4 +86,4 @@
 	    <filter-name>MultipartFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
 	</filter-mapping>`
-    web.xml에 위와 같이 설정해주면 Spring Security와 파일 업로드 충돌을 방지할 수 있음
+    web.xml에 위와 같이 설정해주면 Spring Security와 multipart/form-data 충돌을 방지할 수 있음
