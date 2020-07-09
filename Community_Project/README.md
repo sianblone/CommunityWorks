@@ -59,23 +59,35 @@
 - Spring Security Web
 - Spring Security Config
 - Spring Security Taglibs
+
+#### 암호화 라이브러리
 - jasypt
 - jasypt-spring31
 
 #### DB
-- spring JDBC
-- apache DBCP
+- Spring JDBC
+- Apache Commons DBCP
 - MyBatis
-- MyBatis-Spring
-- MySQL-J
+- MyBatis Spring
+- MySQL Connector/J
+
+#### 메일 발송
+- JavaMail API (compat)
+- Spring Context Support
+
+#### 파일 업로드
+- commons-fileupload
+- commons-io
+
+#### Log
+- logback
 
 #### Utility Dependencies
 - lombok
 - jackson-databind
-- logback
 
 ### xml 설정
-1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml 순서대로 추가
+1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml 논리적 연동 순서대로 추가
 2. appServlet/servlet-context.xml 설정 : component-scan controller와 service 추가, interceptor 추가, 파일 업로드 폴더 열어주기, 파일 경로 전역 변수 bean으로 등록
 
 ### Spring Security 설정
@@ -83,10 +95,10 @@
 2. spring 폴더 아래에 [db-context.xml] 생성 및 설정 : BasicDataSource, SqlSessionFactoryBean, trasactionManager
 3. spring 폴더 아래에 [security-context.xml] 생성 및 설정 : global-method-security(어노테이션 활성화), BCryptPasswordEncoder, component-scan + Provider, authentication-provider, intercept-url, form-login, form-logout, (옵션)ReloadableResourceBundleMessageSource, (옵션)LoginSuccessHandlerImpl
 4. spring 폴더 아래에 properties 폴더 생성 후(ReloadableResourceBundleMessageSource에서 설정한 폴더) [spring-security.message.ko.properties] 파일 복사
-5. service 패키지에 [AuthenticationProvider]를 implements 한 클래스를 하나 만들고 security-context.xml에 bean으로 설정
+5. service 패키지에 AuthenticationProvider를 implements 한 클래스를 하나 만들고 security-context.xml에 bean으로 설정
 6. 유저 테이블에 저장할 [UserDetailsVO](implements UserDetails), 권한 테이블에 저장할 [AuthorityVO] 하나씩 만들고 설정
-7. [AuthenticationProviderImpl](implements AuthenticationProvider) -> [UserDetailsServiceImpl](implements UserDetailsService) -> [UserDao], [AuthoritiesDao] 만들고 설정
-8. spring 폴더 아래에 mapper 폴더 생성 후 [auth-mapper.xml], [user-mapper.xml] 생성 및 설정. user-mapper는 mybatis의 resultMap을 이용해 authorities 테이블 조회 결과도 가져오기
+7. [AuthenticationProviderImpl](implements AuthenticationProvider) -> [UserDetailsServiceImpl](implements UserDetailsService), [UserDao], [AuthoritiesDao] 만들고 설정
+8. spring 폴더 아래에 mapper 폴더 생성 후 [auth-mapper.xml], [user-mapper.xml] 생성 및 설정. user-mapper SELECT는 mybatis의 resultMap을 이용해 authorities 테이블 조회 결과도 가져오기
 
 #### web.xml에 Spring Sescurity 설정
 1. filter, filter-mapping에 springSecurityFilterChain 설정
