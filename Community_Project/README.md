@@ -59,7 +59,6 @@
 - Spring Security Web
 - Spring Security Config
 - Spring Security Taglibs
-
 - jasypt
 - jasypt-spring31
 
