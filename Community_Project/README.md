@@ -14,7 +14,7 @@
 
 #### 방법 2 : 서버 컴퓨터에 환경변수 값 설정하기
 1. 서버 컴퓨터로 사용할 PC에서(Windows 10 기준) 내 컴퓨터 -> 속성 -> 고급 시스템 설정 -> 환경 변수에 사용자 변수나 시스템 변수 만들기
-2. 변수 이름 : ENV_PASS, 변수 값 : 암호화 키로 사용할 문자열
+2. 변수 이름 : ENV_PASS, 변수 값 : 암호화 키로 사용할 문자열 입력
 
 ### DB 설정
 * MySQL DBMS에서 Schema(Database), User 생성
@@ -28,8 +28,9 @@
 2. /WEB-INF/spring/properties 폴더 클릭 후 새로고침(F5) (새로고침 하지 않으면 새로 생성된 파일 인식 못함)
 3. 어플리케이션 실행 후 작동 확인
 
-## pom.xml에서 받은 라이브러리 목록
-### Spring Security
+## 개발 기록
+### pom.xml에서 받은 라이브러리 목록
+#### Spring Security
 * Spring Security Core
 * Spring Security Web
 * Spring Security Config
@@ -38,23 +39,23 @@
 * jasypt
 * jasypt-spring31
 
-### DB
+#### DB
 * spring JDBC
 * apache DBCP
 * MyBatis
 * MyBatis-Spring
 * MySQL-J
 
-### Utility Dependencies
+#### Utility Dependencies
 * lombok
 * jackson-databind
 * logback
 
-## xml 설정
+### xml 설정
 1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml 순서대로 추가
 2. appServlet/servlet-context.xml 설정 : component-scan controller와 service 추가, interceptor 추가, 파일 업로드 폴더 열어주기, 파일 경로 전역 변수 bean으로 등록
 
-## Spring Security 설정
+### Spring Security 설정
 1. spring 폴더 아래에 [jasypt-context.xml] 생성 및 설정 : Encryptor, Config, PropertyPlaceholderConfigurer
 2. spring 폴더 아래에 [db-context.xml] 생성 및 설정 : BasicDataSource, SqlSessionFactoryBean, trasactionManager
 3. spring 폴더 아래에 [security-context.xml] 생성 및 설정 : global-method-security(어노테이션 활성화), BCryptPasswordEncoder, component-scan + Provider, authentication-provider, intercept-url, form-login, form-logout, (옵션)ReloadableResourceBundleMessageSource, (옵션)LoginSuccessHandlerImpl
@@ -64,15 +65,15 @@
 7. [AuthenticationProviderImpl](implements AuthenticationProvider) -> [UserDetailsServiceImpl](implements UserDetailsService) -> [UserDao], [AuthoritiesDao] 만들고 설정
 8. spring 폴더 아래에 mapper 폴더 생성 후 [auth-mapper.xml], [user-mapper.xml] 생성 및 설정. user-mapper는 mybatis의 resultMap을 이용해 authorities 테이블 조회 결과도 가져오기
 
-### web.xml에 Spring Sescurity 설정
+#### web.xml에 Spring Sescurity 설정
 1. filter, filter-mapping에 springSecurityFilterChain 설정
 2. contextConfigLocation에 jasypt -> db -> security 순서로 context.xml을 로드하도록 설정. 논리적인 연동 순서대로 로드하지 않으면 오류 발생
 
-## 파일 업로드 설정
+### 파일 업로드 설정
 1. fileupload-context.xml에 CommonsMultipartResolver 설정. id는 반드시 multipartResolver로 설정
 2. multipartResolver 안에 maxUploadSize, maxUploadSizePerFile, defaultEncoding 설정
 
-### web.xml에 파일 업로드 설정
+#### web.xml에 파일 업로드 설정
 1. Spring Security 사용 시 csrf 방지와 form(method="POST" enctype="multipart/form-data")은 충돌이 일어남
 2. `<filter>
 	    <filter-name>MultipartFilter</filter-name>
