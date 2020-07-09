@@ -1,8 +1,8 @@
 # 커뮤니티 프로젝트
 
 ## 개발 환경
-* Tomcat (개발 환경 버전 : 9.0)
-* MySQL (개발 환경 버전 : 8.0.19)
+- Tomcat (개발 환경 버전 : 9.0)
+- MySQL (개발 환경 버전 : 8.0.19)
 
 ## 사용법(기본 설정)
 ### 암호화 Key 설정 : 방법 1과 방법 2 중 하나를 선택해서 진행
@@ -17,7 +17,7 @@
 2. 변수 이름 : ENV_PASS, 변수 값 : 암호화 키로 사용할 문자열 입력
 
 ### DB 설정
-* MySQL DBMS에서 Schema(Database), User 생성
+- MySQL DBMS에서 Schema(Database), User 생성
 
 ### SMTP 발송용 메일 설정(Gmail)
 1. Gmail에서 SMTP 메일로 사용할 Gmail 계정 로그인 -> 메일 -> 설정 -> 전달 및 POP/IMAP 탭 -> IMAP 사용 클릭 -> 변경사항 저장
@@ -28,8 +28,8 @@
 2. /WEB-INF/spring/properties 폴더 클릭 후 새로고침(F5) (새로고침 하지 않으면 새로 생성된 파일 인식 못함)
 
 ## 작동 확인 및 배포
-* 설정 완료 후 어플리케이션 실행해서 작동 확인
-* 정상적으로 작동하는지 확인 후 배포
+- 설정 완료 후 어플리케이션 실행해서 작동 확인
+- 정상적으로 작동하는지 확인 후 배포
 
 ## 프로젝트 목적
 1. 게시판 CRUD, 게시판 순서 변경, 게시판 별 페이지네이션 설정
@@ -46,30 +46,30 @@
 12. 메인페이지에 표시되는 게시판 별 최신 글, 최대 글 수 설정
 13. 쿠키와 Spring Security를 이용한 조회수, 추천 중복 방지
 
-* 위의 기술들을 결합한 커뮤니티형 게시판 제작
+- 위의 기술들을 결합한 커뮤니티형 게시판 제작
 
 ## 개발 기록
 ### pom.xml에서 받은 라이브러리 목록
 #### Spring Security
-* Spring Security Core
-* Spring Security Web
-* Spring Security Config
-* Spring Security Taglibs
+- Spring Security Core
+- Spring Security Web
+- Spring Security Config
+- Spring Security Taglibs
 
-* jasypt
-* jasypt-spring31
+- jasypt
+- jasypt-spring31
 
 #### DB
-* spring JDBC
-* apache DBCP
-* MyBatis
-* MyBatis-Spring
-* MySQL-J
+- spring JDBC
+- apache DBCP
+- MyBatis
+- MyBatis-Spring
+- MySQL-J
 
 #### Utility Dependencies
-* lombok
-* jackson-databind
-* logback
+- lombok
+- jackson-databind
+- logback
 
 ### xml 설정
 1. web.xml 설정 : 한글 인코딩 필터 추가, *-context.xml 순서대로 추가
@@ -95,7 +95,8 @@
 
 #### web.xml에 파일 업로드 설정
 1. Spring Security 사용 시 csrf 방지와 form(method="POST" enctype="multipart/form-data")은 충돌이 일어남
-2. `<filter>
+2. ```
+	<filter>
 	    <filter-name>MultipartFilter</filter-name>
 	    <filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
 	    <init-param>
@@ -106,5 +107,6 @@
 	<filter-mapping>
 	    <filter-name>MultipartFilter</filter-name>
 	    <url-pattern>/*</url-pattern>
-	</filter-mapping>`
+	</filter-mapping>
+	```
     web.xml에 위와 같이 설정해주면 Spring Security와 multipart/form-data 충돌을 방지할 수 있음
