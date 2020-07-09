@@ -34,13 +34,12 @@
 			
 		]
 		
-		function upFile(file, editor) {
+		function uploadFile(file, editor) {
 			var formData = new FormData()
 
-			formData.append('upFile', file)
+			formData.append("uploadFile", file)
 			
 			$.ajax({
-
 				url: "${rootPath}/board/image_up",
 				type: "POST",
 				data: formData,
@@ -52,7 +51,7 @@
 				},
 				success: function(result) {
 					result = "${rootPath}/files/" + result
-					$(editor).summernote('editor.insertImage', result)
+					$(editor).summernote("editor.insertImage", result)
 				},
 				error: function() {
 					alert("서버 통신 오류")
@@ -61,16 +60,16 @@
 		}
 		
 		$("#board_content").summernote({
-			lang: 'ko-KR',
-			placeholder: '본문을 입력하세요',
-			width: '100%',
+			lang: "ko-KR",
+			placeholder: "본문을 입력하세요",
+			width: "100%",
 			toolbar: toolbar,
-			height: '200px',
+			height: "200px",
 			disableDragAndDrop: false,
 			callbacks: {
 				onImageUpload: function(files, editor, isEdit) {
 					for(let i = files.length - 1; i >=0 ; i--) {
-						upFile(files[i], this)
+						uploadFile(files[i], this)
 					}
 				}
 			}

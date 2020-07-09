@@ -242,11 +242,11 @@ public class BoardController {
 	// 이미지 업로드 시 사용할 메소드
 	@ResponseBody
 	@RequestMapping(value="/image_up", method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String fileUp(MultipartFile upFile) {
+	public String fileUp(MultipartFile uploadFile) {
 		
-		log.debug("업로드한 파일명 : " + upFile.getOriginalFilename());
+		log.debug("업로드한 파일명 : " + uploadFile.getOriginalFilename());
 		
-		String saveName = fileService.fileUp(upFile);
+		String saveName = fileService.fileUp(uploadFile);
 		if(saveName == null) {
 			return "FAIL";
 		}
