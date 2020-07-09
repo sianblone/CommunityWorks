@@ -26,7 +26,12 @@
 ### 서버에서 읽을 properties 파일 설정
 1. com.sif.util 패키지 안의 DefaultSetting을 Java Application으로 실행 후 MySQL, Gmail 설정
 2. /WEB-INF/spring/properties 폴더 클릭 후 새로고침(F5) (새로고침 하지 않으면 새로 생성된 파일 인식 못함)
-3. 어플리케이션 실행 후 작동 확인
+
+### 작동 확인
+* 설정 완료 후 어플리케이션을 실행해서 작동 확인
+
+### 배포
+* 정상적으로 작동하는지 확인 후 배포
 
 ## 개발 기록
 ### pom.xml에서 받은 라이브러리 목록
