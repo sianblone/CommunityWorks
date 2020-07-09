@@ -10,7 +10,7 @@
 1. com.sif.util 패키지 안의 DefaultSetting.java를 Java Application으로 실행, 오류 발생 확인
 2. 프로젝트 우클릭 -> Run As -> Run on Server 클릭, 오류 발생 확인
 3. 프로젝트 우클릭 -> Run As -> Run Configurations 클릭
-4. Tomcat v9.0 Server at localhost과 DefaultSetting의 Environment에 각각 Add 클릭 후 NAME은 ENV_PASS, VALUE는 암호화 키로 사용할 문자열 입력(암호화 키는 Tomcat v9.0과 DefaultSetting 똑같이 설정)
+4. Tomcat v9.0 Server at localhost와 DefaultSetting의 Environment에 각각 Add 클릭 후 NAME은 ENV_PASS, VALUE는 암호화 키로 사용할 문자열 입력(둘 다 환경변수 이름, 환경변수 값 똑같이 설정)
 
 #### 방법 2 : 서버 컴퓨터에 환경변수 값 설정하기
 1. 서버 컴퓨터로 사용할 PC에서(Windows 10 기준) 내 컴퓨터 -> 속성 -> 고급 시스템 설정 -> 환경 변수에 사용자 변수나 시스템 변수 만들기
