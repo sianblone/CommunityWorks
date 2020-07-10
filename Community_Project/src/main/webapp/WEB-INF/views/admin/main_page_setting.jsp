@@ -77,7 +77,7 @@
 <form:form id="main_page_setting_form" autocomplete="${FORM_AUTOCOMPLETE}">
 	<input type="hidden"/>
 	<div class="my_form_item">
-		<span class="my_label">메인 페이지 게시판에 표시할 최대 글 수</span>
+		<span class="my_label">메인페이지 게시판<br/>최신 글 수</span>
 		<input id="page_data_cnt" class="my_data" name="page_data_cnt" value="${PAGE_DTO.page_data_cnt}" maxlength="8" type="number"/>
 	</div>
 	

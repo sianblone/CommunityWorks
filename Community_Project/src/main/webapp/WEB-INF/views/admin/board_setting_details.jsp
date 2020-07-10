@@ -256,7 +256,7 @@
 	</div>
 	
 	<div class="my_form_item">
-		<span class="my_label">게시판 페이지 글 수</span>
+		<span class="my_label">게시판 페이지당 글 수</span>
 		<input id="data_cnt_board" class="my_data" name="data_cnt_board" value="${BOARD_INFO.data_cnt_board}" maxlength="8" type="number"/>
 	</div>
 	
@@ -266,7 +266,7 @@
 	</div>
 	
 	<div class="my_form_item">
-		<span class="my_label">댓글 페이지 댓글 수</span>
+		<span class="my_label">댓글 페이지당 댓글 수</span>
 		<input id="data_cnt_comment" class="my_data" name="data_cnt_comment" value="${BOARD_INFO.data_cnt_comment}" maxlength="8" type="number"/>
 	</div>
 	

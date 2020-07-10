@@ -62,6 +62,10 @@ public class PaginationServiceImpl implements PaginationService {
 		if(pageOptionDTO != null) {
 			this.setDataPerPage(pageOptionDTO.getPage_data_cnt());
 			this.setPageRange(pageOptionDTO.getPage_range());
+		} else if(pageOptionDTO == null) {
+			// 페이지네이션 데이터가 null이면 기본값 10으로 세팅
+			this.setDataPerPage(10);
+			this.setPageRange(10);
 		}
 		
 //		pageCount(전체 페이지 수) : (전체 데이터 개수 + 한 페이지에 보여줄 데이터 개수 - 1) / 한 페이지에 보여줄 데이터 개수
