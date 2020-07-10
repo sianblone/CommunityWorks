@@ -157,7 +157,7 @@
 		WHERE `board_no` = #{board_no}
 	</update>
 	
-	<update id="updateDelete">
+	<update id="updateDeleteFlag">
 		UPDATE tbl_board
 		SET
 			board_delete = #{board_delete}
@@ -176,6 +176,20 @@
 		SET
 			board_recommend = board_recommend + 1
 		WHERE board_no = #{board_no}
+	</update>
+	
+	<update id="orderMinusOneWhenDelete">
+		UPDATE tbl_board b1
+		INNER JOIN tbl_board b2
+		ON
+			b1.board_group = b2.board_group 
+		    AND
+		    b1.board_order &lt; b2.board_order
+		SET b2.board_order = b2.board_order - 1
+		WHERE
+			b1.board_no = #{board_no}
+			AND
+		    b1.board_order != 0
 	</update>
 	
 	<delete id="delete">

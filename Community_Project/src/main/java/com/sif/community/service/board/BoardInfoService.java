@@ -105,8 +105,12 @@ public class BoardInfoService {
 		return boardInfoDao.findByOrder(bi_order);
 	}
 
+	@Transactional
 	public int delete(long bi_id) {
-		return boardInfoDao.delete(bi_id);
+		boardInfoDao.orderMinusOneWhenDelete(bi_id);
+		int result = boardInfoDao.delete(bi_id);
+		
+		return result;
 	}
 	
 }

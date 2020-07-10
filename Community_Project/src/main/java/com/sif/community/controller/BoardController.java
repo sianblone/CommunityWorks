@@ -166,7 +166,7 @@ public class BoardController {
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
 	public String delete(BoardVO boardOptionVO, Integer pageNo) {
 		String render = "";
-		int result = boardSvc.delete(boardOptionVO.getBoard_no());
+		int result = boardSvc.updateDeleteFlag(boardOptionVO.getBoard_no());
 		
 		if(result == -100 || result == -200) {
 			render = "board/error";

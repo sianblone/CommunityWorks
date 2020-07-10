@@ -74,7 +74,7 @@ public class CommentController {
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public String delete(long cmt_no, long cmt_board_no, Integer pageNo, Model model) {
 		String render = "";
-		int result = cmtSvc.delete(cmt_no);
+		int result = cmtSvc.updateDeleteFlag(cmt_no);
 		
 		if(result == -100 || result == -200) {
 			render = "comment/cmt_error";

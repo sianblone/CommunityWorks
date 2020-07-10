@@ -98,6 +98,18 @@
 		WHERE `bi_id` = #{bi_id}
 	</update>
 	
+	<update id="orderMinusOneWhenDelete">
+		UPDATE tbl_board_info bi1
+		INNER JOIN tbl_board_info bi2
+		ON
+		    bi1.bi_order &lt; bi2.bi_order
+		SET bi2.bi_order = bi2.bi_order - 1
+		WHERE
+			bi1.bi_id = #{bi_id}
+			AND
+			bi1.bi_order != 0
+	</update>
+	
 	<delete id="delete">
 		DELETE FROM tbl_board_info
 		WHERE bi_id = #{bi_id}

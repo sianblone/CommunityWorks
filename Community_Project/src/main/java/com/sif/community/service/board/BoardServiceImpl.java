@@ -156,7 +156,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public int delete(long board_no) {
+	public int updateDeleteFlag(long board_no) {
 		int result = 0;
 		
 		// DB에 게시글번호로 검색한 데이터가 있으면(이미 있는 글이면) 삭제하기
@@ -173,11 +173,12 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
 		boardVO.setBoard_delete(1);
-		result = boardDao.updateDelete(boardVO);
+		result = boardDao.updateDeleteFlag(boardVO);
 		
 		return result;
 	}
 	
+	@Transactional
 	@Override
 	public int admin(long board_no, String command) {
 		int result = 0;
@@ -197,9 +198,10 @@ public class BoardServiceImpl implements BoardService {
 		if(command.equals("restore")) {
 			// 글 복구 클릭
 			boardVO.setBoard_delete(0);
-			result = boardDao.updateDelete(boardVO);
+			result = boardDao.updateDeleteFlag(boardVO);
 		} else if(command.equals("delete")) {
 			// 글 완전삭제 클릭
+			boardDao.orderMinusOneWhenDelete(board_no);
 			result = boardDao.delete(board_no);
 		}
 		

@@ -17,5 +17,6 @@ public interface BoardInfoDao {
 	
 	public int insert(BoardInfoVO boardInfoVO);
 	public int update(BoardInfoVO boardInfoVO);
+	public int orderMinusOneWhenDelete(long bi_id);
 	public int delete(long bi_id);
 }

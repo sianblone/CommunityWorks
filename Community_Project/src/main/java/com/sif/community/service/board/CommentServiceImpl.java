@@ -53,8 +53,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public CommentVO findByCmtNo(long comment_no) {
-		return cmtDao.findByCmtNo(comment_no);
+	public CommentVO findByCmtNo(long cmt_no) {
+		return cmtDao.findByCmtNo(cmt_no);
 	}
 	
 	@Transactional
@@ -130,7 +130,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int delete(long cmt_no) {
+	public int updateDeleteFlag(long cmt_no) {
 		int result = 0;
 		
 		// DB에 댓글번호로 검색한 데이터가 있으면(이미 있는 댓글이면) 삭제하기
@@ -146,10 +146,17 @@ public class CommentServiceImpl implements CommentService {
 		}
 		// 로그인한 사용자가 게시글 작성자거나 관리자면 글 삭제
 		commentVO.setCmt_delete(1);
-		cmtDao.updateDelete(commentVO);
+		cmtDao.updateDeleteFlag(commentVO);
 		
 		return result;
 	}
-	
+
+	@Override
+	public int delete(long cmt_no) {
+		cmtDao.orderMinusOneWhenDelete(cmt_no);
+		int result = cmtDao.delete(cmt_no);
+		
+		return result;
+	}
 	
 }

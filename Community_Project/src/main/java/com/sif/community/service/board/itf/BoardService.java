@@ -15,7 +15,7 @@ public interface BoardService {
 	public BoardVO findByBoardNo(long board_no);
 	
 	public int save(BoardVO boardVO);
-	public int delete(long board_no);
+	public int updateDeleteFlag(long board_no);
 	public int admin(long board_no, String order);
 	public int updateBoardCount(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response);
 	public int updateBoardRecommend(BoardVO boardOptionVO, HttpServletRequest request, HttpServletResponse response);
