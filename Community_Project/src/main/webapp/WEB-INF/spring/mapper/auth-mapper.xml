@@ -4,7 +4,7 @@
 <mapper namespace="com.sif.community.dao.AuthoritiesDao">
 
 	<!-- username과 연결된 권한 SELECT -->
-	<select id="findByUsername">
+	<select id="findByUsername" resultType="authorityVO">
 		SELECT *
 		FROM authorities
 		WHERE username = #{username}
