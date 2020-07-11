@@ -9,7 +9,8 @@ import com.sif.community.dao.BoardInfoDao;
 import com.sif.community.model.BoardInfoVO;
 import com.sif.community.model.PaginationDTO;
 import com.sif.community.service.board.itf.PaginationService;
-import com.sif.util.ProjectUtil;
+import com.sif.enums.PageDefaultLimit;
+import com.sif.enums.PageLocation;
 import com.sif.util.SpSec;
 
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class BoardInfoService {
 	
 	// 메인 페이지에서 사용할 메소드
 	public List<BoardInfoVO> selectMainPage() {
-		int limit_value = ProjectUtil.PAGE_DEFAULT_LIMIT_VALUE;
-		PaginationDTO dbPageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
+		int limit_value = PageDefaultLimit.MAIN.getLimit_value();
+		PaginationDTO dbPageDTO = pageSvc.findByBiId(null, PageLocation.MAIN.getPage_location());
 		// dbPageDTO가 있으면 limit_value를 db에 있는 값으로 세팅
 		if(dbPageDTO != null) limit_value = dbPageDTO.getPage_data_cnt();
 		return boardInfoDao.selectMainPage(limit_value);

@@ -10,6 +10,13 @@ public interface PaginationService {
 	// 페이지 하단에 보여줄 페이지 개수(범위)
 	public void setPageRange(int pageRange);
 	
+	/**
+	 * @param bi_id 게시판 정보 ID(메인 페이지는 null 사용)
+	 * @param page_location 데이터를 보여줄 페이지 위치(메인페이지, 게시판, 댓글)
+	 * <br/>
+	 * 들어갈 수 있는 값 목록 enum : {@link com.sif.enums.PageLocation}
+	 * @return
+	 */
 	public PaginationDTO findByBiId(Long bi_id, String page_location);
 	
 	// DB, API에서 받아온 dataCount(총 게시물 수)

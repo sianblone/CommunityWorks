@@ -16,7 +16,8 @@ import com.sif.community.model.UserDetailsVO;
 import com.sif.community.service.board.BoardInfoService;
 import com.sif.community.service.board.CategoryService;
 import com.sif.community.service.board.itf.PaginationService;
-import com.sif.util.ProjectUtil;
+import com.sif.enums.PageDefaultLimit;
+import com.sif.enums.PageLocation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -111,118 +112,130 @@ public class AdminService {
 		return boardInfoSvc.insert(boardInfoVO);
 	}
 	
-	protected int savePagination(PaginationDTO dbPageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
+	/**
+	 * 페이지네이션 DB 저장 메소드
+	 * @param dbPageDTO DB에 저장된 데이터가 없으면(null) INSERT, 있으면 UPDATE
+	 * @param bi_id 게시판 ID
+	 * @param page_location 데이터를 보여줄 페이지 위치(메인페이지, 게시판, 댓글)
+	 * <br/>
+	 * 들어갈 수 있는 값 목록 enum : {@link com.sif.enums.PageLocation}
+	 * @param data_cnt 보여줄 데이터 수
+	 * @param page_range 페이지 범위
+	 * @return
+	 */
+	protected int savePagination(PaginationDTO dbPageDTO, Long bi_id, String page_location, int data_cnt, int page_range) {
 		int result = 0;
 		if(dbPageDTO == null) {
-			// dbPageDTO가 없으면 insert
-			dbPageDTO = new PaginationDTO();
-			this.setPaginationDTO(dbPageDTO, bi_id, data_cnt, page_range, page_location);
+			// dbPageDTO가 없으면 DTO 세팅 후 INSERT
+			dbPageDTO = PaginationDTO.builder()
+						.page_bi_id(bi_id)
+						.page_location(page_location)
+						.page_data_cnt(data_cnt)
+						.page_range(page_range)
+						.build();
+			
 			result = pageSvc.insert(dbPageDTO);
 		} else {
-			// dbPageDTO가 있으면 update
-			this.setPaginationDTO(dbPageDTO, bi_id, data_cnt, page_range, page_location);
+			// dbPageDTO가 있으면 data_cnt, page_range 세팅 후 UPDATE
+			dbPageDTO.setDataCount(data_cnt);
+			dbPageDTO.setPage_range(page_range);
+			
 			result = pageSvc.update(dbPageDTO);
 		}
 		
 		return result;
 	}
 	
-	protected void setPaginationDTO(PaginationDTO pageDTO, Long bi_id, int data_cnt, int page_range, String page_location) {
-		pageDTO.setPage_bi_id(bi_id);
-		pageDTO.setPage_data_cnt(data_cnt);
-		pageDTO.setPage_range(page_range);
-		pageDTO.setPage_location(page_location);
-	}
-	
-	// 관리자 페이지 메인페이지 설정 GET에서 사용할 메소드
+	// 관리자 페이지 - 메인 페이지 설정 GET에서 사용할 메소드
 	public PaginationDTO mainPageInfo() {
-		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
+		PaginationDTO pageDTO = pageSvc.findByBiId(null, PageLocation.MAIN.getPage_location());
 		if(pageDTO == null) pageDTO = new PaginationDTO();
 		
-		// 관리자 페이지 메인페이지 설정에서 사용할 변수 세팅
-		if(pageDTO.getPage_data_cnt() == 0) pageDTO.setPage_data_cnt(ProjectUtil.PAGE_DEFAULT_LIMIT_VALUE);
+		// 관리자 페이지 - 메인 페이지 설정에서 사용할 변수 세팅
+		if(pageDTO.getPage_data_cnt() == 0) pageDTO.setPage_data_cnt(PageDefaultLimit.MAIN.getLimit_value());
 		return pageDTO;
 	}
 	
-	// 관리자 페이지 메인페이지 설정 POST에서 사용할 메소드
+	// 관리자 페이지 - 메인 페이지 설정 POST에서 사용할 메소드
 	public int updateMainPage(int page_data_cnt) {
-		PaginationDTO pageDTO = pageSvc.findByBiId(null, ProjectUtil.PAGE_LOCATION_MAIN);
-		return this.savePagination(pageDTO, null, page_data_cnt, 10, ProjectUtil.PAGE_LOCATION_MAIN);
+		PaginationDTO pageDTO = pageSvc.findByBiId(null, PageLocation.MAIN.getPage_location());
+		return this.savePagination(pageDTO, null, PageLocation.MAIN.getPage_location(), page_data_cnt, 10);
 	}
 	
+	// 게시판 정보 업데이트 메소드
 	@Transactional
 	public int updateBoard(BoardInfoVO boardInfoVO, CategoryVO categoryOptionVO) {
 		// boardInfoOptionVO에는 bi_id, bi_name, bi_enabled, data_cnt_board, data_cnt_comment, page_range_board, page_range_comment가 들어있다
 		// categoryOptionVO에는 카테고리 목록이 들어있다
+		
 		long bi_id = boardInfoVO.getBi_id();
 		String bi_name = boardInfoVO.getBi_name();
 		
-		// DB의 게시판 정보(tbl_board_info) 불러오기
+		// 1. DB의 게시판 정보(tbl_board_info) 불러오기
 		BoardInfoVO dbBoardInfoVO = boardInfoSvc.findByBiId(bi_id);
 		
-		// 유효성 검사 시작
+		// 2. 유효성 검사
 		if(bi_name.length() > 100) {
-			// 게시판 이름이 100글자를 초과하는 경우
+			// 2-1. 게시판 이름이 100글자를 초과하는 경우
 			return -100;
 		} else if(dbBoardInfoVO == null) {
-			// DB에 게시판 ID가 존재하지 않는 경우
+			// 2-2. DB에 게시판 ID가 존재하지 않는 경우
 			return -200;
 		}
 		
 		// 유효성 검사 통과 시 
-		// 기존의 게시판 정보에 form에서 입력받은 정보(게시판 이름, 활성여부) 새로 세팅하기
+		// 3. 기존의 게시판 정보에 form에서 입력받은 정보(게시판 이름, 활성여부) 새로 세팅하기
 		dbBoardInfoVO.setBi_name(bi_name);
 		dbBoardInfoVO.setBi_enabled(boardInfoVO.isBi_enabled());
 		int result = boardInfoSvc.update(dbBoardInfoVO);
 		
-		// 게시판 정보 업데이트 성공 시 페이지네이션 테이블 INSERT/UPDATE
+		// 4. 게시판 정보 업데이트 성공 시 페이지네이션 테이블 INSERT/UPDATE
 		if(result > 0) {
-			// 게시판 pageDTO INSERT/UPDATE
-			PaginationDTO pageDTO = pageSvc.findByBiId(bi_id, ProjectUtil.PAGE_LOCATION_BOARD);
-			result = this.savePagination(pageDTO, bi_id, boardInfoVO.getData_cnt_board(), boardInfoVO.getPage_range_board(), ProjectUtil.PAGE_LOCATION_BOARD);
+			// 4-1. 게시판 pageDTO INSERT/UPDATE
+			PaginationDTO pageDTO = pageSvc.findByBiId(bi_id, PageLocation.BOARD.getPage_location());
+			result = this.savePagination(pageDTO, bi_id, PageLocation.BOARD.getPage_location(), boardInfoVO.getData_cnt_board(), boardInfoVO.getPage_range_board());
 			
-			// 댓글 pageDTO INSERT/UPDATE
-			pageDTO = pageSvc.findByBiId(bi_id, ProjectUtil.PAGE_LOCATION_COMMENT);
-			result = this.savePagination(pageDTO, bi_id, boardInfoVO.getData_cnt_comment(), boardInfoVO.getPage_range_comment(), ProjectUtil.PAGE_LOCATION_COMMENT);
+			// 4-2. 댓글 pageDTO INSERT/UPDATE
+			pageDTO = pageSvc.findByBiId(bi_id, PageLocation.COMMENT.getPage_location());
+			result = this.savePagination(pageDTO, bi_id, PageLocation.COMMENT.getPage_location(), boardInfoVO.getData_cnt_comment(), boardInfoVO.getPage_range_comment());
 		}
 		
-		// 페이지네이션 정보 업데이트 성공 시 카테고리 테이블 INSERT/UPDATE
+		// 5. 페이지네이션 정보 업데이트 성공 시 카테고리 테이블 INSERT/UPDATE
 		if(result > 0) {
-			
 			List<Long> cate_id_list = categoryOptionVO.getCate_id_list();
 			List<String> cate_text_list = categoryOptionVO.getCate_text_list();
 			
-			// 받은 카테고리 값이 있으면(리스트가 null이 아니면) 카테고리 테이블 업데이트 
-			if(cate_id_list != null) {
+			// 5-1. form에서 카테고리 리스트를 전달받았으면 카테고리 테이블 업데이트
+			if(cate_id_list == null) return result;
 			
-				List<CategoryVO> categoryList = new ArrayList<CategoryVO>();
+			List<CategoryVO> categoryList = new ArrayList<CategoryVO>();
+			
+			for(int i = 0; i < cate_id_list.size(); i++) {
+				long cate_id = cate_id_list.get(i);
+				String cate_text = cate_text_list.get(i);
 				
-				for(int i = 0; i < cate_id_list.size(); i++) {
-					long cate_id = cate_id_list.get(i);
-					String cate_text = cate_text_list.get(i);
-					
-					// cate_id 여부에 따라서 INSERT UPDATE 선택
-					if(cate_id == 0) {
-						// cate_id를 입력받지 않았으면(0 이면) 게시판에 카테고리 새로 추가
-						CategoryVO categoryVO = CategoryVO.builder()
-								.cate_bi_id(dbBoardInfoVO.getBi_id())
-								.cate_text(cate_text)
-								.build();
-						categoryList.add(categoryVO);
-					} else {
-						// cate_id를 입력받았으면 기존 DB 카테고리 내용 업데이트
-						CategoryVO categoryVO = CategoryVO.builder()
-								.cate_id(cate_id)
-								.cate_bi_id(dbBoardInfoVO.getBi_id())
-								.cate_text(cate_text)
-								.build();
-						cateSvc.update(categoryVO);
-					}
-					
+				// 5-2. cate_id 여부에 따라서 INSERT/UPDATE 선택
+				if(cate_id == 0) {
+					// cate_id를 입력받지 않았으면(0 이면) INSERT할 VO 생성 후 카테고리 리스트에 추가
+					CategoryVO categoryVO = CategoryVO.builder()
+							.cate_bi_id(dbBoardInfoVO.getBi_id())
+							.cate_text(cate_text)
+							.build();
+					categoryList.add(categoryVO);
+				} else {
+					// cate_id를 입력받았으면 기존 DB 카테고리 UPDATE
+					CategoryVO categoryVO = CategoryVO.builder()
+							.cate_id(cate_id)
+							.cate_bi_id(dbBoardInfoVO.getBi_id())
+							.cate_text(cate_text)
+							.build();
+					cateSvc.update(categoryVO);
 				}
-				if(categoryList.size() > 0) cateSvc.insert(categoryList);
+				
 			}
 			
+			// 5-3. 카테고리 리스트 INSERT
+			if(categoryList.size() > 0) cateSvc.insert(categoryList);
 		}
 		
 		return result;
